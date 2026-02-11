@@ -1,31 +1,43 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const path = require("path");
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() }); // upload in memoria
+const cloudinary = require('../cloudinary'); // importa la config corretta
+const Veicolo = require('../models/veicolo');
 
-const app = express();
-const PORT = 3000;
+// Route per aggiungere un veicolo con immagini
+router.post('/', upload.array('immagini', 10), async (req, res) => {
+  try {
+    const uploadedUrls = [];
 
-// Middleware per JSON
-app.use(express.json());
+    // Funzione per upload su Cloudinary
+    const uploadToCloudinary = (fileBuffer) => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'veicoli' }, // cartella su Cloudinary
+          (err, result) => (err ? reject(err) : resolve(result))
+        );
+        stream.end(fileBuffer);
+      });
+    };
 
-// Statici: cartella public
-app.use(express.static(path.join(__dirname, "public")));
+    // Carica tutte le immagini
+    for (const file of req.files) {
+      const result = await uploadToCloudinary(file.buffer);
+      uploadedUrls.push({ url: result.secure_url, public_id: result.public_id });
+    }
 
-// Espone la cartella uploads per le immagini caricate
-app.use('/uploads', express.static(path.join(__dirname, "public/uploads")));
+    // Crea e salva il veicolo
+    const veicoloData = { ...req.body, immagini: uploadedUrls };
+    const veicolo = new Veicolo(veicoloData);
+    await veicolo.save();
 
-mongoose.connect("mongodb://127.0.0.1:27017/dpcarok1")
-  .then(() => console.log("✅ MongoDB connesso con Mongoose"))
-  .catch((err) => {
-    console.error("Errore connessione MongoDB:", err);
-    process.exit(1);
-  });
+    res.status(201).json(veicolo);
 
-// Importa il router veicoli
-const veicoliRouter = require("./routes/veicoli");
-app.use("/veicoli", veicoliRouter);
-
-// Avvio server
-app.listen(PORT, () => {
-  console.log(`🚀 Server in ascolto su http://localhost:${PORT}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore durante l'upload delle immagini" });
+  }
 });
+
+module.exports = router;

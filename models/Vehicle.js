@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const ImageSchema = new mongoose.Schema({
+  url: { type: String, required: true },
+  public_id: { type: String, required: true }
+});
+
 const vehicleSchema = new mongoose.Schema({
   tipo: { type: String, enum: ["auto", "moto"], required: true },
   marca: { type: String, required: true },
@@ -51,9 +56,10 @@ const vehicleSchema = new mongoose.Schema({
     default: 'disponibile'
   },
 
-  descrizioni: [String], // aggiunta per accessori / descrizioni veicolo
+  descrizioni: [String], // accessori / descrizioni veicolo
 
-  immagini: [String], // array di path immagini (es. "/uploads/nomefile.jpg")
+  immagini: { type: [ImageSchema], default: [] }, // array di oggetti {url, public_id}
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("Vehicle", vehicleSchema);
