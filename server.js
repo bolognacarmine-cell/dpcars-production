@@ -1,43 +1,23 @@
 const express = require('express');
-const router = express.Router();
-const multer = require('multer');
-const upload = multer({ storage: multer.memoryStorage() }); // upload in memoria
-const cloudinary = require('../cloudinary'); // importa la config corretta
-const Veicolo = require('../models/veicolo');
+const cors = require('cors');
+const path = require('path');
 
-// Route per aggiungere un veicolo con immagini
-router.post('/', upload.array('immagini', 10), async (req, res) => {
-  try {
-    const uploadedUrls = [];
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-    // Funzione per upload su Cloudinary
-    const uploadToCloudinary = (fileBuffer) => {
-      return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: 'veicoli' }, // cartella su Cloudinary
-          (err, result) => (err ? reject(err) : resolve(result))
-        );
-        stream.end(fileBuffer);
-      });
-    };
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('uploads'));
 
-    // Carica tutte le immagini
-    for (const file of req.files) {
-      const result = await uploadToCloudinary(file.buffer);
-      uploadedUrls.push({ url: result.secure_url, public_id: result.public_id });
-    }
+require('./cloudinary');
 
-    // Crea e salva il veicolo
-    const veicoloData = { ...req.body, immagini: uploadedUrls };
-    const veicolo = new Veicolo(veicoloData);
-    await veicolo.save();
+app.use('/api/veicoli', require('./routes/veicoli'));
+app.get('/api/test', (req, res) => res.json({message: 'DP Cars Backend + Cloudinary'}));
 
-    res.status(201).json(veicolo);
+// FIX 404 Express v5
+app.use((req, res) => res.status(404).json({error: 'Non trovato'}));
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore durante l'upload delle immagini" });
-  }
+app.listen(PORT, () => {
+  console.log(`🚀 DP Cars Backend su http://localhost:${PORT}`);
 });
-
-module.exports = router;
