@@ -2,16 +2,18 @@ const express = require("express");
 const router = express.Router();
 const Vehicle = require("../models/Vehicle");
 const multer = require("multer");
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../cloudinary"); // usa la config corretta (da .env / config centralizzata)
 
 // -------------------
-// CONFIG CLOUDINARY
+// AUTH MIDDLEWARE BASIC (protegge solo le scritture)
 // -------------------
-cloudinary.config({
-  cloud_name: "TUO_CLOUD_NAME",
-  api_key: "TUA_API_KEY",
-  api_secret: "TUO_API_SECRET"
-});
+const authMiddleware = (req, res, next) => {
+  const auth = req.headers.authorization;
+  if (!auth || auth !== "Basic ZHBjYXJzOmRwY2FyczIwMjY=") {
+    return res.status(401).json({ error: "Accesso negato 🛑" });
+  }
+  next();
+};
 
 // -------------------
 // MULTER IN MEMORIA
@@ -24,11 +26,11 @@ const upload = multer({
     const allowedTypes = /jpeg|jpg|png|gif|svg|avif/;
     if (allowedTypes.test(file.mimetype)) cb(null, true);
     else cb(new Error("Solo immagini valide sono accettate"));
-  }
+  },
 });
 
 // -------------------
-// FUNZIONE HELPER UPLOAD CLOUDINARY
+// HELPER UPLOAD CLOUDINARY
 // -------------------
 const uploadToCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
@@ -41,7 +43,7 @@ const uploadToCloudinary = (fileBuffer) => {
 };
 
 // -------------------
-// GET /veicoli
+// GET /veicoli (PUBBLICO)
 // -------------------
 router.get("/", async (req, res) => {
   try {
@@ -54,7 +56,7 @@ router.get("/", async (req, res) => {
 });
 
 // -------------------
-// GET /veicoli/:id
+// GET /veicoli/:id (PUBBLICO)
 // -------------------
 router.get("/:id", async (req, res) => {
   try {
@@ -68,23 +70,29 @@ router.get("/:id", async (req, res) => {
 });
 
 // -------------------
-// POST /veicoli
+// POST /veicoli (PROTETTO)
 // -------------------
-router.post("/", upload.array("immagini", 10), async (req, res) => {
+router.post("/", authMiddleware, upload.array("immagini", 10), async (req, res) => {
   try {
     const data = req.body;
 
     const uploadedResults = await Promise.all(
-      (req.files || []).map(file => uploadToCloudinary(file.buffer))
+      (req.files || []).map((file) => uploadToCloudinary(file.buffer))
     );
 
-    const immaginiArr = uploadedResults.map(r => ({ url: r.secure_url, public_id: r.public_id }));
+    const immaginiArr = uploadedResults.map((r) => ({
+      url: r.secure_url,
+      public_id: r.public_id,
+    }));
 
     // Parsing descrizioni
     let descrizioniArr = [];
     if (data.descrizioni) {
-      try { descrizioniArr = JSON.parse(data.descrizioni); }
-      catch { descrizioniArr = [data.descrizioni]; }
+      try {
+        descrizioniArr = JSON.parse(data.descrizioni);
+      } catch {
+        descrizioniArr = [data.descrizioni];
+      }
       if (!Array.isArray(descrizioniArr)) descrizioniArr = [data.descrizioni];
     }
 
@@ -92,19 +100,22 @@ router.post("/", upload.array("immagini", 10), async (req, res) => {
       ...data,
       usato: data.usato === "true",
       chilometri: data.chilometri ? Number(data.chilometri) : undefined,
-      meseImmatricolazione: data.meseImmatricolazione ? Number(data.meseImmatricolazione) : undefined,
-      annoImmatricolazione: data.annoImmatricolazione ? Number(data.annoImmatricolazione) : undefined,
+      meseImmatricolazione: data.meseImmatricolazione
+        ? Number(data.meseImmatricolazione)
+        : undefined,
+      annoImmatricolazione: data.annoImmatricolazione
+        ? Number(data.annoImmatricolazione)
+        : undefined,
       cilindrata: data.cilindrata ? Number(data.cilindrata) : undefined,
       porte: data.porte ? Number(data.porte) : undefined,
       prezzo: data.prezzo ? Number(data.prezzo) : undefined,
       descrizioni: descrizioniArr,
       immagini: immaginiArr,
-      statoVendita: data.statoVendita || "disponibile"
+      statoVendita: data.statoVendita || "disponibile",
     });
 
     const savedVehicle = await newVehicle.save();
     res.status(201).json(savedVehicle);
-
   } catch (err) {
     console.error("💥 ERRORE POST /veicoli:", err);
     res.status(500).json({ error: "Errore creazione veicolo: " + err.message });
@@ -112,9 +123,9 @@ router.post("/", upload.array("immagini", 10), async (req, res) => {
 });
 
 // -------------------
-// PUT /veicoli/:id
+// PUT /veicoli/:id (PROTETTO)
 // -------------------
-router.put("/:id", upload.array("immagini", 10), async (req, res) => {
+router.put("/:id", authMiddleware, upload.array("immagini", 10), async (req, res) => {
   try {
     const vehicle = await Vehicle.findById(req.params.id);
     if (!vehicle) return res.status(404).json({ error: "Veicolo non trovato" });
@@ -123,11 +134,14 @@ router.put("/:id", upload.array("immagini", 10), async (req, res) => {
 
     // Rimuovi immagini se specificato (array di public_id da eliminare)
     if (data.rimuoviImmagini) {
-      const daRimuovere = Array.isArray(data.rimuoviImmagini) ? data.rimuoviImmagini : [data.rimuoviImmagini];
+      const daRimuovere = Array.isArray(data.rimuoviImmagini)
+        ? data.rimuoviImmagini
+        : [data.rimuoviImmagini];
+
       for (const public_id of daRimuovere) {
         try {
           await cloudinary.uploader.destroy(public_id);
-          vehicle.immagini = vehicle.immagini.filter(img => img.public_id !== public_id);
+          vehicle.immagini = vehicle.immagini.filter((img) => img.public_id !== public_id);
         } catch (err) {
           console.warn(`⚠️ Non è stato possibile eliminare ${public_id}:`, err.message);
         }
@@ -137,9 +151,11 @@ router.put("/:id", upload.array("immagini", 10), async (req, res) => {
     // Upload nuove immagini se presenti
     if (req.files?.length) {
       const uploadedResults = await Promise.all(
-        req.files.map(file => uploadToCloudinary(file.buffer))
+        req.files.map((file) => uploadToCloudinary(file.buffer))
       );
-      vehicle.immagini.push(...uploadedResults.map(r => ({ url: r.secure_url, public_id: r.public_id })));
+      vehicle.immagini.push(
+        ...uploadedResults.map((r) => ({ url: r.secure_url, public_id: r.public_id }))
+      );
     }
 
     // Aggiorna campi
@@ -147,8 +163,12 @@ router.put("/:id", upload.array("immagini", 10), async (req, res) => {
     vehicle.modello = data.modello || vehicle.modello;
     vehicle.usato = data.usato !== undefined ? data.usato === "true" : vehicle.usato;
     vehicle.chilometri = data.chilometri ? Number(data.chilometri) : vehicle.chilometri;
-    vehicle.meseImmatricolazione = data.meseImmatricolazione ? Number(data.meseImmatricolazione) : vehicle.meseImmatricolazione;
-    vehicle.annoImmatricolazione = data.annoImmatricolazione ? Number(data.annoImmatricolazione) : vehicle.annoImmatricolazione;
+    vehicle.meseImmatricolazione = data.meseImmatricolazione
+      ? Number(data.meseImmatricolazione)
+      : vehicle.meseImmatricolazione;
+    vehicle.annoImmatricolazione = data.annoImmatricolazione
+      ? Number(data.annoImmatricolazione)
+      : vehicle.annoImmatricolazione;
     vehicle.cilindrata = data.cilindrata ? Number(data.cilindrata) : vehicle.cilindrata;
     vehicle.porte = data.porte ? Number(data.porte) : vehicle.porte;
     vehicle.prezzo = data.prezzo ? Number(data.prezzo) : vehicle.prezzo;
@@ -167,7 +187,6 @@ router.put("/:id", upload.array("immagini", 10), async (req, res) => {
 
     const updatedVehicle = await vehicle.save();
     res.json(updatedVehicle);
-
   } catch (err) {
     console.error("💥 ERRORE PUT /veicoli/:id:", err);
     res.status(500).json({ error: "Errore aggiornamento veicolo: " + err.message });
@@ -175,22 +194,23 @@ router.put("/:id", upload.array("immagini", 10), async (req, res) => {
 });
 
 // -------------------
-// DELETE /veicoli/:id
+// DELETE /veicoli/:id (PROTETTO)
 // -------------------
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const vehicle = await Vehicle.findById(req.params.id);
     if (!vehicle) return res.status(404).json({ error: "Veicolo non trovato" });
 
     if (vehicle.immagini?.length) {
       await Promise.allSettled(
-        vehicle.immagini.map(img => img.public_id ? cloudinary.uploader.destroy(img.public_id) : null)
+        vehicle.immagini.map((img) =>
+          img.public_id ? cloudinary.uploader.destroy(img.public_id) : null
+        )
       );
     }
 
     await Vehicle.findByIdAndDelete(req.params.id);
     res.json({ message: "Veicolo e immagini eliminati con successo 🏁" });
-
   } catch (err) {
     console.error("💥 ERRORE DELETE /veicoli/:id:", err);
     res.status(500).json({ error: "Errore eliminazione veicolo" });
@@ -198,10 +218,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 // -------------------
-// MIDDLEWARE GESTIONE ERRORI MULTER
+// MIDDLEWARE ERRORI MULTER
 // -------------------
 router.use((err, req, res, next) => {
   console.error("🔴 MULTER ERROR:", err);
+
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
       return res.status(400).json({ error: "File troppo grande. Max 5MB 🚫" });
@@ -210,6 +231,7 @@ router.use((err, req, res, next) => {
   } else if (err) {
     return res.status(500).json({ error: "Server crash: " + err.message });
   }
+
   next();
 });
 
