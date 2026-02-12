@@ -2,6 +2,11 @@ console.log("SERVER FILE:", __filename);
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+app.use(cors({
+  origin: "*", // poi lo rendiamo sicuro
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 const path = require("path");
 const mongoose = require("mongoose");
 
