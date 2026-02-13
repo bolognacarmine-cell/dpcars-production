@@ -44,11 +44,9 @@ app.get("/api/test", (req, res) => {
 // SPA FALLBACK (IMPORTANTISSIMO)
 // -------------------
 
-app.get("*", (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-
-
 
 
 // -------------------
