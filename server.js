@@ -7,6 +7,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 
 const app = express();
+app.disable("x-powered-by"); 
 const PORT = process.env.PORT || 3000;
 
 // -------------------
