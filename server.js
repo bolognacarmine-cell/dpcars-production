@@ -1,71 +1,72 @@
 console.log("SERVER FILE:", __filename);
+
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-app.use(cors({
-  origin: "*", // poi lo rendiamo sicuro
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
 const path = require("path");
 const mongoose = require("mongoose");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware base
-app.use(cors());
+// -------------------
+// MIDDLEWARE
+// -------------------
+
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static
+// Static files
 app.use("/uploads", express.static("uploads"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Cloudinary init
+// -------------------
+// CLOUDINARY
+// -------------------
 require("./cloudinary");
 
 // -------------------
-// AUTH MIDDLEWARE BASIC
+// ROUTES
 // -------------------
-const authMiddleware = (req, res, next) => {
-  const auth = req.headers.authorization;
-  if (!auth || auth !== "Basic ZHBjYXJzOmRwY2FyczIwMjY=") {
-    return res.status(401).json({ error: "Accesso negato 🛑" });
-  }
-  next();
-};
 
-// Routes
 app.use("/veicoli", require("./routes/veicoli"));
-
 
 app.get("/api/test", (req, res) => {
   res.json({ message: "DP Cars Backend + Cloudinary 🏁" });
 });
 
-// 404
-app.use((req, res) => {
-  res.status(404).json({ error: "Non trovato" });
+// -------------------
+// SPA FALLBACK (IMPORTANTISSIMO)
+// -------------------
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // -------------------
-// START: connect DB then listen
+// START SERVER
 // -------------------
+
 async function start() {
   try {
     if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URI mancante nel .env");
+      throw new Error("MONGODB_URI mancante su Render");
     }
 
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("✅ MongoDB connesso");
 
     app.listen(PORT, () => {
-      console.log(`🚀 DP Cars Backend su http://localhost:${PORT}`);
+      console.log(`🚀 Server attivo su porta ${PORT}`);
     });
+
   } catch (err) {
-    console.error("❌ Errore connessione MongoDB:", err.message);
+    console.error("❌ Errore MongoDB:", err.message);
     process.exit(1);
   }
 }
