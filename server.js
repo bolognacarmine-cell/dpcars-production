@@ -5,9 +5,19 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 app.disable("x-powered-by"); 
+app.use(helmet());             // 👈 sicurezza header
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,    // 15 minuti
+  max: 100                     // max 100 richieste per IP
+});
+
+app.use(limiter);              // 👈 protezione anti spamy
 const PORT = process.env.PORT || 3000;
 
 // -------------------
