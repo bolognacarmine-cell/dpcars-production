@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;600;700&display=swap');
+
+/* F1 CORE CON LOGO DP CARS */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --f1-black: #0a0a0a;
+  --carbon-dark: #1a1a1a;
+  --ferrari-red: #DC2626;
+  --red-glow: #EF4444;
+  --accent-yellow: #FACC15;
+  --dp-gold: #F1C859;
+  --white-glow: rgba(255,255,255,.1);
+  --speed-blur: 0 0 30px rgba(220,38,38,.6);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--f1-black);
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(220,38,38,.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--dp-gold,.08) 0%, transparent 50%),
+    linear-gradient(135deg, var(--carbon-dark) 0%, var(--f1-black) 100%);
+  color: #fff;
+  line-height: 1.5;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    90deg, transparent, transparent 2px, rgba(220,38,38,.03) 2px, rgba(220,38,38,.03) 4px
+  );
+  pointer-events: none; z-index: 1;
+}
+
+/* HEADER F1 CON LOGO DP CARS SCUDO */
+.admin-header {
+  position: sticky; top: 0; z-index: 1000; height: 100vh; width: 280px;
+  background: linear-gradient(180deg, rgba(10,10,10,.98) 0%, rgba(26,26,26,.95) 100%);
+  backdrop-filter: blur(20px); border-right: 1px solid rgba(220,38,38,.3);
+  box-shadow: var(--speed-blur); padding: 2rem 1.5rem; overflow: hidden;
+}
+.admin-header::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 200%; height: 200%;
+  background: conic-gradient(transparent, rgba(241,200,89,.05), transparent);
+  animation: dpRotate 25s linear infinite;
+}
+@keyframes dpRotate { to { transform: rotate(360deg); } }
+
+.dp-logo-shield {
+  position: relative; width: 80px; height: 80px; margin: 0 auto 1.5rem;
+  background: conic-gradient(
+    #DC2626 0deg 120deg, #FBBF24 120deg 240deg, #F1C859 240deg 360deg
+  );
+  border-radius: 16px; animation: f1ShieldPulse 2s cubic-bezier(.25,.46,.45,.94) infinite;
+  border: 3px solid rgba(255,255,255,.2); box-shadow: 
+    0 0 30px rgba(220,38,38,.6),
+    inset 0 0 20px rgba(255,255,255,.1);
+}
+.dp-logo-shield::before {
+  content: 'DP'; position: absolute; inset: 8px;
+  background: var(--f1-black); border-radius: 12px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 900;
+  color: var(--dp-gold); text-shadow: 
+    0 0 8px rgba(241,200,89,.8),
+    2px 2px 4px rgba(0,0,0,.9);
+  letter-spacing: -.05em; line-height: 1;
+}
+.dp-logo-shield::after {
+  content: 'CARS'; position: absolute; bottom: -8px; left: 50%;
+  transform: translateX(-50%); font-size: .65rem; font-weight: 700;
+  color: #fff; text-shadow: 0 0 5px rgba(220,38,38,.8);
+  letter-spacing: .1em; text-transform: uppercase;
+}
+@keyframes f1ShieldPulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(220,38,38,.5), inset 0 0 20px rgba(255,255,255,.1);
+    transform: rotate(0deg) scale(1);
+  }
+  25% { transform: rotate(5deg) scale(1.03); }
+  75% { transform: rotate(-5deg) scale(1.03); }
+  50% { 
+    box-shadow: 0 0 50px rgba(220,38,38,.9), 0 0 80px rgba(241,200,89,.4),
+    inset 0 0 30px rgba(255,255,255,.2);
+    transform: rotate(0deg) scale(1.08);
+  }
+}
+
+.f1-title {
+  font-family: 'Orbitron', monospace; font-size: 1.3rem; font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, var(--ferrari-red) 50%, var(--dp-gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; letter-spacing: .25em; text-transform: uppercase;
+  margin-bottom: 2rem; filter: drop-shadow(0 0 15px rgba(220,38,38,.7));
+  position: relative; z-index: 2;
+}
+.f1-subtitle {
+  text-align: center; font-size: .75rem; color: rgba(255,255,255,.6);
+  font-weight: 500; letter-spacing: .3em; text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+/* NAV CON LOGO HOVER */
+.admin-nav ul { list-style: none; position: relative; z-index: 2; }
+.admin-nav li { margin-bottom: 1.2rem; }
+.admin-nav a {
+  display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1rem;
+  color: rgba(255,255,255,.8); font-weight: 600; border-radius: 12px;
+  transition: all .4s cubic-bezier(.25,.46,.45,.94); position: relative;
+  overflow: hidden; border: 1px solid transparent;
+}
+.admin-nav a::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: linear-gradient(180deg, var(--ferrari-red), var(--dp-gold));
+  transform: scaleY(0); transition: transform .4s ease; z-index: 1;
+}
+.admin-nav a:hover {
+  background: rgba(220,38,38,.2); color: #fff; 
+  transform: translateX(12px) scale(1.02);
+  border-color: rgba(241,200,89,.4);
+  box-shadow: 0 12px 40px rgba(220,38,38,.4);
+}
+.admin-nav a:hover::before { transform: scaleY(1); }
+.admin-nav i { font-size: 1.2rem; opacity: .7; transition: opacity .3s; }
+.admin-nav a:hover i { opacity: 1; }
+
+/* MAIN CONTENT */
+.main-content { 
+  margin-left: 280px; padding: 2.5rem; min-height: 100vh; position: relative; z-index: 2;
+}
+@media (max-width: 1200px) { 
+  .main-content { margin-left: 0; padding: 1.5rem; } 
+  .admin-header { position: relative; height: auto; width: 100%; padding: 1.5rem; }
+}
+
+/* Resto CSS invariato... (tabelle, form, buttons dal precedente) */
+.section {
+  background: rgba(26,26,26,.7); border-radius: 20px; padding: 3rem;
+  border: 1px solid rgba(220,38,38,.3); backdrop-filter: blur(20px);
+  margin-bottom: 2.5rem; position: relative; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8);
+}
+.section h2 {
+  font-family: 'Orbitron', monospace; font-size: 2.2rem; font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, var(--ferrari-red) 50%, var(--dp-gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 2.5rem; letter-spacing: .15em; text-transform: uppercase;
+  filter: drop-shadow(0 0 20px rgba(220,38,38,.8));
+}
+table { width: 100%; border-collapse: collapse; font-family: 'Rajdhani', sans-serif; }
+th {
+  background: linear-gradient(135deg, var(--ferrari-red), #B91C1C, var(--dp-gold));
+  color: #fff; padding: 1.5rem 1.5rem; text-transform: uppercase;
+  font-weight: 700; letter-spacing: .1em; font-size: .95rem;
+  border: none; border-radius: 12px 12px 0 0;
+}
+tr:hover { 
+  background: rgba(220,38,38,.15); transform: scale(1.01);
+  box-shadow: 0 15px 40px rgba(220,38,38,.3);
+}
+td { padding: 1.5rem 1.5rem; font-weight: 500; }
+.btn-f1 {
+  padding: 1rem 2.5rem; border-radius: 50px; font-family: 'Orbitron', monospace;
+  font-weight: 900; text-transform: uppercase; letter-spacing: .2em;
+  border: none; cursor: pointer; position: relative; overflow: hidden;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--ferrari-red), var(--dp-gold));
+  color: #fff; box-shadow: 0 15px 40px rgba(220,38,38,.5);
+}
+.btn-primary:hover { 
+  transform: translateY(-6px) scale(1.08); 
+  box-shadow: 0 25px 60px rgba(220,38,38,.7);
+}
+.form-control:focus { 
+  border-color: var(--ferrari-red); 
+  box-shadow: var(--speed-blur), 0 0 0 4px rgba(220,38,38,.2);
+}
+.metric-card:hover { 
+  box-shadow: var(--speed-blur), 0 40px 80px rgba(0,0,0,.9);
+  border-color: var(--ferrari-red);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .section { padding: 2rem 1.5rem; margin-bottom: 2rem; }
+  .dp-logo-shield { width: 70px; height: 70px; }
+  table { font-size: .85rem; overflow-x: auto; display: block; }
+  th, td { padding: 1rem .75rem; min-width: 120px; }
+}
+.f1-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.dp-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem;
+}
+
+.dp-logo-img {
+  display: block;
+  margin: auto;
+}
