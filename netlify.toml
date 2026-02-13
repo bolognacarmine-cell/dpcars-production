@@ -1,3 +1,0 @@
-git add netlify.toml
-git commit -m "Aggiunto netlify.toml per il deploy"
-git push origin main
