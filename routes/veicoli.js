@@ -36,14 +36,13 @@ const uploadToCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: "veicoli",
-        // OTTIMIZZAZIONI AUTOMATICHE DI CLOUDINARY
+        folder: "vecolari",
         width: 1600,           // max larghezza
         height: 1200,          // max altezza
-        crop: "limit",         // non ingrandisce, solo ridimensiona se più grande
-        quality: "auto",       // qualità ottimale
-        format: "auto",        // WebP/AVIF se supportato dal browser
-        fetch_format: "auto",
+        crop: "limit",         // ridimensiona solo se più grande
+        quality: "auto",       // qualità ottimale automatica
+        fetch_format: "auto",  // ← CORRETTO: formato automatico (WebP/AVIF)
+        // RIMUOVI QUESTA RIGA: format: "auto",  ← CAUSA L'ERRORE!
       },
       (err, result) => (err ? reject(err) : resolve(result))
     );
