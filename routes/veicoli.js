@@ -21,7 +21,7 @@ const authMiddleware = (req, res, next) => {
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 10 * 1024 * 1024 }, // 5MB max
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|svg|avif/;
     if (allowedTypes.test(file.mimetype)) cb(null, true);
@@ -30,12 +30,21 @@ const upload = multer({
 });
 
 // -------------------
-// HELPER UPLOAD CLOUDINARY
+// HELPER UPLOAD CLOUDINARY (OTTIMIZZATO)
 // -------------------
 const uploadToCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder: "veicoli" },
+      {
+        folder: "veicoli",
+        // OTTIMIZZAZIONI AUTOMATICHE DI CLOUDINARY
+        width: 1600,           // max larghezza
+        height: 1200,          // max altezza
+        crop: "limit",         // non ingrandisce, solo ridimensiona se più grande
+        quality: "auto",       // qualità ottimale
+        format: "auto",        // WebP/AVIF se supportato dal browser
+        fetch_format: "auto",
+      },
       (err, result) => (err ? reject(err) : resolve(result))
     );
     stream.end(fileBuffer);
