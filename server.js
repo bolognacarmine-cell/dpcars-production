@@ -9,6 +9,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+app.set('trust proxy', 1);  // Fidati di 1 proxy (Render ne usa uno)
 app.disable("x-powered-by"); 
 app.use(
   helmet({
