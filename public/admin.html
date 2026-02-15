@@ -421,10 +421,11 @@ const headers = new Headers();
 const ADMIN_USER = "dpcars";
 const ADMIN_PASS = "ok";
 
-headers.append(
-  "Authorization",
+headers.append(    // headers.append(
+  "Authorization",   //   "Authorization",
   "Basic " + btoa(ADMIN_USER + ":" + ADMIN_PASS)
-);
+);   //   "Basic " + btoa(ADMIN_USER + ":" + ADMIN_PASS)
+// );
 
 async function caricaVeicoli() {
   try {
