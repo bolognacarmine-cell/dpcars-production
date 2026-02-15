@@ -41,6 +41,29 @@ app.use(express.urlencoded({ extended: true }));
 
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// PROTEZIONE admin.html
+app.get("/admin.html", (req, res, next) => {
+  const auth = req.headers.authorization;
+
+  if (!auth || !auth.startsWith("Basic ")) {
+    res.setHeader("WWW-Authenticate", "Basic realm=\"Admin Panel\"");
+    return res.status(401).send("Autenticazione richiesta");
+  }
+
+  const credentials = Buffer.from(auth.split(" ")[1], "base64").toString();
+  const [user, pass] = credentials.split(":");
+
+  if (
+    user !== process.env.ADMIN_USER ||
+    pass !== process.env.ADMIN_PASS
+  ) {
+    res.setHeader("WWW-Authenticate", "Basic realm=\"Admin Panel\"");
+    return res.status(401).send("Credenziali non valide");
+  }
+
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 
 // -------------------
