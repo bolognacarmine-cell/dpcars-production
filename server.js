@@ -55,7 +55,7 @@ app.get("/admin.html", (req, res, next) => {
 
   if (
     user !== process.env.ADMIN_USER ||
-    pass !== process.env.ADMIN_PASS
+    pass !== process.env.ADMIN_PASSWORD
   ) {
     res.setHeader("WWW-Authenticate", "Basic realm=\"Admin Panel\"");
     return res.status(401).send("Credenziali non valide");
