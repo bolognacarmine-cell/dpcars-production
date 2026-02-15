@@ -9,7 +9,7 @@ const cloudinary = require("../cloudinary");
 // AUTH MIDDLEWARE (SICURO)
 // -------------------
 const authMiddleware = (req, res, next) => {
-  if (!process.env.ADMIN_USER || !process.env.ADMIN_PASS) {
+  if (!process.env.ADMIN_USER || !process.env.ADMIN_PASSWORD) {
     return res.status(500).json({ error: "Auth non configurata" });
   }
 
@@ -25,7 +25,7 @@ const authMiddleware = (req, res, next) => {
 
     if (
       user !== process.env.ADMIN_USER ||
-      pass !== process.env.ADMIN_PASS
+      pass !== process.env.ADMIN_PASSWORD
     ) {
       return res.status(401).json({ error: "Accesso negato 🛑" });
     }
