@@ -4,15 +4,33 @@ const Vehicle = require("../models/Vehicle");
 const multer = require("multer");
 const cloudinary = require("../cloudinary"); // usa la config corretta (da .env / config centralizzata)
 
-// -------------------
-// AUTH MIDDLEWARE BASIC (protegge solo le scritture)
-// -------------------
 const authMiddleware = (req, res, next) => {
+  if (!process.env.ADMIN_USER || !process.env.ADMIN_PASS) {
+    return res.status(500).json({ error: "Auth non configurata" });
+  }
+
   const auth = req.headers.authorization;
-  if (!auth || auth !== "Basic ZHBjYXJzOmRwY2FyczIwMjY=") {
+
+  if (!auth || !auth.startsWith("Basic ")) {
     return res.status(401).json({ error: "Accesso negato 🛑" });
   }
-  next();
+
+  try {
+    const credentials = Buffer.from(auth.split(" ")[1], "base64").toString();
+    const [user, pass] = credentials.split(":");
+
+    if (
+      user !== process.env.ADMIN_USER ||
+      pass !== process.env.ADMIN_PASS
+    ) {
+      return res.status(401).json({ error: "Accesso negato 🛑" });
+    }
+
+    next();
+
+  } catch {
+    return res.status(401).json({ error: "Accesso negato 🛑" });
+  }
 };
 
 // -------------------
@@ -21,7 +39,7 @@ const authMiddleware = (req, res, next) => {
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|svg|avif/;
     if (allowedTypes.test(file.mimetype)) cb(null, true);
@@ -55,8 +73,8 @@ const uploadToCloudinary = (fileBuffer) => {
 // -------------------
 router.get("/", async (req, res) => {
   try {
-    const veicoli = await Vehicle.find();
-    res.json(veicoli);
+   const veicoli = await Vehicle.find().sort({ createdAt: -1 });
+   res.json(veicoli);
   } catch (err) {
     console.error("💥 ERRORE GET /veicoli:", err);
     res.status(500).json({ error: "Errore nel recupero veicoli" });
