@@ -416,7 +416,15 @@
 <script>
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
 const headers = new Headers();
-headers.append('Authorization', 'Basic ZHBjYXJzOmRwY2FyczIwMjY=');
+
+// INSERISCI QUI LE STESSE CREDENZIALI DI RENDER
+const ADMIN_USER = "dpcars";
+const ADMIN_PASS = "ok";
+
+headers.append(
+  "Authorization",
+  "Basic " + btoa(ADMIN_USER + ":" + ADMIN_PASS)
+);
 
 async function caricaVeicoli() {
   try {
