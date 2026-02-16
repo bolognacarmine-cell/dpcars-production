@@ -119,8 +119,14 @@ function renderVehicles(vehicles) {
     <div class="specs">
       <span>${v.annoImmatricolazione || v.anno || 'N/D'}</span>
       <span>${v.chilometri?.toLocaleString() || 'N/D'} km</span>
-      <span>${v.carburante || 'N/D'}</span>
-    </div>
+      <span class="euro">${v.categoriaEuro || 'N/A'}</span>
+      <span>${v.colore || '—'}</span>
+      <span>${v.carburante || '—'}</span>
+      <span>${v.cambio || '—'}</span>
+      <span>${v.porte || '?'} porte</span>
+      <span>${v.cilindrata || ''}cc</span>
+      <span>${v.tipoAuto || ''}</span>
+      </div>
 
     <div class="price">${prezzoHTML}</div>
 
