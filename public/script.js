@@ -4,13 +4,10 @@ console.log('🚀 SCRIPT.JS CARICATO!');
    CONFIG
 ========================================================= */
 const CONFIG = {
-  API_URL: 'https://dpcars.onrender.com', // PRODUZIONE
-  LIMIT_VEHICLES: 9,
-  MAX_IMAGES: 6,
-  AUTO_SLIDE_DELAY: 4000,
-  DEBOUNCE_DELAY: 400
+  API_URL: '',  // ← VUOTO! Usa percorsi relativi
+  LIMIT_VEHICLES: 999,  // ← MOSTRA TUTTI
+  // ... resto uguale
 };
-
 
 /* =========================================================
    STATE
@@ -49,19 +46,14 @@ function updateYear() {
 /* =========================================================
    API
 ========================================================= */
+// ✅ CORRETTO - MOSTRA TUTTI:
 async function fetchVehicles() {
   try {
-    const params = new URLSearchParams({
-      ...state.filters,
-      page: state.currentPage,
-      limit: CONFIG.LIMIT_VEHICLES
-    });
-
-    const res = await fetch(`${CONFIG.API_URL}/veicoli?${params}`);
+    // SEMPLICE, SENZA FILTRI/PAGINAZIONE
+    const res = await fetch('/veicoli');
     if (!res.ok) throw new Error(res.status);
-
     const data = await res.json();
-    return data; // ✅ backend manda direttamente array
+    return data; // Backend manda array diretto
   } catch (err) {
     console.error('❌ API error:', err);
     return [];
