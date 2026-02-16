@@ -76,8 +76,13 @@ async function loadVehicles() {
    RENDER VEHICLES
 ========================================================= */
 function renderVehicles(vehicles) {
+  console.log(`🎨 Rendering ${vehicles.length} veicoli...`);
+  
   const grid = $('#vehicles-grid');
-  if (!grid) return;
+  if (!grid) {
+    console.error('❌ #vehicles-grid NON TROVATO!');
+    return;
+  }
 
   if (!vehicles.length) {
     grid.innerHTML = `<p style="grid-column:1/-1;text-align:center">Nessun veicolo trovato</p>`;
@@ -85,13 +90,14 @@ function renderVehicles(vehicles) {
   }
 
   grid.innerHTML = vehicles.map((v, i) => {
-    const imgs = (v.immagini || []).slice(0, CONFIG.MAX_IMAGES);
-
-    const imagesHTML = imgs.length
-      ? imgs.map((img, n) =>
-          `<img src="${img}" class="slide ${n === 0 ? 'active' : ''}" loading="lazy">`
-        ).join('')
+    // ✅ SAFE: gestisce campi mancanti
+    const imgs = Array.isArray(v.immagini) ? v.immagini.slice(0, CONFIG.MAX_IMAGES) : [];
+    const imagesHTML = imgs.length 
+      ? imgs.map((img, n) => `<img src="${img.url || img}" class="slide ${n === 0 ? 'active' : ''}" loading="lazy">`).join('')
       : `<div class="no-image">Foto non disponibile</div>`;
+
+    const prezzo = Number(v.prezzo || 0);
+    const prezzoHTML = isNaN(prezzo) ? 'Prezzo su richiesta' : `€${prezzo.toLocaleString()}`;
 
     return `
 <article class="vehicle-card" data-aos="fade-up" data-aos-delay="${i * 80}">
@@ -105,46 +111,39 @@ function renderVehicles(vehicles) {
 
   <div class="vehicle-details">
     <div class="info">
-      <span class="badge">${v.tipo?.toUpperCase() || 'AUTO'}</span>
-      <h3>${v.marca} ${v.modello}</h3>
-      <p class="vehicle-descrizione">${v.descrizione || 'Veicolo premium'}</p>
+      <span class="badge">${(v.tipo || 'AUTO').toUpperCase()}</span>
+      <h3>${v.marca || '?'} ${v.modello || 'Modello'}</h3>
+      <p class="vehicle-descrizione">${v.descrizione || v.descrizioni?.[0] || 'Veicolo premium'}</p>
     </div>
 
     <div class="specs">
-      <span>${v.anno || 'N/D'}</span>
+      <span>${v.annoImmatricolazione || v.anno || 'N/D'}</span>
       <span>${v.chilometri?.toLocaleString() || 'N/D'} km</span>
       <span>${v.carburante || 'N/D'}</span>
     </div>
 
-    <div class="price">€${parseInt(v.prezzo).toLocaleString()}</div>
+    <div class="price">${prezzoHTML}</div>
 
     <div class="actions">
       <a href="tel:+393921234567" class="btn call">📞 Chiama</a>
-      <a href="https://wa.me/393921234567?text=Interessato ${v.marca} ${v.modello}"
-         target="_blank" class="btn whatsapp">💬 WhatsApp</a>
-      <button class="btn details js-details"
-        data-vehicle='${encodeURIComponent(JSON.stringify(v))}'>👁 Dettagli</button>
+      <a href="https://wa.me/393921234567?text=Interessato ${v.marca || ''} ${v.modello || ''}" target="_blank" class="btn whatsapp">💬 WhatsApp</a>
       <button class="btn info js-show-indicazioni">📝 Indicazioni</button>
     </div>
 
     <div class="indicazioni hidden">
       <ul>
-        <li><b>Marca:</b> ${v.marca}</li>
-        <li><b>Modello:</b> ${v.modello}</li>
-        <li><b>Anno:</b> ${v.anno}</li>
-        <li><b>Chilometri:</b> ${v.chilometri?.toLocaleString()}</li>
-        <li><b>Carburante:</b> ${v.carburante}</li>
-        <li><b>Cambio:</b> ${v.cambio}</li>
-        <li><b>Colore:</b> ${v.colore || '—'}</li>
-        <li><b>Cilindrata:</b> ${v.cilindrata || '—'}</li>
-        <li><b>Potenza:</b> ${v.potenza || '—'} CV</li>
-        <li><b>Prezzo:</b> €${parseInt(v.prezzo).toLocaleString()}</li>
+        <li><b>Marca:</b> ${v.marca || '—'}</li>
+        <li><b>Modello:</b> ${v.modello || '—'}</li>
+        <li><b>Anno:</b> ${v.annoImmatricolazione || v.anno || '—'}</li>
+        <li><b>Km:</b> ${v.chilometri?.toLocaleString() || '—'}</li>
+        <li><b>Prezzo:</b> ${prezzoHTML}</li>
       </ul>
     </div>
   </div>
 </article>`;
   }).join('');
 
+  console.log(`✅ Renderizzati ${vehicles.length} veicoli`);
   setTimeout(initSliders, 50);
   initIndicazioniButtons();
 }
