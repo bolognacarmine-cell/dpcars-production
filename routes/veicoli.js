@@ -154,26 +154,25 @@ router.post(
       }
 
       const newVehicle = new Vehicle({
-        ...data,
-        usato: data.usato === "true",
-        chilometri: data.chilometri
-          ? Number(data.chilometri)
-          : undefined,
-        meseImmatricolazione: data.meseImmatricolazione
-          ? Number(data.meseImmatricolazione)
-          : undefined,
-        annoImmatricolazione: data.annoImmatricolazione
-          ? Number(data.annoImmatricolazione)
-          : undefined,
-        cilindrata: data.cilindrata
-          ? Number(data.cilindrata)
-          : undefined,
-        porte: data.porte ? Number(data.porte) : undefined,
-        prezzo: data.prezzo ? Number(data.prezzo) : undefined,
-        descrizioni: descrizioniArr,
-        immagini: immaginiArr,
-        statoVendita: data.statoVendita || "disponibile",
-      });
+  tipo: data.tipo || "auto",
+  marca: data.marca,
+  modello: data.modello,
+  usato: data.usato === "true",
+  chilometri: data.chilometri ? Number(data.chilometri) : undefined,
+  meseImmatricolazione: data.meseImmatricolazione ? Number(data.meseImmatricolazione) : undefined,
+  annoImmatricolazione: data.annoImmatricolazione ? Number(data.annoImmatricolazione) : undefined,
+  categoriaEuro: data.categoriaEuro || undefined,  // ✅ ESPLICITO!
+  tipoAuto: data.tipoAuto || undefined,            // ✅ ESPLICITO!
+  cilindrata: data.cilindrata ? Number(data.cilindrata) : undefined,
+  carburante: data.carburante || undefined,
+  cambio: data.cambio || undefined,
+  porte: data.porte ? Number(data.porte) : undefined,
+  colore: data.colore || undefined,
+  prezzo: data.prezzo ? Number(data.prezzo) : undefined,
+  descrizioni: descrizioniArr,
+  immagini: immaginiArr,
+  statoVendita: data.statoVendita || "disponibile",
+});
 
       const savedVehicle = await newVehicle.save();
 
