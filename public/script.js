@@ -4,10 +4,14 @@ console.log('🚀 SCRIPT.JS CARICATO!');
    CONFIG
 ========================================================= */
 const CONFIG = {
-  API_URL: '',  // ← VUOTO! Usa percorsi relativi
-  LIMIT_VEHICLES: 999,  // ← MOSTRA TUTTI
-  // ... resto uguale
+  API_URL: '',
+  LIMIT_VEHICLES: 999,
+  MAX_IMAGES: 5,           ← AGGIUNGI
+  AUTO_SLIDE_DELAY: 4000,  ← AGGIUNGI
+  DEBOUNCE_DELAY: 300,     ← AGGIUNGI
+  // ... resto
 };
+
 
 /* =========================================================
    STATE
@@ -46,14 +50,13 @@ function updateYear() {
 /* =========================================================
    API
 ========================================================= */
-// ✅ CORRETTO - MOSTRA TUTTI:
 async function fetchVehicles() {
   try {
-    // SEMPLICE, SENZA FILTRI/PAGINAZIONE
-    const res = await fetch('/veicoli');
+    const res = await fetch('/api/vehicles');  // ← /api/vehicles invece /vehicles
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
-    return data; // Backend manda array diretto
+    console.log(`📊 Trovati ${data.length} veicoli`);
+    return data;
   } catch (err) {
     console.error('❌ API error:', err);
     return [];
