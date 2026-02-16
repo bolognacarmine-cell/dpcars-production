@@ -75,6 +75,11 @@ const VehicleSchema = new mongoose.Schema(
     trim: true,
     },
     
+    tipoAuto: {
+    type: String,
+    trim: true,
+   },
+   
     cilindrata: {
       type: Number,
       min: 0,
