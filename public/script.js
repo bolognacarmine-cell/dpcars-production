@@ -119,19 +119,19 @@ function renderVehicles(vehicles) {
       <p class="vehicle-descrizione">${v.descrizione || v.descrizioni?.[0] || 'Veicolo premium'}</p>
     </div>
 
-    <div class="specs">
-      <span>${v.annoImmatricolazione || v.anno || 'N/D'}</span>
-      <span>${v.chilometri?.toLocaleString() || 'N/D'} km</span>
-      <span class="euro">${v.categoriaEuro || 'N/A'}</span>
-      <span>${v.colore || '—'}</span>
-      <span>${v.carburante || '—'}</span>
-      <span>${v.cambio || '—'}</span>
-      <span>${v.porte || '?'} porte</span>
-      <span>${v.cilindrata || ''}cc</span>
-      <span>${v.tipoAuto || ''}</span>
-      </div>
-
-    <div class="price">${prezzoHTML}</div>
+  <div class="specs">
+  <span>${v.annoImmatricolazione || v.anno || 'N/D'}</span>
+  <span>${v.chilometri?.toLocaleString() || 'N/D'} km</span>
+  <span class="euro">
+    ${v.categoriaEuro || v['Categoria Euro'] || v.categoria_euro || v.euro || 'N/A'}
+  </span>
+  <span>${v.colore || v.Colore || '—'}</span>
+  <span>${v.carburante || v.Carburante || '—'}</span>
+  <span>${v.cambio || v.Cambio || '—'}</span>
+  <span>${v.porte || v.Porte || '?'} porte</span>
+  <span>${v.cilindrata || v.Cilindrata || ''}cc</span>
+  <span>${v.tipoAuto || v['Tipo Auto'] || v.tipo_auto || v.car_type || 'N/A'}</span>
+</div>
 
     <div class="actions">
       <a href="tel:+393921234567" class="btn call">📞 Chiama</a>
