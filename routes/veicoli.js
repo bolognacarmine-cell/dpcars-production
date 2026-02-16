@@ -208,103 +208,63 @@ router.put(
 
       const data = req.body;
 
-      if (data.rimuoviImmagini) {
-        const daRimuovere = Array.isArray(data.rimuoviImmagini)
-          ? data.rimuoviImmagini
-          : [data.rimuoviImmagini];
-
-        for (const public_id of daRimuovere) {
-          try {
-            await cloudinary.uploader.destroy(public_id);
-
-            vehicle.immagini = vehicle.immagini.filter(
-              (img) => img.public_id !== public_id
-            );
-          } catch (err) {
-            console.warn(
-              `⚠️ Errore eliminazione immagine ${public_id}`,
-              err.message
-            );
-          }
-        }
-      }
-
-      if (req.files?.length) {
-        const uploadedResults = await Promise.all(
-          req.files.map((file) =>
-            uploadToCloudinary(file.buffer)
-          )
-        );
-
-        vehicle.immagini.push(
-          ...uploadedResults.map((r) => ({
-            url: r.secure_url,
-            public_id: r.public_id,
-          }))
-        );
-      }
-
+      // ✅ AGGIUNGI TUTTI I CAMPI MANCANTI!
       vehicle.marca = data.marca || vehicle.marca;
       vehicle.modello = data.modello || vehicle.modello;
+      vehicle.categoriaEuro = data.categoriaEuro || vehicle.categoriaEuro;
+      vehicle.tipoAuto = data.tipoAuto || vehicle.tipoAuto;
+      vehicle.carburante = data.carburante || vehicle.carburante;
+      vehicle.colore = data.colore || vehicle.colore;
+      vehicle.cambio = data.cambio || vehicle.cambio;
+      vehicle.statoVendita = data.statoVendita || vehicle.statoVendita;
 
       if (data.usato !== undefined) {
         vehicle.usato = data.usato === "true";
       }
 
-      if (data.chilometri) {
-        vehicle.chilometri = Number(data.chilometri);
-      }
-
-      if (data.meseImmatricolazione) {
-        vehicle.meseImmatricolazione = Number(
-          data.meseImmatricolazione
-        );
-      }
-
-      if (data.annoImmatricolazione) {
-        vehicle.annoImmatricolazione = Number(
-          data.annoImmatricolazione
-        );
-      }
-
-      if (data.cilindrata) {
-        vehicle.cilindrata = Number(data.cilindrata);
-      }
-
-      if (data.porte) {
-        vehicle.porte = Number(data.porte);
-      }
-
-      if (data.prezzo) {
-        vehicle.prezzo = Number(data.prezzo);
-      }
+      if (data.chilometri) vehicle.chilometri = Number(data.chilometri);
+      if (data.meseImmatricolazione) vehicle.meseImmatricolazione = Number(data.meseImmatricolazione);
+      if (data.annoImmatricolazione) vehicle.annoImmatricolazione = Number(data.annoImmatricolazione);
+      if (data.cilindrata) vehicle.cilindrata = Number(data.cilindrata);
+      if (data.porte) vehicle.porte = Number(data.porte);
+      if (data.prezzo) vehicle.prezzo = Number(data.prezzo);
 
       if (data.descrizioni) {
         try {
           let descrizioniArr = JSON.parse(data.descrizioni);
-
-          if (!Array.isArray(descrizioniArr)) {
-            descrizioniArr = [descrizioniArr];
-          }
-
+          if (!Array.isArray(descrizioniArr)) descrizioniArr = [descrizioniArr];
           vehicle.descrizioni = descrizioniArr;
         } catch {
           vehicle.descrizioni = [data.descrizioni];
         }
       }
 
-      if (data.statoVendita) {
-        vehicle.statoVendita = data.statoVendita;
+      // Immagini (codice tuo esistente)
+      if (data.rimuoviImmagini) {
+        const daRimuovere = Array.isArray(data.rimuoviImmagini) ? data.rimuoviImmagini : [data.rimuoviImmagini];
+        for (const public_id of daRimuovere) {
+          try {
+            await cloudinary.uploader.destroy(public_id);
+            vehicle.immagini = vehicle.immagini.filter(img => img.public_id !== public_id);
+          } catch (err) {
+            console.warn(`⚠️ Errore eliminazione immagine ${public_id}`, err.message);
+          }
+        }
+      }
+
+      if (req.files?.length) {
+        const uploadedResults = await Promise.all(req.files.map(file => uploadToCloudinary(file.buffer)));
+        vehicle.immagini.push(...uploadedResults.map(r => ({
+          url: r.secure_url,
+          public_id: r.public_id
+        })));
       }
 
       const updatedVehicle = await vehicle.save();
-
       res.json(updatedVehicle);
     } catch (err) {
       console.error("💥 ERRORE PUT /veicoli:", err);
-      res.status(500).json({
-        error: "Errore aggiornamento veicolo: " + err.message,
-      });
+      res.status(500).json({ error: "Errore aggiornamento veicolo: " + err.message });
     }
   }
 );
