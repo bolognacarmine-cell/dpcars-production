@@ -122,19 +122,18 @@ function renderVehicles(vehicles) {
   <div class="specs">
   <span>${v.annoImmatricolazione || v.anno || 'N/D'}</span>
   <span>${v.chilometri?.toLocaleString() || 'N/D'} km</span>
-  <span class="euro">
-    ${v.categoriaEuro || v['Categoria Euro'] || v.categoria_euro || v.euro || 'N/A'}
-  </span>
-  <span>${v.colore || v.Colore || '—'}</span>
-  <span>${v.carburante || v.Carburante || '—'}</span>
-  <span>${v.cambio || v.Cambio || '—'}</span>
+  <span class="euro">${v['Categoria Euro'] || v.categoriaEuro || v.categoria_euro || 'N/D'}</span>
+  <span>${v.colore || v.Colore || 'N/D'}</span>
+  <span>${v.carburante || v.Carburante || 'N/D'}</span>
+  <span>${v.cambio || v.Cambio || 'N/D'}</span>
   <span>${v.porte || v.Porte || '?'} porte</span>
-  <span>${v.cilindrata || v.Cilindrata || ''}cc</span>
-  <span>${v.tipoAuto || v['Tipo Auto'] || v.tipo_auto || v.car_type || 'N/A'}</span>
+  <span>${v.cilindrata || v.Cilindrata || 'N/D'}cc</span>
+  <span>${v['Tipo Auto'] || v.tipoAuto || v.tipo_auto || 'N/D'}</span>
 </div>
 
     <div class="actions">
       <a href="tel:+393921234567" class="btn call">📞 Chiama</a>
+  
       <a href="https://wa.me/393921234567?text=Interessato ${v.marca || ''} ${v.modello || ''}" target="_blank" class="btn whatsapp">💬 WhatsApp</a>
       <button class="btn info js-show-indicazioni">📝 Indicazioni</button>
     </div>
