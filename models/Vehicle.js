@@ -70,7 +70,11 @@ const VehicleSchema = new mongoose.Schema(
       min: 1900,
       max: 2100,
     },
-
+    categoriaEuro: {
+    type: String,
+    trim: true,
+    },
+    
     cilindrata: {
       type: Number,
       min: 0,
