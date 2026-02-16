@@ -933,27 +933,24 @@
                         </div>
 
                         <!-- Card Body -->
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }}</h3>
-                            <p class="card-text">
-                                <strong>📅 Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
-                                <strong>🚗 Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
-                                <strong>💶 Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
-                                <strong>⚙️ Categoria Euro:</strong> {{ vehicle.categoriaEuro || "N/A" }}<br>
-                                <strong>📌 Stato vendita:</strong> {{ vehicle.statoVendita || "N/D" }}
-                                <strong>⛽ Carburante:</strong>
-                                {{ vehicle.carburante || "N/A" }}<br>
-                                <strong>⚙️ Cambio:</strong>
-                                {{ vehicle.cambio || "N/A" }}<br>
-                                <strong>🎨 Colore:</strong>
-                                {{ vehicle.colore || "N/A" }}<br>
-                                <strong>🔧 Cilindrata:</strong>
-                                {{ vehicle.cilindrata ? vehicle.cilindrata + " cc" : "N/A" }}<br>
-                                <strong>🚪 Porte:</strong>
-                                {{ vehicle.porte || "N/A" }}<br>
-                                <strong>🚘 Tipo Auto:</strong>
-                                {{ vehicle.tipoAuto || "N/A" }}<br>
-                                </p>
+<div class="card-body d-flex flex-column">
+  <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }}</h3>
+  
+  <p class="card-text">
+    <strong>📅 Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
+    <strong>🚗 Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
+    <strong>💶 Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
+    <strong>⚙️ Categoria Euro:</strong> {{ vehicle.categoriaEuro || "N/A" }}<br>
+    <strong>📌 Stato vendita:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
+    <strong>⛽ Carburante:</strong> {{ vehicle.carburante || "N/A" }}<br>
+    <strong>⚙️ Cambio:</strong> {{ vehicle.cambio || "N/A" }}<br>
+    <strong>🎨 Colore:</strong> {{ vehicle.colore || "N/A" }}<br>
+    <strong>🔧 Cilindrata:</strong> {{ vehicle.cilindrata ? vehicle.cilindrata + " cc" : "N/A" }}<br>
+    <strong>🚪 Porte:</strong> {{ vehicle.porte || "N/A" }}<br>
+    <strong>🚘 Tipo Auto:</strong> {{ vehicle.tipoAuto || "N/A" }}<br>
+  </p>
+</div>
+
 
                             <!-- Toggle Description Button -->
                             <button
