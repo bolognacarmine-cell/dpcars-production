@@ -30,18 +30,14 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limit
+// Rate limit (puoi anche applicarlo solo a /api e /veicoli)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
 });
 app.use(limiter);
 
-// ✅ AGGIUNGI QUI: API ROUTES PRIMA STATIC!
-app.use('/api/vehicles', require('./routes/veicoli'));
-app.use('/api', require('./routes/auth'));  // altre API se hai
-
-// Static (DOPO API!)
+// Static
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "public")));
 
