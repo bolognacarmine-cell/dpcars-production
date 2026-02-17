@@ -251,8 +251,7 @@
       letter-spacing: .05em;
     }
 
-    button.delete-btn {
-      background: linear-gradient(135deg, #EF4444, #DC2626);
+    button.delete-btn, button.edit-btn {
       color: #fff;
       border: none;
       padding: .8rem 1.5rem;
@@ -264,8 +263,24 @@
       text-transform: uppercase;
       letter-spacing: .1em;
       transition: all .3s ease;
+      margin-right: .5rem;
+      margin-top: 1rem;
+    }
+
+    button.edit-btn {
+      background: linear-gradient(135deg, #3B82F6, #2563EB);
+      box-shadow: 0 8px 25px rgba(59,130,246,.4);
+    }
+
+    button.edit-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(59,130,246,.7);
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    }
+
+    button.delete-btn {
+      background: linear-gradient(135deg, #EF4444, #DC2626);
       box-shadow: 0 8px 25px rgba(239,68,68,.4);
-      float: right;
     }
 
     button.delete-btn:hover {
@@ -331,6 +346,10 @@
       input, select, textarea { padding: 1rem; font-size: .95rem; }
       .carosello { max-width: 100%; height: 180px; }
     }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: translateY(-25px); height: 0; margin: 0; padding: 0; border: none; }
+    }
   </style>
 </head>
 <body>
@@ -371,21 +390,21 @@
   <label>Chilometri <input name="chilometri" type="number"></label>
   <label>Carburante
     <select name="carburante">
-    <option value="">Seleziona...</option>
-    <option value="benzina">Benzina</option>
-    <option value="diesel">Diesel</option>
-    <option value="gpl">GPL</option>
-    <option value="metano">Metano</option>
-    <option value="elettrico">Elettrico</option>
-    <option value="ibrido benzina">Ibrido Benzina</option>
-    <option value="ibrido diesel">Ibrido Diesel</option>
-    <option value="plug-in benzina">Plug-in Benzina</option>
-    <option value="plug-in diesel">Plug-in Diesel</option>
-    <option value="benzina/gpl">Benzina/GPL</option>
-    <option value="benzina/metano">Benzina/Metano</option>
-    <option value="mild hybrid benzina">Mild Hybrid Benzina</option>
-    <option value="idrogeno">Idrogeno</option>
-  </select>
+      <option value="">Seleziona...</option>
+      <option value="benzina">Benzina</option>
+      <option value="diesel">Diesel</option>
+      <option value="gpl">GPL</option>
+      <option value="metano">Metano</option>
+      <option value="elettrico">Elettrico</option>
+      <option value="ibrido benzina">Ibrido Benzina</option>
+      <option value="ibrido diesel">Ibrido Diesel</option>
+      <option value="plug-in benzina">Plug-in Benzina</option>
+      <option value="plug-in diesel">Plug-in Diesel</option>
+      <option value="benzina/gpl">Benzina/GPL</option>
+      <option value="benzina/metano">Benzina/Metano</option>
+      <option value="mild hybrid benzina">Mild Hybrid Benzina</option>
+      <option value="idrogeno">Idrogeno</option>
+    </select>
   </label>
   <label>Cambio
     <select name="cambio">
@@ -430,11 +449,10 @@ const headers = new Headers();
 const ADMIN_USER = "dpcars";
 const ADMIN_PASS = "ok";
 
-headers.append(    // headers.append(
-  "Authorization",   //   "Authorization",
+headers.append(
+  "Authorization",
   "Basic " + btoa(ADMIN_USER + ":" + ADMIN_PASS)
-);   //   "Basic " + btoa(ADMIN_USER + ":" + ADMIN_PASS)
-// );
+);
 
 async function caricaVeicoli() {
   try {
@@ -476,8 +494,10 @@ async function caricaVeicoli() {
         💰 €${parseFloat(v.prezzo || 0).toLocaleString()}<br>
         📝 ${v.descrizioni || 'Nessuna descrizione'}<br>
         ${immaginiHtml}
+        <button class="edit-btn" data-id="${v._id}">✏️ MODIFICA</button>
         <button class="delete-btn" data-id="${v._id}">🗑️ ELIMINA</button>
       `;
+
       container.appendChild(div);
     });
 
@@ -491,6 +511,42 @@ async function caricaVeicoli() {
           headers
         });
         if (delRes.ok) caricaVeicoli();
+      });
+    });
+
+    // Edit buttons
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        const res = await fetch(`${API_BASE}/veicoli/${id}`, { headers });
+        const vehicle = await res.json();
+        
+        // Popola form con dati esistenti
+        document.querySelector('[name="tipo"]').value = vehicle.tipo || 'auto';
+        document.querySelector('[name="marca"]').value = vehicle.marca || '';
+        document.querySelector('[name="modello"]').value = vehicle.modello || '';
+        document.querySelector('[name="meseImmatricolazione"]').value = vehicle.meseImmatricolazione || '';
+        document.querySelector('[name="annoImmatricolazione"]').value = vehicle.annoImmatricolazione || '';
+        document.querySelector('[name="categoriaEuro"]').value = vehicle.categoriaEuro || '';
+        document.querySelector('[name="usato"]').value = vehicle.usato ? 'true' : 'false';
+        document.querySelector('[name="statoVendita"]').value = vehicle.statoVendita || 'disponibile';
+        document.querySelector('[name="chilometri"]').value = vehicle.chilometri || '';
+        document.querySelector('[name="carburante"]').value = vehicle.carburante || 'benzina';
+        document.querySelector('[name="cambio"]').value = vehicle.cambio || 'manuale';
+        document.querySelector('[name="colore"]').value = vehicle.colore || '';
+        document.querySelector('[name="cilindrata"]').value = vehicle.cilindrata || '';
+        document.querySelector('[name="porte"]').value = vehicle.porte || '';
+        document.querySelector('[name="prezzo"]').value = vehicle.prezzo || '';
+        document.querySelector('[name="tipoAuto"]').value = vehicle.tipoAuto || 'suv';
+        document.querySelector('[name="descrizioni"]').value = vehicle.descrizioni?.[0] || '';
+        
+        // Cambia form in modalità UPDATE
+        const form = document.getElementById('form-veicolo');
+        form.dataset.editId = id;
+        form.querySelector('button[type="submit"]').textContent = '✏️ AGGIORNA VEICOLO';
+        
+        // Scroll al form
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
@@ -524,19 +580,24 @@ async function caricaVeicoli() {
 document.getElementById('form-veicolo').addEventListener('submit', async e => {
   e.preventDefault();
   const formData = new FormData(e.target);
-
+  const editId = e.target.dataset.editId;
+  
   try {
-    const res = await fetch(`${API_BASE}/veicoli`, {
-      method: 'POST',
+    const method = editId ? 'PUT' : 'POST';
+    const url = editId ? `${API_BASE}/veicoli/${editId}` : `${API_BASE}/veicoli`;
+    
+    const res = await fetch(url, {
+      method,
       body: formData,
       headers
     });
 
     if (res.ok) {
       e.target.reset();
+      delete e.target.dataset.editId;
       caricaVeicoli();
       const btn = e.target.querySelector('button[type="submit"]');
-      btn.textContent = '✅ AGGIUNTO!';
+      btn.textContent = editId ? '✅ AGGIORNATO!' : '✅ AGGIUNTO!';
       setTimeout(() => btn.textContent = '🏎️ INSERISCI VEICOLO F1', 2000);
     } else {
       const err = await res.json();
@@ -549,12 +610,6 @@ document.getElementById('form-veicolo').addEventListener('submit', async e => {
 
 caricaVeicoli();
 </script>
-
-<style>
-@keyframes fadeOut {
-  to { opacity: 0; transform: translateY(-25px); height: 0; margin: 0; padding: 0; border: none; }
-}
-</style>
 
 <!-- live-server -->
 <script>
