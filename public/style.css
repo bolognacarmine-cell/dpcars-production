@@ -169,6 +169,35 @@ a {
 .nav-links a:hover {
   color: var(--accent-red);
 }
+/* ✅ AGGIUNGI QUESTO - Mobile hamburger menu */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;  /* Allinea a sinistra */
+    gap: 0.5rem;
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    border-left-color: var(--accent-red);
+    padding-left: 1.5rem;
+    background: rgba(220, 38, 38, 0.1);
+  }
+}
 
 /* HAMBURGER */
 .hamburger {
@@ -188,7 +217,7 @@ a {
 
 /* MOBILE MENU */
 @media (max-width: 992px) {
-  .nav-links { display: none; }
+  .-links { display: none; }
   .hamburger { display: flex; }
 
   .mobile-menu {
