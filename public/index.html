@@ -1367,10 +1367,7 @@
             offset: 100
         });
     </script>
- <!-- ================================
-         VUE.JS APPLICATION
-    ================================ -->
-   <script>
+<script>
 const { createApp } = Vue;
 
 createApp({
@@ -1427,7 +1424,6 @@ createApp({
                 case 'km-asc':
                     sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
                     break;
-                // puoi aggiungere altri case se vuoi (es. km-desc, anno-asc...)
             }
             
             return sorted;
@@ -1482,52 +1478,36 @@ createApp({
             }
         },
 
-      submitForm() {
-    // Costruzione messaggio WhatsApp
-    const text = `Ciao DP CARS!\n\n` +
-                `Nome: ${this.form.name || '—'}\n` +
-                `Email: ${this.form.email || '—'}\n` +
-                `Telefono: ${this.form.phone || '—'}\n` +
-                `Motivo: ${this.form.reason || '—'}\n` +
-                `Messaggio:\n${this.form.message || '—'}`;
+        submitForm() {
+            const text = `Ciao DP CARS! 🚗\n\n` +
+                         `Nome: ${this.form.name || '—'}\n` +
+                         `Email: ${this.form.email || '—'}\n` +
+                         `Telefono: ${this.form.phone || '—'}\n` +
+                         `Motivo: ${this.form.reason || '—'}\n` +
+                         `Messaggio:\n${this.form.message || '—'}\n\n` +
+                         `Grazie per la richiesta! Attendo vostra risposta. 😊`;
 
-    const phone = '393333330834';
+            const phone = '393333330834';
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 
-    // Usa wa.me (più moderno e raccomandato)
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
 
-    // Conferma per guidare l'utente (riduce confusione)
-    const confirmed = confirm(
-        "Il messaggio è pronto con i tuoi dati!\n\n" +
-        "Si aprirà WhatsApp (o la chat web).\n" +
-        "Premi il tasto INVIO (freccia verde) per spedire davvero la richiesta.\n\n" +
-        "Vuoi procedere?"
-    );
+            this.form = { name: '', email: '', phone: '', reason: '', message: '' };
 
-    if (confirmed) {
-        window.open(url, '_blank');
-
-        // Reset form
-        this.form = {
-            name: '',
-            email: '',
-            phone: '',
-            reason: '',
-            message: ''
-        };
-    }
-},
+            setTimeout(() => {
+                alert(
+                    "✅ WhatsApp si è aperto con tutti i tuoi dati già scritti!\n\n" +
+                    "Ora premi solo il tasto INVIO (freccia verde in basso) per spedire la richiesta.\n" +
+                    "Grazie mille, DP CARS ti contatterà presto!"
+                );
+            }, 1200);
+        }
+    },
 
     mounted() {
         this.loadVehicles();
     }
-
 }).mount('#app');
 </script>
-
-<!-- ================================
-     SERVER.JS (se utilizzato)
-=============================== -->
-
 </body>
 </html>
