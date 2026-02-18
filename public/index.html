@@ -1153,49 +1153,7 @@
         </div>
     </section>
 
-    <!-- ================================
-          RICHIEDI INFORMAZIONI
-    ================================ -->
-    <section id="richiedi-form">
-        <div class="container">
-            <h2 class="text-center">Richiedi Informazioni</h2>
-            <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
-                <!-- Nome e Cognome -->
-                <div class="col-md-6">
-                    <input 
-                        v-model="form.name" 
-                        type="text" 
-                        class="form-control form-control-lg" 
-                        placeholFORMder="Nome e Cognome *" 
-                        required
-                        aria-label="Nome e Cognome"
-                    >
-                </div>
-
-                <!-- Email -->
-                <div class="col-md-6">
-                    <input 
-                        v-model="form.email" 
-                        type="email" 
-                        class="form-control form-control-lg" 
-                        placeholder="Email *" 
-                        required
-                        aria-label="Email"
-                    >
-                </div>
-
-                <!-- Telefono -->
-                <div class="col-md-6">
-                    <input 
-                        v-model="form.phone" 
-                        type="tel" 
-                        class="form-control form-control-lg" 
-                        placeholder="Telefono"
-                        aria-label="Telefono"
-                    >
-                </div>
-
-                <!-- Motivo  -->
+   <!-- Motivo Richiesta -->
                 <div class="col-md-6">
                     <select 
                         v-model="form.reason" 
@@ -1222,25 +1180,16 @@
                     ></textarea>
                 </div>
 
-               <!-- Submit Button + guida visiva -->
-<div class="col-12 text-center mt-4">
-    <button 
-        type="submit" 
-        class="btn btn-success btn-lg px-5 py-3"
-        :disabled="!form.name || !form.phone || !form.reason"
-    >
-        <i class="fab fa-whatsapp me-2 fs-4"></i>
-        Invia Richiesta su WhatsApp
-    </button>
-
-    <!-- Testo guida molto visibile e chiaro -->
-    <div class="alert alert-info mt-3 text-center" role="alert">
-        <i class="fas fa-info-circle me-2"></i>
-        <strong>Come funziona:</strong> dopo aver cliccato si apre WhatsApp con il messaggio <strong>già scritto</strong> usando tutti i dati che hai inserito.<br>
-        <strong class="text-danger">Devi solo premere il tasto INVIO (freccia verde) nella chat per spedirlo davvero.</strong><br>
-        <small>Senza questo ultimo passo il messaggio rimane solo bozza e non arriva.</small>
-    </div>
-</div>
+                <!-- Submit Button -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                        <i class="fab fa-whatsapp me-2"></i>
+                        Invia richiesta su WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
     <!-- ================================
          CONTATTI SECTION (con mappa)
     ================================ -->
