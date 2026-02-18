@@ -1154,7 +1154,7 @@
     </section>
 
     <!-- ================================
-         FORM RICHIEDI INFORMAZIONI
+          RICHIEDI INFORMAZIONI
     ================================ -->
     <section id="richiedi-form">
         <div class="container">
@@ -1166,7 +1166,7 @@
                         v-model="form.name" 
                         type="text" 
                         class="form-control form-control-lg" 
-                        placeholder="Nome e Cognome *" 
+                        placeholFORMder="Nome e Cognome *" 
                         required
                         aria-label="Nome e Cognome"
                     >
@@ -1486,36 +1486,44 @@ createApp({
             }
         },
 
-        submitForm() {
-            const text = `Ciao DP CARS! 🚗\n\n` +
-                         `Nome: ${this.form.name || '—'}\n` +
-                         `Email: ${this.form.email || '—'}\n` +
-                         `Telefono: ${this.form.phone || '—'}\n` +
-                         `Motivo: ${this.form.reason || '—'}\n` +
-                         `Messaggio:\n${this.form.message || '—'}\n\n` +
-                         `Grazie per la richiesta! Attendo vostra risposta. 😊`;
+      submitForm() {
+                    // Costruzione messaggio WhatsApp
+                    const text = `Ciao DP CARS!%0A%0A` +
+                                `Nome: ${this.form.name}%0A` +
+                                `Email: ${this.form.email}%0A` +
+                                `Telefono: ${this.form.phone}%0A` +
+                                `Motivo: ${this.form.reason}%0A` +
+                                `Messaggio: ${this.form.message}`;
+                    
+                    // Apertura WhatsApp
+                    window.open(
+                        `https://api.whatsapp.com/send?phone=+39333330834&text=${text}`, 
+                        '_blank'
+                    );
+                    
+                    // Reset form
+                    this.form = {
+                        name: '',
+                        email: '',
+                        phone: '',
+                        reason: '',
+                        message: ''
+                    };
+                }
+            },
 
-            const phone = '393384550216';  // corretto per 3384550216
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+            mounted() {
+                this.loadVehicles();
+            }
+        }).mount('#app');
+    </script>
+fetch('veicoli.json')
 
-            window.open(url, '_blank');
-
-            this.form = { name: '', email: '', phone: '', reason: '', message: '' };
-
-            setTimeout(() => {
-                alert(
-                    "✅ WhatsApp si è aperto con tutti i tuoi dati già scritti!\n\n" +
-                    "Ora premi solo il tasto INVIO (freccia verde in basso) per spedire la richiesta.\n" +
-                    "Grazie mille, DP CARS ti contatterà presto!"
-                );
-            }, 1200);
-        }
-    },
-
-    mounted() {
-        this.loadVehicles();
-    }
-}).mount('#app');
-</script>
+    <!-- ================================
+         SERVER.JS (se utilizzato)
+    ================================ -->
+ 
 </body>
 </html>
+
+
