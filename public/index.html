@@ -434,6 +434,7 @@
         /* =========================================================
            FORM SECTION
         ========================================================= */
+        
         #richiedi-form {
             background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
             padding: 5rem 0;
@@ -1152,85 +1153,334 @@
             </div>
         </div>
     </section>
- <!-- ================================
-         FORM RICHIEDI INFORMAZIONI
+ 
+    <!-- ================================
+         FORM APPUNTAMENTO
     ================================ -->
     <section id="richiedi-form">
+
         <div class="container">
-            <h2 class="text-center">Richiedi Informazioni</h2>
-            <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
-                <!-- Nome e Cognome -->
+
+            <h2 class="text-center">
+                Richiedi Informazioni / Appuntamento
+            </h2>
+
+            <form class="row g-4 justify-content-center"
+                  @submit.prevent="submitForm">
+
+                <!-- Nome -->
                 <div class="col-md-6">
-                    <input 
-                        v-model="form.name" 
-                        type="text" 
-                        class="form-control form-control-lg" 
-                        placeholder="Nome e Cognome *" 
-                        required
-                        aria-label="Nome e Cognome"
-                    >
+                    <input
+                        v-model="form.name"
+                        type="text"
+                        class="form-control form-control-lg"
+                        placeholder="Nome e Cognome *"
+                        required>
                 </div>
 
                 <!-- Email -->
                 <div class="col-md-6">
-                    <input 
-                        v-model="form.email" 
-                        type="email" 
-                        class="form-control form-control-lg" 
-                        placeholder="Email *" 
-                        required
-                        aria-label="Email"
-                    >
+                    <input
+                        v-model="form.email"
+                        type="email"
+                        class="form-control form-control-lg"
+                        placeholder="Email *"
+                        required>
                 </div>
 
                 <!-- Telefono -->
                 <div class="col-md-6">
-                    <input 
-                        v-model="form.phone" 
-                        type="tel" 
-                        class="form-control form-control-lg" 
-                        placeholder="Telefono"
-                        aria-label="Telefono"
-                    >
+                    <input
+                        v-model="form.phone"
+                        type="tel"
+                        class="form-control form-control-lg"
+                        placeholder="Telefono *"
+                        required>
                 </div>
-   <!-- Motivo Richiesta -->
+
+                <!-- Motivo -->
                 <div class="col-md-6">
-                    <select 
-                        v-model="form.reason" 
-                        class="form-select form-select-lg" 
-                        required
-                        aria-label="Motivo della richiesta"
-                    >
-                        <option value="" disabled selected>Motivo della richiesta *</option>
-                        <option>Informazioni generali</option>
-                        <option>Richiesta test drive</option>
-                        <option>Finanziamento</option>
-                        <option>Altro</option>
+                    <select
+                        v-model="form.reason"
+                        class="form-select form-select-lg"
+                        required>
+
+                        <option value="" disabled>
+                            Motivo della richiesta *
+                        </option>
+
+                        <option>
+                            Informazioni generali
+                        </option>
+
+                        <option>
+                            Richiesta test drive
+                        </option>
+
+                        <option>
+                            Finanziamento
+                        </option>
+
+                        <option>
+                            Appuntamento in sede
+                        </option>
+
+                        <option>
+                            Altro
+                        </option>
+
                     </select>
                 </div>
 
-                <!-- Messaggio -->
-                <div class="col-12">
-                    <textarea 
-                        v-model="form.message" 
-                        class="form-control form-control-lg" 
-                        rows="5" 
-                        placeholder="Messaggio (opzionale)"
-                        aria-label="Messaggio"
-                    ></textarea>
+
+                <!-- DATA -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Data appuntamento *
+                    </label>
+
+                    <input
+                        v-model="form.date"
+                        type="date"
+                        class="form-control form-control-lg"
+                        required>
+
                 </div>
 
-                <!-- Submit Button -->
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
-                        <i class="fab fa-whatsapp me-2"></i>
-                        Invia richiesta su WhatsApp
-                    </button>
+
+                <!-- ORA -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Ora appuntamento *
+                    </label>
+
+                    <input
+                        v-model="form.time"
+                        type="time"
+                        class="form-control form-control-lg"
+                        required>
+
                 </div>
+
+
+                <!-- Messaggio -->
+                <div class="col-12">
+
+                    <textarea
+                        v-model="form.message"
+                        class="form-control form-control-lg"
+                        rows="4"
+                        placeholder="Messaggio opzionale">
+                    </textarea>
+
+                </div>
+
+
+                <!-- Pulsante -->
+                <div class="col-12 text-center">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg px-5 py-3">
+
+                        Invia richiesta su WhatsApp
+
+                    </button>
+
+                </div>
+
             </form>
+
         </div>
+
     </section>
-    <!-- ================================
+
+</div>
+<!-- ================================
+     APP ROOT
+================================ -->
+<div id="app">
+
+    <!-- PULSANTE CHAT -->
+    <div class="text-center my-4">
+        <button 
+            type="button"
+            onclick="if(window.Tawk_API){Tawk_API.toggle();}"
+            class="btn btn-success btn-lg px-5 py-3">
+
+            <i class="fab fa-whatsapp me-2"></i>
+            Parla con l'assistente via chat (più veloce!)
+
+        </button>
+    </div>
+
+<!-- ================================
+     VUE JS (UNA SOLA VOLTA)
+================================ -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+<script>
+
+const { createApp } = Vue;
+
+createApp({
+
+data(){
+
+return{
+
+vehicles:[],
+descrizioniVisibili:[],
+
+filters:{
+type:'all',
+search:'',
+sort:'price-asc'
+},
+
+form:{
+name:'',
+email:'',
+phone:'',
+reason:'',
+date:'',
+time:'',
+message:''
+}
+
+}
+
+},
+
+methods:{
+
+
+submitForm(){
+
+const numero="393333330834";
+
+const messaggio=
+
+`Ciao DP CARS!
+
+Nuova richiesta appuntamento
+
+Nome: ${this.form.name}
+Email: ${this.form.email}
+Telefono: ${this.form.phone}
+
+Motivo: ${this.form.reason}
+
+Data: ${this.form.date}
+Ora: ${this.form.time}
+
+Messaggio:
+${this.form.message || "Nessun messaggio"}
+`;
+
+const url=
+`https://wa.me/${numero}?text=${encodeURIComponent(messaggio)}`;
+
+window.open(url,"_blank");
+
+this.resetForm();
+
+},
+
+
+resetForm(){
+
+this.form={
+
+name:'',
+email:'',
+phone:'',
+reason:'',
+date:'',
+time:'',
+message:''
+
+};
+
+},
+
+
+async loadVehicles(){
+
+try{
+
+const res=await fetch("/veicoli");
+
+if(!res.ok) return;
+
+this.vehicles=await res.json();
+
+}catch(e){
+
+console.error(e);
+
+}
+
+}
+
+
+},
+
+mounted(){
+
+this.loadVehicles();
+
+}
+
+}).mount("#app");
+
+</script>
+
+
+
+<!-- ================================
+     TAWK CHAT
+================================ -->
+<script>
+
+var Tawk_API=Tawk_API||{},Tawk_LoadStart=new Date();
+
+(function(){
+
+var s1=document.createElement("script"),
+s0=document.getElementsByTagName("script")[0];
+
+s1.async=true;
+s1.src='https://embed.tawk.to/6995e7286040871c3853a0ee/1jhootu01';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+
+s0.parentNode.insertBefore(s1,s0);
+
+})();
+
+
+// opzionale apertura whatsapp dopo chat
+Tawk_API.onChatEnded=function(){
+
+const numero="393333330834";
+
+const testo=
+"Ciao, vorrei fissare un appuntamento.";
+
+window.open(
+`https://wa.me/${numero}?text=${encodeURIComponent(testo)}`,
+"_blank"
+);
+
+};
+
+</script>
+
+ 
+ <!-- ================================
          CONTATTI SECTION (con mappa)
     ================================ -->
     <section id="contact" class="contact-section">
@@ -1261,7 +1511,7 @@
                             <i class="fas fa-phone fa-3x text-primary-custom"></i>
                         </div>
                         <h4 class="fw-bold">Telefono</h4>
-                        <p class="fs-5 mb-3">333 3330834</p>
+                        <p class="fs-5 mb-3">333 333 0834</p>
                         <a href="tel:+393333330834" class="btn btn-primary w-100">
                             Chiama ora
                         </a>
@@ -1275,7 +1525,7 @@
                             <i class="fab fa-whatsapp fa-3x" style="color: #25d366;"></i>
                         </div>
                         <h4 class="fw-bold">WhatsApp</h4>
-                        <p class="fs-5 mb-3">333 3330834</p>
+                        <p class="fs-5 mb-3">333 333 0834</p>
                         <a 
                             href="https://api.whatsapp.com/send?phone=393333330834&text=Ciao%20DP%20CARS,%20vorrei%20informazioni%20su..." 
                             target="_blank" 
@@ -1294,7 +1544,9 @@
                             <i class="fas fa-envelope fa-3x text-primary-custom"></i>
                         </div>
                         <h4 class="fw-bold">Email PEC</h4>
-                        <p class="fs-6 mb-2"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c3a7b3a0a2b1b0b0b1af83b3a6a0edaab7">[email&#160;protected]</a></p>
+                        <p class="fs-6 mb-2">
+                            <a href="mailto:info@dpcars.it">info@dpcars.it</a>
+                        </p>
                         <p class="small text-muted">Per comunicazioni ufficiali</p>
                     </div>
                 </div>
@@ -1312,8 +1564,9 @@
                 <div class="col-md-5">
                     <strong>DP CARS Srl</strong><br>
                     Via F. Petrarca 16, 81025 Marcianise (CE)<br>
-                    <i class="fas fa-phone me-1"></i> 3333330834 • 
-                    <i class="fas fa-envelope me-1"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea8e9a898b9899999886aa9a8f89c4839e">[email&#160;protected]</a>
+                    <i class="fas fa-phone me-1"></i> 333 333 0834 • 
+                    <i class="fas fa-envelope me-1"></i> 
+                    <a href="mailto:info@dpcars.it">info@dpcars.it</a>
                 </div>
 
                 <!-- Orari -->
@@ -1339,10 +1592,11 @@
             </div>
         </div>
     </footer>
- <!-- ================================
+
+    <!-- ================================
          JAVASCRIPT LIBRARIES
     ================================ -->
-    <!-- Vue.js -->
+    <!-- Vue.js (solo una volta) -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     
     <!-- GSAP Animation -->
@@ -1364,155 +1618,163 @@
             offset: 100
         });
     </script>
-<script>
-const { createApp } = Vue;
-
-createApp({
-    data() {
-        return {
-            vehicles: [],
-            descrizioniVisibili: [],
-            filters: {
-                type: 'all',
-                search: '',
-                sort: 'price-asc'
-            },
-            form: {
-                name: '',
-                email: '',
-                phone: '',
-                reason: '',
-                message: ''
-            }
-        };
-    },
-
-    computed: {
-        filteredVehicles() {
-            return this.vehicles.filter(vehicle => {
-                const matchType = this.filters.type === 'all' || 
-                                  this.filters.type === vehicle.tipo;
-                
-                const matchSearch = 
-                    vehicle.marca?.toLowerCase().includes(this.filters.search.toLowerCase()) ||
-                    vehicle.modello?.toLowerCase().includes(this.filters.search.toLowerCase());
-                
-                return matchType && matchSearch;
-            });
-        },
-
-        sortedVehicles() {
-            let sorted = [...this.filteredVehicles];
-            
-            switch(this.filters.sort) {
-                case 'price-asc':
-                    sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
-                    break;
-                case 'price-desc':
-                    sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
-                    break;
-                case 'year-desc':
-                    sorted.sort((a, b) => {
-                        const yearA = a.annoImmatricolazione || a.anno || 0;
-                        const yearB = b.annoImmatricolazione || b.anno || 0;
-                        return yearB - yearA;
-                    });
-                    break;
-                case 'km-asc':
-                    sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
-                    break;
-            }
-            
-            return sorted;
-        }
-    },
-
-    methods: {
-        formatMeseAnno(vehicle) {
-            const mesi = [
-                'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 
-                'Maggio', 'Giugno', 'Luglio', 'Agosto', 
-                'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-            ];
-            
-            if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
-                return mesi[vehicle.meseImmatricolazione - 1] + ' ' + vehicle.annoImmatricolazione;
-            }
-            
-            if (vehicle.annoImmatricolazione) {
-                return vehicle.annoImmatricolazione;
-            }
-            
-            if (vehicle.anno) {
-                return vehicle.anno;
-            }
-            
-            return 'N/A';
-        },
-
-        toggleDescrizione(vehicleId) {
-            const index = this.descrizioniVisibili.indexOf(vehicleId);
-            
-            if (index > -1) {
-                this.descrizioniVisibili.splice(index, 1);
-            } else {
-                this.descrizioniVisibili.push(vehicleId);
-            }
-        },
-
-        async loadVehicles() {
-            try {
-                const response = await fetch('/veicoli');
-                
-                if (!response.ok) {
-                    throw new Error(`Errore ${response.status} nel caricamento dei veicoli`);
-                }
-                
-                this.vehicles = await response.json();
-            } catch (error) {
-                console.error('Errore caricamento veicoli:', error);
-                alert('Impossibile caricare i veicoli. Riprova più tardi.');
-            }
-        },
-
-      submitForm() {
-                    // Costruzione messaggio WhatsApp
-                    const text = `Ciao DP CARS!%0A%0A` +
-                                `Nome: ${this.form.name}%0A` +
-                                `Email: ${this.form.email}%0A` +
-                                `Telefono: ${this.form.phone}%0A` +
-                                `Motivo: ${this.form.reason}%0A` +
-                                `Messaggio: ${this.form.message}`;
-                    
-                    // Apertura WhatsApp
-                    window.open(
-                        `https://api.whatsapp.com/send?phone=+39333330834&text=${text}`, 
-                        '_blank'
-                    );
-                    
-                    // Reset form
-                    this.form = {
-                        name: '',
-                        email: '',
-                        phone: '',
-                        reason: '',
-                        message: ''
-                    };
-                }
-            },
-
-            mounted() {
-                this.loadVehicles();
-            }
-        }).mount('#app');
-    </script>
-fetch('veicoli.json')
 
     <!-- ================================
-         SERVER.JS (se utilizzato)
+         APP LOGICA (unica istanza Vue)
     ================================ -->
- 
+    <script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                vehicles: [],
+                descrizioniVisibili: [],
+                filters: {
+                    type: 'all',
+                    search: '',
+                    sort: 'price-asc'
+                },
+                form: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    reason: '',
+                    date: '',
+                    time: '',
+                    message: ''
+                }
+            };
+        },
+
+        computed: {
+            filteredVehicles() {
+                return this.vehicles.filter(vehicle => {
+                    const matchType = this.filters.type === 'all' || 
+                                      this.filters.type === (vehicle.tipo || '').toLowerCase();
+                    
+                    const matchSearch = 
+                        (vehicle.marca || '').toLowerCase().includes(this.filters.search.toLowerCase()) ||
+                        (vehicle.modello || '').toLowerCase().includes(this.filters.search.toLowerCase());
+                    
+                    return matchType && matchSearch;
+                });
+            },
+
+            sortedVehicles() {
+                let sorted = [...this.filteredVehicles];
+                
+                switch(this.filters.sort) {
+                    case 'price-asc':
+                        sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
+                        break;
+                    case 'price-desc':
+                        sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
+                        break;
+                    case 'year-desc':
+                        sorted.sort((a, b) => {
+                            const ya = a.annoImmatricolazione || a.anno || 0;
+                            const yb = b.annoImmatricolazione || b.anno || 0;
+                            return yb - ya;
+                        });
+                        break;
+                    case 'km-asc':
+                        sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
+                        break;
+                }
+                
+                return sorted;
+            }
+        },
+
+        methods: {
+            formatMeseAnno(vehicle) {
+                const mesi = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+                
+                if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
+                    return mesi[vehicle.meseImmatricolazione - 1] + ' ' + vehicle.annoImmatricolazione;
+                }
+                return vehicle.annoImmatricolazione || vehicle.anno || 'N/D';
+            },
+
+            toggleDescrizione(id) {
+                const idx = this.descrizioniVisibili.indexOf(id);
+                if (idx > -1) {
+                    this.descrizioniVisibili.splice(idx, 1);
+                } else {
+                    this.descrizioniVisibili.push(id);
+                }
+            },
+
+            async loadVehicles() {
+                try {
+                    const res = await fetch('/veicoli');
+                    if (!res.ok) throw new Error('Errore ' + res.status);
+                    this.vehicles = await res.json();
+                } catch (err) {
+                    console.error('Errore caricamento veicoli:', err);
+                    // Dati di fallback opzionali
+                    // this.vehicles = [ ... ];
+                }
+            },
+
+            submitForm() {
+                if (!this.form.name || !this.form.email || !this.form.phone || !this.form.reason) {
+                    alert('Compila tutti i campi obbligatori');
+                    return;
+                }
+
+                const messaggio = 
+`Ciao DP CARS!
+
+Richiesta da sito web:
+
+Nome: ${this.form.name}
+Email: ${this.form.email}
+Telefono: ${this.form.phone}
+Motivo: ${this.form.reason}
+${this.form.date ? `Data: ${this.form.date}` : ''}
+${this.form.time ? `Ora: ${this.form.time}` : ''}
+${this.form.message ? `\nMessaggio:\n${this.form.message}` : ''}`;
+
+                const url = `https://wa.me/393333330834?text=${encodeURIComponent(messaggio)}`;
+                window.open(url, '_blank');
+
+                // reset form
+                this.form = {
+                    name: '', email: '', phone: '', reason: '', date: '', time: '', message: ''
+                };
+            }
+        },
+
+        mounted() {
+            this.loadVehicles();
+        }
+    }).mount('#app');
+    </script>
+
+    <!-- ================================
+         TAWK.TO CHAT WIDGET (solo una volta)
+    ================================ -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6995e7286040871c3853a0ee/1jhootu01';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+
+    // Opzionale: apri WhatsApp dopo fine chat
+    Tawk_API.onChatEnded = function() {
+        window.open(
+            'https://wa.me/393333330834?text=' + encodeURIComponent('Ciao, vorrei fissare un appuntamento.'),
+            '_blank'
+        );
+    };
+    </script>
+
 </body>
-</html>
-
-
+</html>   
