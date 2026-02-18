@@ -1152,7 +1152,47 @@
             </div>
         </div>
     </section>
+ <!-- ================================
+         FORM RICHIEDI INFORMAZIONI
+    ================================ -->
+    <section id="richiedi-form">
+        <div class="container">
+            <h2 class="text-center">Richiedi Informazioni</h2>
+            <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
+                <!-- Nome e Cognome -->
+                <div class="col-md-6">
+                    <input 
+                        v-model="form.name" 
+                        type="text" 
+                        class="form-control form-control-lg" 
+                        placeholder="Nome e Cognome *" 
+                        required
+                        aria-label="Nome e Cognome"
+                    >
+                </div>
 
+                <!-- Email -->
+                <div class="col-md-6">
+                    <input 
+                        v-model="form.email" 
+                        type="email" 
+                        class="form-control form-control-lg" 
+                        placeholder="Email *" 
+                        required
+                        aria-label="Email"
+                    >
+                </div>
+
+                <!-- Telefono -->
+                <div class="col-md-6">
+                    <input 
+                        v-model="form.phone" 
+                        type="tel" 
+                        class="form-control form-control-lg" 
+                        placeholder="Telefono"
+                        aria-label="Telefono"
+                    >
+                </div>
    <!-- Motivo Richiesta -->
                 <div class="col-md-6">
                     <select 
