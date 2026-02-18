@@ -1367,159 +1367,167 @@
             offset: 100
         });
     </script>
-
-    <!-- ================================
+ <!-- ================================
          VUE.JS APPLICATION
     ================================ -->
-    <script>
-        const { createApp } = Vue;
+   <script>
+const { createApp } = Vue;
 
-        createApp({
-            data() {
-                return {
-                    vehicles: [],
-                    descrizioniVisibili: [],
-                    filters: {
-                        type: 'all',
-                        search: '',
-                        sort: 'price-asc'
-                    },
-                    form: {
-                        name: '',
-                        email: '',
-                        phone: '',
-                        reason: '',
-                        message: ''
-                    }
-                };
+createApp({
+    data() {
+        return {
+            vehicles: [],
+            descrizioniVisibili: [],
+            filters: {
+                type: 'all',
+                search: '',
+                sort: 'price-asc'
             },
-
-            computed: {
-                filteredVehicles() {
-                    return this.vehicles.filter(vehicle => {
-                        const matchType = this.filters.type === 'all' || 
-                                        this.filters.type === vehicle.tipo;
-                        
-                        const matchSearch = vehicle.marca.toLowerCase()
-                                            .includes(this.filters.search.toLowerCase()) ||
-                                          vehicle.modello.toLowerCase()
-                                            .includes(this.filters.search.toLowerCase());
-                        
-                        return matchType && matchSearch;
-                    });
-                },
-
-                sortedVehicles() {
-                    let sorted = [...this.filteredVehicles];
-                    
-                    switch(this.filters.sort) {
-                        case 'price-asc':
-                            sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
-                            break;
-                        case 'price-desc':
-                            sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
-                            break;
-                        case 'year-desc':
-                            sorted.sort((a, b) => {
-                                const yearA = a.annoImmatricolazione || a.anno || 0;
-                                const yearB = b.annoImmatricolazione || b.anno || 0;
-                                return yearB - yearA;
-                            });
-                            break;
-                        case 'km-asc':
-                            sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
-                            break;
-                    }
-                    
-                    return sorted;
-                }
-            },
-
-            methods: {
-                formatMeseAnno(vehicle) {
-                    const mesi = [
-                        'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 
-                        'Maggio', 'Giugno', 'Luglio', 'Agosto', 
-                        'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-                    ];
-                    
-                    if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
-                        return mesi[vehicle.meseImmatricolazione - 1] + ' ' + 
-                               vehicle.annoImmatricolazione;
-                    }
-                    
-                    if (vehicle.annoImmatricolazione) {
-                        return vehicle.annoImmatricolazione;
-                    }
-                    
-                    if (vehicle.anno) {
-                        return vehicle.anno;
-                    }
-                    
-                    return 'N/A';
-                },
-
-                toggleDescrizione(vehicleId) {
-                    const index = this.descrizioniVisibili.indexOf(vehicleId);
-                    
-                    if (index > -1) {
-                        this.descrizioniVisibili.splice(index, 1);
-                    } else {
-                        this.descrizioniVisibili.push(vehicleId);
-                    }
-                },
-
-                async loadVehicles() {
-                    try {
-                        const response = await fetch('/veicoli');
-                        
-                        if (!response.ok) {
-                            throw new Error('Errore nel caricamento dei veicoli');
-                        }
-                        
-                        this.vehicles = await response.json();
-                    } catch (error) {
-                        console.error('Errore:', error);
-                        alert('Impossibile caricare i veicoli. Riprova più tardi.');
-                    }
-                },
-
-                submitForm() {
-                    // Costruzione messaggio WhatsApp
-                    const text = `Ciao DP CARS!%0A%0A` +
-                                `Nome: ${this.form.name}%0A` +
-                                `Email: ${this.form.email}%0A` +
-                                `Telefono: ${this.form.phone}%0A` +
-                                `Motivo: ${this.form.reason}%0A` +
-                                `Messaggio: ${this.form.message}`;
-                    
-                    // Apertura WhatsApp
-                    window.open(
-                        `https://api.whatsapp.com/send?phone=+393333330834&text=${text}`, 
-                        '_blank'
-                    );
-                    
-                    // Reset form
-                    this.form = {
-                        name: '',
-                        email: '',
-                        phone: '',
-                        reason: '',
-                        message: ''
-                    };
-                }
-            },
-
-            mounted() {
-                this.loadVehicles();
+            form: {
+                name: '',
+                email: '',
+                phone: '',
+                reason: '',
+                message: ''
             }
-        }).mount('#app');
-    </script>
-fetch('veicoli.json')
+        };
+    },
 
-    <!-- ================================
-         SERVER.JS (se utilizzato)
-    ================================ -->
- 
+    computed: {
+        filteredVehicles() {
+            return this.vehicles.filter(vehicle => {
+                const matchType = this.filters.type === 'all' || 
+                                  this.filters.type === vehicle.tipo;
+                
+                const matchSearch = 
+                    vehicle.marca?.toLowerCase().includes(this.filters.search.toLowerCase()) ||
+                    vehicle.modello?.toLowerCase().includes(this.filters.search.toLowerCase());
+                
+                return matchType && matchSearch;
+            });
+        },
+
+        sortedVehicles() {
+            let sorted = [...this.filteredVehicles];
+            
+            switch(this.filters.sort) {
+                case 'price-asc':
+                    sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
+                    break;
+                case 'price-desc':
+                    sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
+                    break;
+                case 'year-desc':
+                    sorted.sort((a, b) => {
+                        const yearA = a.annoImmatricolazione || a.anno || 0;
+                        const yearB = b.annoImmatricolazione || b.anno || 0;
+                        return yearB - yearA;
+                    });
+                    break;
+                case 'km-asc':
+                    sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
+                    break;
+                // puoi aggiungere altri case se vuoi (es. km-desc, anno-asc...)
+            }
+            
+            return sorted;
+        }
+    },
+
+    methods: {
+        formatMeseAnno(vehicle) {
+            const mesi = [
+                'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 
+                'Maggio', 'Giugno', 'Luglio', 'Agosto', 
+                'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+            ];
+            
+            if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
+                return mesi[vehicle.meseImmatricolazione - 1] + ' ' + vehicle.annoImmatricolazione;
+            }
+            
+            if (vehicle.annoImmatricolazione) {
+                return vehicle.annoImmatricolazione;
+            }
+            
+            if (vehicle.anno) {
+                return vehicle.anno;
+            }
+            
+            return 'N/A';
+        },
+
+        toggleDescrizione(vehicleId) {
+            const index = this.descrizioniVisibili.indexOf(vehicleId);
+            
+            if (index > -1) {
+                this.descrizioniVisibili.splice(index, 1);
+            } else {
+                this.descrizioniVisibili.push(vehicleId);
+            }
+        },
+
+        async loadVehicles() {
+            try {
+                const response = await fetch('/veicoli');
+                
+                if (!response.ok) {
+                    throw new Error(`Errore ${response.status} nel caricamento dei veicoli`);
+                }
+                
+                this.vehicles = await response.json();
+            } catch (error) {
+                console.error('Errore caricamento veicoli:', error);
+                alert('Impossibile caricare i veicoli. Riprova più tardi.');
+            }
+        },
+
+      submitForm() {
+    // Costruzione messaggio WhatsApp
+    const text = `Ciao DP CARS!\n\n` +
+                `Nome: ${this.form.name || '—'}\n` +
+                `Email: ${this.form.email || '—'}\n` +
+                `Telefono: ${this.form.phone || '—'}\n` +
+                `Motivo: ${this.form.reason || '—'}\n` +
+                `Messaggio:\n${this.form.message || '—'}`;
+
+    const phone = '393333330834';
+
+    // Usa wa.me (più moderno e raccomandato)
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+    // Conferma per guidare l'utente (riduce confusione)
+    const confirmed = confirm(
+        "Il messaggio è pronto con i tuoi dati!\n\n" +
+        "Si aprirà WhatsApp (o la chat web).\n" +
+        "Premi il tasto INVIO (freccia verde) per spedire davvero la richiesta.\n\n" +
+        "Vuoi procedere?"
+    );
+
+    if (confirmed) {
+        window.open(url, '_blank');
+
+        // Reset form
+        this.form = {
+            name: '',
+            email: '',
+            phone: '',
+            reason: '',
+            message: ''
+        };
+    }
+},
+
+    mounted() {
+        this.loadVehicles();
+    }
+
+}).mount('#app');
+</script>
+
+<!-- ================================
+     SERVER.JS (se utilizzato)
+=============================== -->
+
 </body>
 </html>
