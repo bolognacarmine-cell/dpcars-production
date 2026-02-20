@@ -1619,112 +1619,111 @@ window.open(
         });
     </script>
 
-    <!-- ================================
-         APP LOGICA (unica istanza Vue)
-    ================================ -->
-    <script>
-    const { createApp } = Vue;
+   <!-- ================================
+     VUE.JS APP COMPLETA (unica istanza)
+=============================== -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+const { createApp } = Vue;
 
-    createApp({
-        data() {
-            return {
-                vehicles: [],
-                descrizioniVisibili: [],
-                filters: {
-                    type: 'all',
-                    search: '',
-                    sort: 'price-asc'
-                },
-                form: {
-                    name: '',
-                    email: '',
-                    phone: '',
-                    reason: '',
-                    date: '',
-                    time: '',
-                    message: ''
-                }
-            };
+createApp({
+    data() {
+        return {
+            vehicles: [],
+            descrizioniVisibili: [],
+            filters: {
+                type: 'all',
+                search: '',
+                sort: 'price-asc'
+            },
+            form: {
+                name: '',
+                email: '',
+                phone: '',
+                reason: '',
+                date: '',
+                time: '',
+                message: ''
+            }
+        };
+    },
+
+    computed: {
+        filteredVehicles() {
+            return this.vehicles.filter(vehicle => {
+                const matchType = this.filters.type === 'all' || 
+                                  this.filters.type === (vehicle.tipo || '').toLowerCase();
+                
+                const matchSearch = 
+                    (vehicle.marca || '').toLowerCase().includes(this.filters.search.toLowerCase()) ||
+                    (vehicle.modello || '').toLowerCase().includes(this.filters.search.toLowerCase());
+                
+                return matchType && matchSearch;
+            });
         },
 
-        computed: {
-            filteredVehicles() {
-                return this.vehicles.filter(vehicle => {
-                    const matchType = this.filters.type === 'all' || 
-                                      this.filters.type === (vehicle.tipo || '').toLowerCase();
-                    
-                    const matchSearch = 
-                        (vehicle.marca || '').toLowerCase().includes(this.filters.search.toLowerCase()) ||
-                        (vehicle.modello || '').toLowerCase().includes(this.filters.search.toLowerCase());
-                    
-                    return matchType && matchSearch;
-                });
-            },
+        sortedVehicles() {
+            let sorted = [...this.filteredVehicles];
+            
+            switch(this.filters.sort) {
+                case 'price-asc':
+                    sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
+                    break;
+                case 'price-desc':
+                    sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
+                    break;
+                case 'year-desc':
+                    sorted.sort((a, b) => {
+                        const ya = a.annoImmatricolazione || a.anno || 0;
+                        const yb = b.annoImmatricolazione || b.anno || 0;
+                        return yb - ya;
+                    });
+                    break;
+                case 'km-asc':
+                    sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
+                    break;
+            }
+            
+            return sorted;
+        }
+    },
 
-            sortedVehicles() {
-                let sorted = [...this.filteredVehicles];
-                
-                switch(this.filters.sort) {
-                    case 'price-asc':
-                        sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
-                        break;
-                    case 'price-desc':
-                        sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
-                        break;
-                    case 'year-desc':
-                        sorted.sort((a, b) => {
-                            const ya = a.annoImmatricolazione || a.anno || 0;
-                            const yb = b.annoImmatricolazione || b.anno || 0;
-                            return yb - ya;
-                        });
-                        break;
-                    case 'km-asc':
-                        sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
-                        break;
-                }
-                
-                return sorted;
+    methods: {
+        formatMeseAnno(vehicle) {
+            const mesi = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+            
+            if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
+                return mesi[vehicle.meseImmatricolazione - 1] + ' ' + vehicle.annoImmatricolazione;
+            }
+            return vehicle.annoImmatricolazione || vehicle.anno || 'N/D';
+        },
+
+        toggleDescrizione(id) {
+            const idx = this.descrizioniVisibili.indexOf(id);
+            if (idx > -1) {
+                this.descrizioniVisibili.splice(idx, 1);
+            } else {
+                this.descrizioniVisibili.push(id);
             }
         },
 
-        methods: {
-            formatMeseAnno(vehicle) {
-                const mesi = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-                
-                if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
-                    return mesi[vehicle.meseImmatricolazione - 1] + ' ' + vehicle.annoImmatricolazione;
-                }
-                return vehicle.annoImmatricolazione || vehicle.anno || 'N/D';
-            },
+        async loadVehicles() {
+            try {
+                const res = await fetch('/veicoli');
+                if (!res.ok) throw new Error('Errore ' + res.status);
+                this.vehicles = await res.json();
+            } catch (err) {
+                console.error('Errore caricamento veicoli:', err);
+            }
+        },
 
-            toggleDescrizione(id) {
-                const idx = this.descrizioniVisibili.indexOf(id);
-                if (idx > -1) {
-                    this.descrizioniVisibili.splice(idx, 1);
-                } else {
-                    this.descrizioniVisibili.push(id);
-                }
-            },
+        submitForm() {
+            if (!this.form.name || !this.form.email || !this.form.phone || !this.form.reason) {
+                alert('Compila tutti i campi obbligatori');
+                return;
+            }
 
-            async loadVehicles() {
-                try {
-                    const res = await fetch('/veicoli');
-                    if (!res.ok) throw new Error('Errore ' + res.status);
-                    this.vehicles = await res.json();
-                } catch (err) {
-                    console.error('Errore caricamento veicoli:', err);
-                    // Dati di fallback opzionali
-                    // this.vehicles = [ ... ];
-                }
-            },
-
-            submitForm() {
-                if (!this.form.name || !this.form.email || !this.form.phone || !this.form.reason) {
-                    alert('Compila tutti i campi obbligatori');
-                    return;
-                }
-
-                const messaggio = 
+            const messaggio = 
 `Ciao DP CARS!
 
 Richiesta da sito web:
@@ -1737,21 +1736,22 @@ ${this.form.date ? `Data: ${this.form.date}` : ''}
 ${this.form.time ? `Ora: ${this.form.time}` : ''}
 ${this.form.message ? `\nMessaggio:\n${this.form.message}` : ''}`;
 
-                const url = `https://wa.me/393333330834?text=${encodeURIComponent(messaggio)}`;
-                window.open(url, '_blank');
+            const url = `https://wa.me/39333330834?text=${encodeURIComponent(messaggio)}`;
+            window.open(url, '_blank');
 
-                // reset form
-                this.form = {
-                    name: '', email: '', phone: '', reason: '', date: '', time: '', message: ''
-                };
-            }
-        },
-
-        mounted() {
-            this.loadVehicles();
+            // Reset form
+            this.form = {
+                name: '', email: '', phone: '', reason: '', date: '', time: '', message: ''
+            };
         }
-    }).mount('#app');
-    </script>
+    },
+
+    mounted() {
+        this.loadVehicles();
+    }
+}).mount('#app');
+</script>
+
 
     <!-- ================================
          TAWK.TO CHAT WIDGET (solo una volta)
