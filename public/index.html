@@ -1624,9 +1624,8 @@ window.open(
 =============================== -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
-const { createApp } = Vue;
-
-createApp({
+// ❌ ELIMINATO DUPLICATO: const { createApp } = Vue;
+Vue.createApp ({
     data() {
         return {
             vehicles: [],
