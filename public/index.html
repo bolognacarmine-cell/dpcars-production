@@ -950,7 +950,7 @@
     <strong>🚘 Tipo Auto:</strong> {{ vehicle.tipoAuto || "N/A" }}<br>
   </p>
 </div>
-
+zz
 
                             <!-- Toggle Description Button -->
                             <button
@@ -1153,85 +1153,130 @@
         </div>
     </section>
 
-    <!-- ================================
-         FORM RICHIEDI INFORMAZIONI
-    ================================ -->
-    <section id="richiedi-form">
-        <div class="container">
-            <h2 class="text-center">Richiedi Informazioni</h2>
-            <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
-                <!-- Nome e Cognome -->
-                <div class="col-md-6">
-                    <input 
-                        v-model="form.name" 
-                        type="text" 
-                        class="form-control form-control-lg" 
-                        placeholder="Nome e Cognome *" 
-                        required
-                        aria-label="Nome e Cognome"
-                    >
-                </div>
+ <!-- Sostituisci tutta la sezione #richiedi-form con questa -->
 
-                <!-- Email -->
-                <div class="col-md-6">
-                    <input 
-                        v-model="form.email" 
-                        type="email" 
-                        class="form-control form-control-lg" 
-                        placeholder="Email *" 
-                        required
-                        aria-label="Email"
-                    >
-                </div>
+<section id="richiedi-form" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Richiedi Appuntamento</h2>
+        <p class="text-center text-muted mb-5">
+            Compila il form e ti contatteremo subito su WhatsApp per fissare l'appuntamento.
+        </p>
 
-                <!-- Telefono -->
-                <div class="col-md-6">
-                    <input 
-                        v-model="form.phone" 
-                        type="tel" 
-                        class="form-control form-control-lg" 
-                        placeholder="Telefono"
-                        aria-label="Telefono"
-                    >
-                </div>
+        <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
+            
+            <!-- Nome e Cognome -->
+            <div class="col-md-6">
+                <input
+                    v-model="form.nome"
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Nome *"
+                    required
+                >
+            </div>
+            <div class="col-md-6">
+                <input
+                    v-model="form.cognome"
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Cognome *"
+                    required
+                >
+            </div>
 
-                <!-- Motivo Richiesta -->
-                <div class="col-md-6">
-                    <select 
-                        v-model="form.reason" 
-                        class="form-select form-select-lg" 
-                        required
-                        aria-label="Motivo della richiesta"
-                    >
-                        <option value="" disabled selected>Motivo della richiesta *</option>
-                        <option>Informazioni generali</option>
-                        <option>Richiesta test drive</option>
-                        <option>Finanziamento</option>
-                        <option>Altro</option>
-                    </select>
-                </div>
+            <!-- Telefono (molto importante per appuntamento) -->
+            <div class="col-md-6">
+                <input
+                    v-model="form.telefono"
+                    type="tel"
+                    class="form-control form-control-lg"
+                    placeholder="Telefono *"
+                    required
+                >
+            </div>
 
-                <!-- Messaggio -->
-                <div class="col-12">
-                    <textarea 
-                        v-model="form.message" 
-                        class="form-control form-control-lg" 
-                        rows="5" 
-                        placeholder="Messaggio (opzionale)"
-                        aria-label="Messaggio"
-                    ></textarea>
-                </div>
+            <!-- Email (opzionale ma utile) -->
+            <div class="col-md-6">
+                <input
+                    v-model="form.email"
+                    type="email"
+                    class="form-control form-control-lg"
+                    placeholder="Email (opzionale)"
+                >
+            </div>
 
-                <!-- Submit Button -->
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
-                        <i class="fab fa-whatsapp me-2"></i>
-                        Invia richiesta su WhatsApp
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
+            <!-- Motivo della richiesta -->
+            <div class="col-md-6">
+                <select
+                    v-model="form.motivo"
+                    class="form-select form-select-lg"
+                    required
+                >
+                    <option value="" disabled selected>Motivo appuntamento *</option>
+                    <option>Informazioni generali / Preventivo</option>
+                    <option>Prova su strada (test drive)</option>
+                    <option>Valutazione permuta / Acconto</option>
+                    <option>Finanziamento / Rate</option>
+                    <option>Vedere un veicolo specifico</option>
+                    <option>Altro</option>
+                </select>
+            </div>
+
+            <!-- Veicolo di interesse (opzionale) -->
+            <div class="col-12">
+                <input
+                    v-model="form.veicolo"
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Veicolo di tuo interesse (es. BMW X5 2020, Fiat 500 ibrida...)"
+                >
+            </div>
+
+            <!-- Data preferita -->
+            <div class="col-md-6">
+                <input
+                    v-model="form.data"
+                    type="date"
+                    class="form-control form-control-lg"
+                    required
+                >
+            </div>
+
+            <!-- Orario preferito -->
+            <div class="col-md-6">
+                <select
+                    v-model="form.orario"
+                    class="form-select form-select-lg"
+                    required
+                >
+                    <option value="" disabled selected>Orario preferito *</option>
+                    <option>Mattina (9:00–12:30)</option>
+                    <option>Pomeriggio (14:30–18:30)</option>
+                    <option>Flessibile / Qualsiasi orario</option>
+                    <option>Sabato mattina</option>
+                </select>
+            </div>
+
+            <!-- Messaggio aggiuntivo -->
+            <div class="col-12">
+                <textarea
+                    v-model="form.note"
+                    class="form-control form-control-lg"
+                    rows="4"
+                    placeholder="Note aggiuntive / richieste particolari (opzionale)"
+                ></textarea>
+            </div>
+
+            <!-- Pulsante -->
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg px-5 py-3">
+                    <i class="fab fa-whatsapp me-2 fs-4"></i>
+                    Richiedi Appuntamento su WhatsApp
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
 
     <!-- ================================
          CONTATTI SECTION (con mappa)
@@ -1368,153 +1413,150 @@
         });
     </script>
 
-    <!-- ================================
-         VUE.JS APPLICATION
-    ================================ -->
-    <script>
-        const { createApp } = Vue;
+ <!-- ================================
+     VUE.JS APPLICATION (versione sincronizzata con form appuntamento)
+================================= -->
+<script>
+    const { createApp } = Vue;
 
-        createApp({
-            data() {
-                return {
-                    vehicles: [],
-                    descrizioniVisibili: [],
-                    filters: {
-                        type: 'all',
-                        search: '',
-                        sort: 'price-asc'
-                    },
-                    form: {
-                        name: '',
-                        email: '',
-                        phone: '',
-                        reason: '',
-                        message: ''
-                    }
-                };
-            },
-
-            computed: {
-                filteredVehicles() {
-                    return this.vehicles.filter(vehicle => {
-                        const matchType = this.filters.type === 'all' || 
-                                        this.filters.type === vehicle.tipo;
-                        
-                        const matchSearch = vehicle.marca.toLowerCase()
-                                            .includes(this.filters.search.toLowerCase()) ||
-                                          vehicle.modello.toLowerCase()
-                                            .includes(this.filters.search.toLowerCase());
-                        
-                        return matchType && matchSearch;
-                    });
+    createApp({
+        data() {
+            return {
+                vehicles: [],
+                descrizioniVisibili: [],
+                filters: {
+                    type: 'all',
+                    search: '',
+                    sort: 'price-asc'
                 },
-
-                sortedVehicles() {
-                    let sorted = [...this.filteredVehicles];
-                    
-                    switch(this.filters.sort) {
-                        case 'price-asc':
-                            sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0));
-                            break;
-                        case 'price-desc':
-                            sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0));
-                            break;
-                        case 'year-desc':
-                            sorted.sort((a, b) => {
-                                const yearA = a.annoImmatricolazione || a.anno || 0;
-                                const yearB = b.annoImmatricolazione || b.anno || 0;
-                                return yearB - yearA;
-                            });
-                            break;
-                        case 'km-asc':
-                            sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0));
-                            break;
-                    }
-                    
-                    return sorted;
+                // ────────────────────────────────────────────────
+                //   OGGETTO FORM AGGIORNATO per il nuovo form appuntamento
+                // ────────────────────────────────────────────────
+                form: {
+                    nome:     '',
+                    cognome:  '',
+                    telefono: '',
+                    email:    '',
+                    motivo:   '',
+                    veicolo:  '',
+                    data:     '',
+                    orario:   '',
+                    note:     ''
                 }
+            };
+        },
+
+        computed: {
+            filteredVehicles() {
+                return this.vehicles.filter(vehicle => {
+                    const matchType = this.filters.type === 'all' || 
+                                      this.filters.type === vehicle.tipo;
+                    
+                    const matchSearch = 
+                        (vehicle.marca   || '').toLowerCase().includes(this.filters.search.toLowerCase()) ||
+                        (vehicle.modello || '').toLowerCase().includes(this.filters.search.toLowerCase());
+                    
+                    return matchType && matchSearch;
+                });
             },
 
-            methods: {
-                formatMeseAnno(vehicle) {
-                    const mesi = [
-                        'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 
-                        'Maggio', 'Giugno', 'Luglio', 'Agosto', 
-                        'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-                    ];
-                    
-                    if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
-                        return mesi[vehicle.meseImmatricolazione - 1] + ' ' + 
-                               vehicle.annoImmatricolazione;
-                    }
-                    
-                    if (vehicle.annoImmatricolazione) {
-                        return vehicle.annoImmatricolazione;
-                    }
-                    
-                    if (vehicle.anno) {
-                        return vehicle.anno;
-                    }
-                    
-                    return 'N/A';
-                },
-
-                toggleDescrizione(vehicleId) {
-                    const index = this.descrizioniVisibili.indexOf(vehicleId);
-                    
-                    if (index > -1) {
-                        this.descrizioniVisibili.splice(index, 1);
-                    } else {
-                        this.descrizioniVisibili.push(vehicleId);
-                    }
-                },
-
-                async loadVehicles() {
-                    try {
-                        const response = await fetch('/veicoli');
-                        
-                        if (!response.ok) {
-                            throw new Error('Errore nel caricamento dei veicoli');
-                        }
-                        
-                        this.vehicles = await response.json();
-                    } catch (error) {
-                        console.error('Errore:', error);
-                        alert('Impossibile caricare i veicoli. Riprova più tardi.');
-                    }
-                },
-
-                submitForm() {
-                    // Costruzione messaggio WhatsApp
-                    const text = `Ciao DP CARS!%0A%0A` +
-                                `Nome: ${this.form.name}%0A` +
-                                `Email: ${this.form.email}%0A` +
-                                `Telefono: ${this.form.phone}%0A` +
-                                `Motivo: ${this.form.reason}%0A` +
-                                `Messaggio: ${this.form.message}`;
-                    
-                    // Apertura WhatsApp
-                    window.open(
-                        `https://api.whatsapp.com/send?phone=+393333330834&text=${text}`, 
-                        '_blank'
-                    );
-                    
-                    // Reset form
-                    this.form = {
-                        name: '',
-                        email: '',
-                        phone: '',
-                        reason: '',
-                        message: ''
-                    };
+            sortedVehicles() {
+                let sorted = [...this.filteredVehicles];
+                
+                switch(this.filters.sort) {
+                    case 'price-asc':  sorted.sort((a, b) => (a.prezzo || 0) - (b.prezzo || 0)); break;
+                    case 'price-desc': sorted.sort((a, b) => (b.prezzo || 0) - (a.prezzo || 0)); break;
+                    case 'year-desc':
+                        sorted.sort((a, b) => {
+                            const ya = a.annoImmatricolazione || a.anno || 0;
+                            const yb = b.annoImmatricolazione || b.anno || 0;
+                            return yb - ya;
+                        });
+                        break;
+                    case 'km-asc': sorted.sort((a, b) => (a.chilometri || 0) - (b.chilometri || 0)); break;
                 }
-            },
-
-            mounted() {
-                this.loadVehicles();
+                
+                return sorted;
             }
-        }).mount('#app');
-    </script>
+        },
+
+        methods: {
+            formatMeseAnno(vehicle) {
+                const mesi = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+                              'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+                
+                if (vehicle.meseImmatricolazione && vehicle.annoImmatricolazione) {
+                    return mesi[vehicle.meseImmatricolazione - 1] + ' ' + vehicle.annoImmatricolazione;
+                }
+                return vehicle.annoImmatricolazione || vehicle.anno || 'N/A';
+            },
+
+            toggleDescrizione(vehicleId) {
+                const idx = this.descrizioniVisibili.indexOf(vehicleId);
+                if (idx > -1) this.descrizioniVisibili.splice(idx, 1);
+                else this.descrizioniVisibili.push(vehicleId);
+            },
+
+            async loadVehicles() {
+                try {
+                    let res = await fetch('/veicoli');
+                    if (!res.ok) res = await fetch('veicoli.json');
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    this.vehicles = await res.json();
+                } catch (err) {
+                    console.error('Errore caricamento veicoli:', err);
+                }
+            },
+
+            submitForm() {
+                // Campi obbligatori minimi
+                if (!this.form.nome?.trim()     || 
+                    !this.form.cognome?.trim()  ||
+                    !this.form.telefono?.trim() ||
+                    !this.form.motivo           ||
+                    !this.form.data             ||
+                    !this.form.orario) {
+                    alert("Compila tutti i campi obbligatori:\n• Nome\n• Cognome\n• Telefono\n• Motivo\n• Data\n• Orario");
+                    return;
+                }
+
+                // Messaggio WhatsApp ben formattato
+                const lines = [
+                    "Ciao DP CARS! Vorrei fissare un appuntamento 🚗",
+                    "",
+                    `Nome:     ${this.form.nome.trim()} ${this.form.cognome.trim()}`,
+                    `Telefono: ${this.form.telefono.trim()}`,
+                    this.form.email?.trim()   ? `Email:    ${this.form.email.trim()}` : "",
+                    `Motivo:   ${this.form.motivo}`,
+                    this.form.veicolo?.trim() ? `Veicolo:  ${this.form.veicolo.trim()}` : "",
+                    `Data pref: ${this.form.data}`,
+                    `Orario pref: ${this.form.orario}`,
+                    this.form.note?.trim()    ? `\nNote:\n${this.form.note.trim()}` : ""
+                ].filter(Boolean);
+
+                const text = lines.join("%0A");
+                const url = `https://api.whatsapp.com/send?phone=393384550216&text=${encodeURIComponent(text)}`;
+
+                const w = window.open(url, '_blank');
+
+                if (!w || w.closed || typeof w.closed == 'undefined') {
+                    alert("Popup bloccato dal browser.\n\nCopia questo testo e invialo manualmente su WhatsApp al 338 4550216:");
+                    alert(decodeURIComponent(text.replace(/%0A/g, "\n")));
+                }
+
+                // Reset
+                Object.assign(this.form, {
+                    nome: '', cognome: '', telefono: '', email: '',
+                    motivo: '', veicolo: '', data: '', orario: '', note: ''
+                });
+            }
+        },
+
+        mounted() {
+            this.loadVehicles();
+        }
+    }).mount('#app');
+</script>
 fetch('veicoli.json')
 
     <!-- ================================
