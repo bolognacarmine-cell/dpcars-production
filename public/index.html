@@ -1164,9 +1164,11 @@ zz
 
         <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
             
-            <!-- Nome e Cognome -->
+            <!-- Nome -->
             <div class="col-md-6">
                 <input
+                    id="nome"
+                    name="nome"
                     v-model="form.nome"
                     type="text"
                     class="form-control form-control-lg"
@@ -1174,8 +1176,12 @@ zz
                     required
                 >
             </div>
+
+            <!-- Cognome -->
             <div class="col-md-6">
                 <input
+                    id="cognome"
+                    name="cognome"
                     v-model="form.cognome"
                     type="text"
                     class="form-control form-control-lg"
@@ -1184,9 +1190,11 @@ zz
                 >
             </div>
 
-            <!-- Telefono (molto importante per appuntamento) -->
+            <!-- Telefono -->
             <div class="col-md-6">
                 <input
+                    id="telefono"
+                    name="telefono"
                     v-model="form.telefono"
                     type="tel"
                     class="form-control form-control-lg"
@@ -1195,9 +1203,11 @@ zz
                 >
             </div>
 
-            <!-- Email (opzionale ma utile) -->
+            <!-- Email -->
             <div class="col-md-6">
                 <input
+                    id="email"
+                    name="email"
                     v-model="form.email"
                     type="email"
                     class="form-control form-control-lg"
@@ -1205,26 +1215,30 @@ zz
                 >
             </div>
 
-            <!-- Motivo della richiesta -->
+            <!-- Motivo -->
             <div class="col-md-6">
                 <select
+                    id="motivo"
+                    name="motivo"
                     v-model="form.motivo"
                     class="form-select form-select-lg"
                     required
                 >
-                    <option value="" disabled selected>Motivo appuntamento *</option>
-                    <option>Informazioni generali / Preventivo</option>
-                    <option>Prova su strada (test drive)</option>
-                    <option>Valutazione permuta / Acconto</option>
-                    <option>Finanziamento / Rate</option>
-                    <option>Vedere un veicolo specifico</option>
-                    <option>Altro</option>
+                    <option value="" disabled>Motivo appuntamento *</option>
+                    <option value="Informazioni generali / Preventivo">Informazioni generali / Preventivo</option>
+                    <option value="Prova su strada">Prova su strada (test drive)</option>
+                    <option value="Valutazione permuta">Valutazione permuta / Acconto</option>
+                    <option value="Finanziamento">Finanziamento / Rate</option>
+                    <option value="Vedere un veicolo specifico">Vedere un veicolo specifico</option>
+                    <option value="Altro">Altro</option>
                 </select>
             </div>
 
-            <!-- Veicolo di interesse (opzionale) -->
+            <!-- Veicolo -->
             <div class="col-12">
                 <input
+                    id="veicolo"
+                    name="veicolo"
                     v-model="form.veicolo"
                     type="text"
                     class="form-control form-control-lg"
@@ -1232,9 +1246,11 @@ zz
                 >
             </div>
 
-            <!-- Data preferita -->
+            <!-- Data -->
             <div class="col-md-6">
                 <input
+                    id="data"
+                    name="data"
                     v-model="form.data"
                     type="date"
                     class="form-control form-control-lg"
@@ -1242,24 +1258,28 @@ zz
                 >
             </div>
 
-            <!-- Orario preferito -->
+            <!-- Orario -->
             <div class="col-md-6">
                 <select
+                    id="orario"
+                    name="orario"
                     v-model="form.orario"
                     class="form-select form-select-lg"
                     required
                 >
-                    <option value="" disabled selected>Orario preferito *</option>
-                    <option>Mattina (9:00–12:30)</option>
-                    <option>Pomeriggio (14:30–18:30)</option>
-                    <option>Flessibile / Qualsiasi orario</option>
-                    <option>Sabato mattina</option>
+                    <option value="" disabled>Orario preferito *</option>
+                    <option value="Mattina">Mattina (9:00–12:30)</option>
+                    <option value="Pomeriggio">Pomeriggio (14:30–18:30)</option>
+                    <option value="Flessibile">Flessibile / Qualsiasi orario</option>
+                    <option value="Sabato mattina">Sabato mattina</option>
                 </select>
             </div>
 
-            <!-- Messaggio aggiuntivo -->
+            <!-- Note -->
             <div class="col-12">
                 <textarea
+                    id="note"
+                    name="note"
                     v-model="form.note"
                     class="form-control form-control-lg"
                     rows="4"
@@ -1274,6 +1294,7 @@ zz
                     Richiedi Appuntamento su WhatsApp
                 </button>
             </div>
+
         </form>
     </div>
 </section>
