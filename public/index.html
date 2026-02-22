@@ -1150,25 +1150,31 @@
             </div>
         </div>
     </section>
-
- <!-- Sostituisci tutta la sezione #richiedi-form con questa -->
-
+<!-- Sezione Richiedi Appuntamento con invio EMAIL -->
 <section id="richiedi-form" class="py-5">
     <div class="container">
         <h2 class="text-center mb-4">Richiedi Appuntamento</h2>
         <p class="text-center text-muted mb-5">
-            Compila il form e ti contatteremo subito su WhatsApp per fissare l'appuntamento.
+            Compila il form e riceveremo la tua richiesta via email.
         </p>
 
-        <form class="row g-4 justify-content-center" @submit.prevent="submitForm">
-            
+        <form 
+            action="https://formsubmit.co/dpcarssrl@pec.it" 
+            method="POST"
+            class="row g-4 justify-content-center"
+        >
+
+            <!-- Configurazione FormSubmit -->
+            <input type="hidden" name="_subject" value="Nuova richiesta appuntamento - DPCARS">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+
             <!-- Nome -->
             <div class="col-md-6">
                 <input
+                    type="text"
                     id="nome"
                     name="nome"
-                    v-model="form.nome"
-                    type="text"
                     class="form-control form-control-lg"
                     placeholder="Nome *"
                     required
@@ -1178,10 +1184,9 @@
             <!-- Cognome -->
             <div class="col-md-6">
                 <input
+                    type="text"
                     id="cognome"
                     name="cognome"
-                    v-model="form.cognome"
-                    type="text"
                     class="form-control form-control-lg"
                     placeholder="Cognome *"
                     required
@@ -1191,10 +1196,9 @@
             <!-- Telefono -->
             <div class="col-md-6">
                 <input
+                    type="tel"
                     id="telefono"
                     name="telefono"
-                    v-model="form.telefono"
-                    type="tel"
                     class="form-control form-control-lg"
                     placeholder="Telefono *"
                     required
@@ -1204,12 +1208,12 @@
             <!-- Email -->
             <div class="col-md-6">
                 <input
+                    type="email"
                     id="email"
                     name="email"
-                    v-model="form.email"
-                    type="email"
                     class="form-control form-control-lg"
-                    placeholder="Email (opzionale)"
+                    placeholder="Email *"
+                    required
                 >
             </div>
 
@@ -1218,39 +1222,36 @@
                 <select
                     id="motivo"
                     name="motivo"
-                    v-model="form.motivo"
                     class="form-select form-select-lg"
                     required
                 >
-                    <option value="" disabled>Motivo appuntamento *</option>
-                    <option value="Informazioni generali / Preventivo">Informazioni generali / Preventivo</option>
-                    <option value="Prova su strada">Prova su strada (test drive)</option>
-                    <option value="Valutazione permuta">Valutazione permuta / Acconto</option>
-                    <option value="Finanziamento">Finanziamento / Rate</option>
-                    <option value="Vedere un veicolo specifico">Vedere un veicolo specifico</option>
-                    <option value="Altro">Altro</option>
+                    <option value="">Motivo appuntamento *</option>
+                    <option>Informazioni generali / Preventivo</option>
+                    <option>Prova su strada (test drive)</option>
+                    <option>Valutazione permuta / Acconto</option>
+                    <option>Finanziamento / Rate</option>
+                    <option>Vedere un veicolo specifico</option>
+                    <option>Altro</option>
                 </select>
             </div>
 
             <!-- Veicolo -->
             <div class="col-12">
                 <input
+                    type="text"
                     id="veicolo"
                     name="veicolo"
-                    v-model="form.veicolo"
-                    type="text"
                     class="form-control form-control-lg"
-                    placeholder="Veicolo di tuo interesse (es. BMW X5 2020, Fiat 500 ibrida...)"
+                    placeholder="Veicolo di interesse"
                 >
             </div>
 
             <!-- Data -->
             <div class="col-md-6">
                 <input
+                    type="date"
                     id="data"
                     name="data"
-                    v-model="form.data"
-                    type="date"
                     class="form-control form-control-lg"
                     required
                 >
@@ -1261,15 +1262,14 @@
                 <select
                     id="orario"
                     name="orario"
-                    v-model="form.orario"
                     class="form-select form-select-lg"
                     required
                 >
-                    <option value="" disabled>Orario preferito *</option>
-                    <option value="Mattina">Mattina (9:00–12:30)</option>
-                    <option value="Pomeriggio">Pomeriggio (14:30–18:30)</option>
-                    <option value="Flessibile">Flessibile / Qualsiasi orario</option>
-                    <option value="Sabato mattina">Sabato mattina</option>
+                    <option value="">Orario preferito *</option>
+                    <option>Mattina (9:00–12:30)</option>
+                    <option>Pomeriggio (14:30–18:30)</option>
+                    <option>Flessibile</option>
+                    <option>Sabato mattina</option>
                 </select>
             </div>
 
@@ -1278,25 +1278,24 @@
                 <textarea
                     id="note"
                     name="note"
-                    v-model="form.note"
                     class="form-control form-control-lg"
                     rows="4"
-                    placeholder="Note aggiuntive / richieste particolari (opzionale)"
+                    placeholder="Note aggiuntive"
                 ></textarea>
             </div>
 
-            <!-- Pulsante -->
+            <!-- Pulsante EMAIL -->
             <div class="col-12 text-center mt-4">
-                <button type="submit" class="btn btn-success btn-lg px-5 py-3">
-                    <i class="fab fa-whatsapp me-2 fs-4"></i>
-                    Richiedi Appuntamento su WhatsApp
+                <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                    <i class="fas fa-envelope me-2"></i>
+                    Invia richiesta via Email
                 </button>
             </div>
 
         </form>
     </div>
 </section>
-
+ 
     <!-- ================================
          CONTATTI SECTION (con mappa)
     ================================ -->
