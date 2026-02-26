@@ -37,13 +37,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// 🔧 STATIC FILES CORRETTI
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "dist")));  // ⭐ VUE BUILD
+/* =========================================================
+   🔐 ADMIN PROTETTO
+   FILE DEVE ESSERE IN /private/admin.html
+========================================================= */
 
-// PROTEZIONE admin.html
-app.get("/admin.html", (req, res) => {
+app.get("/admin", (req, res) => {
   const auth = req.headers.authorization;
 
   if (!auth || !auth.startsWith("Basic ")) {
@@ -51,17 +50,30 @@ app.get("/admin.html", (req, res) => {
     return res.status(401).send("Autenticazione richiesta");
   }
 
-  const credentials = Buffer.from(auth.split(" ")[1], "base64").toString();
+  const credentials = Buffer.from(
+    auth.split(" ")[1],
+    "base64"
+  ).toString();
+
   const [user, pass] = credentials.split(":");
 
-  if (user !== process.env.ADMIN_USER || pass !== process.env.ADMIN_PASSWORD) {
+  if (
+    user !== process.env.ADMIN_USER ||
+    pass !== process.env.ADMIN_PASSWORD
+  ) {
     res.setHeader("WWW-Authenticate", 'Basic realm="Admin Panel"');
     return res.status(401).send("Credenziali non valide");
   }
 
-  res.sendFile(path.join(__dirname, "admin.html"));
+  res.sendFile(
+    path.join(__dirname, "private", "admin.html")
+  );
 });
 
+// 🔧 STATIC FILES CORRETTI
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "dist")));  // ⭐ VUE BUILD
 // Cloudinary
 require("./cloudinary");
 
