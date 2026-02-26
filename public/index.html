@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark">
+<head>
+    <!-- ================================
+         META TAGS
+    ================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#d32f2f">
+    
+    <title>DP CARS - Auto e Moto di Qualità a Marcianise</title>
+    <meta name="description" content="DP CARS Concessionaria auto e moto usate di qualità a Marcianise CE. Ampia selezione, prezzi competitivi, finanziamenti. Chiama 333 3330834.">
+    <meta name="keywords" content="auto usate Marcianise, moto usate Caserta, concessionaria auto, vendita veicoli, DP CARS">
+    <meta name="author" content="DP CARS">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://dpcars-production.onrender.com/">
+    <!-- ✅ SCHEMA.ORG COMPLETO (QUI dopo title/author) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutomotiveBusiness",
+      "name": "DP CARS S.R.L.",
+      "description": "Concessionaria auto e moto usate di qualità a Marcianise (CE)",
+      "url": "https://dpcars-production.onrender.com",
+      "telephone": "+39 333 333 0834",
+      "image": "logo.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Via Roma 43/47",
+        "addressLocality": "Marcianise",
+        "addressRegion": "CE",
+        "postalCode": "81025",
+        "addressCountry": "IT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 41.0330522,
+        "longitude": 14.2973727
+      },
+      "openingHours": "Mo-Fr 09:00-19:00, Sa 09:00-13:00",
+      "priceRange": "€",
+      "sameAs": ["https://www.facebook.com/p/Dp-cars-100067019164899"]
+    }
+    </script>
+
+    <!-- ================================
+         EXTERNAL STYLESHEETS
+    ================================ -->
+    <!-- Bootstrap Core -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/darkly/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Icon Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">
+    
+    <!-- Animation Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+
+    <!-- ================================
+         CUSTOM STYLES
+    ================================ -->
+    <style>
+        /* =========================================================
+           CSS VARIABLES & RESET
+        ========================================================= */
+        :root{
+  /* prima: --primary-sport: #ff1744; --accent-red: #c00; */
+  --primary-sport: #e11d48;   /* rosso lampone, più elegante */
+  --accent-red:   #b91c1c;    /* rosso scuro, meno “fuoco” */
+  --secondary-sport: #38bdf8; /* opzionale: azzurro più soft */
+}
+            
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bs-body-bg);
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* =========================================================
+           NAVBAR STYLING
+        ========================================================= */
+        .main-header {
+            z-index: 1050;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .navbar {
+            backdrop-filter: blur(16px);
+            background: rgba(10, 10, 10, 0.85) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0 !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar:hover {
+            background: rgba(10, 10, 10, 0.95) !important;
+        }
+
+        /* Brand Logo */
+        .brand-logo {
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 23, 68, 0.45);
+            background: rgba(0, 0, 0, 0.4);
+            /* padding: 4px; */
+            filter: drop-shadow(0 4px 16px rgba(255, 23, 68, 0.6)) brightness(1.1);
+            transition: all 0.4s ease;
+        }
+
+        .navbar-brand:hover .brand-logo {
+            /* transform: scale(1.05); */
+            /* filter: drop-shadow(0 8px 25px rgba(255, 23, 68, 0.9)) brightness(1.2); */
+        }
+
+        /* Brand Text */
+        .brand-name {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.12em;
+            color: #ff1744 !important;
+            text-shadow: 0 0 16px rgba(255, 23, 68, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .brand-tagline {
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            color: #ffffff !important;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Navigation Links */
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.95) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.4rem 0.8rem !important;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-sport) !important;
+            transform: translateY(-2px);
+            text-shadow: 0 0 10px rgba(255, 23, 68, 0.6);
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary-sport) !important;
+        }
+
+        /* CTA Button in Navbar */
+        .navbar-nav .btn-primary {
+            background: linear-gradient(135deg, #ff1744, #d32f2f);
+            border: none;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 23, 68, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .btn-primary:hover {
+            background: linear-gradient(135deg, #ff4569, #ff1744);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 23, 68, 0.6);
+        }
+
+        /* Hamburger Menu */
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 23, 68, 0.25) !important;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+            width: 1.3rem;
+            height: 1.3rem;
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: rgba(10, 10, 10, 0.95);
+                padding: 1.5rem;
+                margin-top: 0.5rem;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .navbar-nav .nav-link:last-child {
+                border-bottom: none;
+            }
+
+            .brand-logo {
+                height: 45px;
+            }
+
+            .brand-name {
+                font-size: 1.3rem;
+            }
+
+            .brand-tagline {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* =========================================================
+           HERO SECTION
+        ========================================================= */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            padding-top: 120px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            padding: 2rem 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 3px 6px rgba(0, 0, 0, 1);
+            line-height: 1.1;
+        }
+
+        .hero-accent {
+            color: var(--primary-sport);
+            text-shadow: 0 0 40px rgba(255, 23, 68, 0.6);
+        }
+
+        .hero-content .lead {
+            font-size: 1.3rem;
+            font-weight: 400;
+            opacity: 0.95;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        @media (max-width: 991px) {
+            .hero {
+                padding-top: 100px;
+                min-height: calc(100vh - 100px);
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content .lead {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* =========================================================
+           MODAL - CONSULENZA PRIVATA
+        ========================================================= */
+        .consulenza-card {
+            background: linear-gradient(145deg, #ff1744, #c00);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(255, 23, 68, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        .consulenza-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px rgba(255, 23, 68, 0.7);
+        }
+
+        .consulenza-card .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        
+        /* =========================================================
+           VANTAGGI SECTION
+        ========================================================= */
+        .vantaggi {
+            background: #000;
+            padding: 5rem 0;
+        }
+
+        .vantaggi h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+
+        .vantaggi-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .vantaggio-card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            width: 280px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .vantaggio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 23, 68, 0.4);
+            border-color: rgba(255, 23, 68, 0.3);
+        }
+
+        .vantaggio-icon {
+            font-size: 3rem;
+            color: var(--primary-sport);
+            margin-bottom: 1rem;
+        }
+
+        .vantaggio-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .vantaggio-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* =========================================================
+           CHI SIAMO SECTION
+        ========================================================= */
+        #chi-siamo {
+            background: linear-gradient(to bottom, #0a0a0a, #111);
+            padding: 6rem 0;
+        }
+
+        #chi-siamo h2 {
+            font-size: 3rem;
+            margin-bottom: 2.5rem;
+            color: var(--primary-sport);
+            font-weight: 800;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.92;
+            transition: all 0.6s ease;
+        }
+
+        .about-content:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        /* =========================================================
+           RECENSIONI SECTION
+        ========================================================= */
+        #reviews {
+            background: #000;
+            padding: 5rem 0;
+        }
+
+        #reviews h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+
+        #reviews .card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #reviews .card:hover {
+            border-color: rgba(255, 23, 68, 0.3);
+        }
+
+        /* =========================================================
+           BLOG SECTION
+        ========================================================= */
+        #blog {
+            padding: 5rem 0;
+        }
+
+        #blog h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--primary-sport);
+        }
+
+        #blog .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-sport);
+            margin-bottom: 0.8rem;
+        }
+
+        /* =========================================================
+           FORM SECTION
+        ========================================================= */
+        #richiedi-form {
+            background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+            padding: 5rem 0;
+        }
+
+        #richiedi-form h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--primary-sport);
+        }
+
+        #richiedi-form .form-control,
+        #richiedi-form .form-select,
+        #richiedi-form textarea {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        #richiedi-form .form-control:focus,
+        #richiedi-form .form-select:focus,
+        #richiedi-form textarea:focus {
+            border-color: var(--primary-sport);
+            box-shadow: 0 0 0 0.25rem rgba(255, 23, 68, 0.25);
+            background: #111;
+        }
+
+        /* =========================================================
+           CONTACT SECTION
+        ========================================================= */
+        #contact {
+            background: #000;
+            padding: 5rem 0;
+        }
+
+        #contact h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--primary-sport);
+        }
+
+        .map-container {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        #contact .card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        #contact .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 23, 68, 0.3);
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+        .main-footer {
+            background: #0a0a0a;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .main-footer a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .main-footer a:hover {
+            color: var(--primary-sport);
+        }
+
+        /* =========================================================
+           BUTTONS
+        ========================================================= */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-sport), #d32f2f);
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff4569, var(--primary-sport));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 23, 68, 0.4);
+        }
+
+        .btn-outline-light {
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: #fff;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #34e077, #25d366);
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+           UTILITY CLASSES
+        ========================================================= */
+        .text-primary-custom {
+            color: var(--primary-sport);
+        }
+
+        .bg-dark-custom {
+            background: #0a0a0a;
+        }
+
+        /* =========================================================
+           RESPONSIVE ADJUSTMENTS
+        ========================================================= */
+        @media (max-width: 768px) {
+            .filters-title {
+                font-size: 2rem;
+            }
+
+            .vantaggi h2,
+            #chi-siamo h2,
+            #reviews h2,
+            #blog h2,
+            #richiedi-form h2,
+            #contact h2 {
+                font-size: 2.2rem;
+            }
+
+            .vantaggio-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+<!-- Silktide Consent Manager GDPR ITALIANO -->
+<link rel="stylesheet" id="silktide-consent-manager-css" href="/cookie-banner/silktide-consent-manager.css">
+<script id="silktide-consent-manager-script" src="/cookie-banner/silktide-consent-manager.js" defer></script>
+<script>
+  // Aspetta caricamento + config ITALIANA completa
+  window.addEventListener('load', function() {
+    if (typeof silktideCookieBannerManager !== 'undefined') {
+      silktideCookieBannerManager.updateCookieBannerConfig({
+        language: 'it',
+        theme: 'dark',  // matching tuo sito
+        position: 'top',  // o 'bottom'
+        background: { showBackground: true },
+        cookieIcon: { position: "bottom-left" },
+        cookieTypes: [
+          {
+            id: "necessary",
+            name: "🍪 Necessari",
+            description: "Cookie tecnici per funzionamento sito (non disattivabili).",
+            required: true
+          },
+          {
+            id: "statistics",
+            name: "📊 Statistiche",
+            description: "Google Analytics + Maps (anonimi).",
+            required: false,
+            onAccept: function() { 
+              checkAndLoadMaps();  // dal tuo codice mappa!
+            }
+          },
+          {
+            id: "marketing", 
+            name: "📢 Marketing",
+            description: "Pubblicità personalizzata.",
+            required: false
+          }
+        ],
+        text: {
+          banner: {
+            description: "<p>DP CARS usa cookie per migliorare esperienza, analisi e mappa. <a href=\"/cookie-policy.html\" target=\"_blank\">Informativa completa</a></p>",
+            acceptAllButtonText: "✅ Accetta tutto",
+            rejectNonEssentialButtonText: "❌ Rifiuta opzionali",
+            preferencesButtonText: "⚙️ Personalizza"
+          },
+          preferences: {
+            title: "Gestisci Cookie DP CARS",
+            description: "Attiva/disattiva categorie per privacy massima.",
+            savePreferencesButtonText: "Salva preferenze",
+            creditLinkText: "Banner gratuito Silktide"
+          }
+        }
+      });
+    }
+  });
+</script>
+
+<script>
+window.silktideConsentManagerConfig = {
+    privacyPolicyUrl: "/privacy.html",  // ← cambia se la tua privacy è in altro percorso
+    lang: "it",
+    theme: "dark",
+    position: "bottom-full",
+    categories: [
+        {
+            id: "necessary",
+            name: "Necessari",
+            description: "Cookie tecnici per navigazione, sessione e caricamento immagini ottimizzate.",
+            required: true
+        },
+        {
+            id: "statistics",
+            name: "Statistiche",
+            description: "Per visualizzare la mappa Google della nostra sede e statistiche anonime di utilizzo."
+        },
+        {
+            id: "marketing",
+            name: "Marketing",
+            description: "Per pubblicità e social (non attivi al momento)."
+        }
+    ],
+    onConsent: function(consent) {
+        if (consent.statistics) {
+            loadGoogleMaps();
+        }
+    }
+};
+</script>
+<script
+ src="https://unpkg.com/vue@3/dist/vue.global.prod.js">
+</script>
+</head>
+<body>
+    <!-- ================================
+         HEADER / NAVIGATION
+    ================================ -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg fixed-top" role="navigation" aria-label="Navigazione principale">
+            <div class="container">
+                <!-- Brand -->
+                <a href="#home" class="navbar-brand d-flex align-items-center">
+                    <img 
+                        src="logo.jpg"
+                        alt="DP CARS Logo"
+                        class="brand-logo me-3"
+                        loading="lazy"
+                        width="50"
+                        height="50"
+                    >
+                    <div class="brand-text d-flex flex-column">
+                        <span class="brand-name">DP CARS</span>
+                        <span class="brand-tagline">EXCELLENCE</span>
+                    </div>
+                </a>
+
+                <!-- Hamburger Toggle -->
+                <button 
+                    class="navbar-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation Menu -->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#inventory">Inventario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#chi-siamo">Chi siamo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#reviews">Recensioni</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#blog-section">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">Contatti</a>
+                        </li>
+                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                            <a href="#contact" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i> Richiedi
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ================================
+         HERO SECTION
+    ================================ -->
+    <section id="home" class="hero" aria-label="Sezione principale">
+        <!-- Background Video -->
+        <video 
+            class="hero-video" 
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            preload="metadata" 
+            poster="hero-poster.jpg"
+            aria-hidden="true"
+        >
+            <source src="video.mp4" type="video/mp4">
+            <source src="video.webm" type="video/webm">
+            Il tuo browser non supporta il tag video.
+        </video>
+
+        <!-- Overlay -->
+        <div class="hero-overlay" aria-hidden="true"></div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1>
+                L'ATELIER<br>
+                <span class="hero-accent">DELLE EMOZIONI</span>
+            </h1>
+            <p class="lead mt-3">
+                Auto e moto di qualità a Marcianise.<br>
+                Selezione, trasparenza e passione.
+            </p>
+            <div class="mt-5 d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#inventory" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-car me-2"></i>Sfoglia Garage
+                </a>
+                <button 
+                    class="btn btn-outline-light btn-lg px-5" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#consulenzaModal"
+                >
+                    <i class="fas fa-handshake me-2"></i>Consulenza Privata
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================
+         MODAL - CONSULENZA PRIVATA
+    ================================ -->
+    <div 
+        class="modal fade" 
+        id="consulenzaModal" 
+        tabindex="-1" 
+        aria-labelledby="consulenzaModalLabel" 
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+           <div class="modal-content consulenza-card">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fs-3 fw-bold" id="consulenzaModalLabel">
+                        VIENI A TROVARCI
+                    </h5>
+                    <button 
+                        type="button" 
+                        class="btn-close btn-close-white" 
+                        data-bs-dismiss="modal" 
+                        aria-label="Chiudi"
+                    ></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="fs-5 mb-4">
+                        La tua prossima avventura inizia qui, a Marcianise.<br>
+                        Il nostro team ti aspetta per un test drive esclusivo.
+                    </p>
+                    <div class="row g-4 justify-content-center text-start">
+                        <div class="col-md-6">
+                            <strong class="d-block mb-2">
+                                <i class="fas fa-map-marker-alt me-2"></i>Location
+                            </strong>
+                            Via Francesco Petrarca, 16<br>
+                            81025 Marcianise (CE), Italia
+                        </div>
+                        <div class="col-md-6">
+                            <strong class="d-block mb-2">
+                                <i class="fas fa-phone me-2"></i>Direct Line
+                            </strong>
+                            +39 3333330834<br>
+                            +39 3384550216
+                        </div>
+                        <div class="col-12 mt-4">
+                            <strong class="d-block mb-2">
+                                <i class="fas fa-clock me-2"></i>Atelier Hours
+                            </strong>
+                            Lun-Ven: 09:00 - 19:00<br>
+                            Sab: 09:00 - 13:00<br>
+                            Dom: Chiuso
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================
+         MAIN CONTENT (Vue App)
+    ================================ -->
+    <main class="container" id="app">
+        <!-- ================================
+             FILTERS SECTION
+        ================================ -->
+        <section class="filters-section" aria-label="Filtri di ricerca veicoli">
+            <h2 class="filters-title text-center mb-4">Trova il tuo veicolo perfetto</h2>
+
+            <div class="row g-4">
+                <!-- Filter: Tipo Veicolo -->
+                <div class="col-md-4">
+                    <div class="filter-group">
+                        <label for="vehicle-type" class="form-label fw-semibold">
+                            Tipo di Veicolo
+                        </label>
+                        <select 
+                            id="vehicle-type" 
+                            class="form-select" 
+                            v-model="filters.type" 
+                            aria-label="Filtra per tipo di veicolo"
+                        >
+                            <option value="all">Tutti i veicoli</option>
+                            <option value="auto">Auto</option>
+                            <option value="moto">Moto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter: Ricerca -->
+                <div class="col-md-4">
+                    <div class="filter-group">
+                        <label for="search-input" class="form-label fw-semibold">
+                            Marca o Modello
+                        </label>
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            class="form-control" 
+                            v-model="filters.search" 
+                            placeholder="Es: Fiat, Volkswagen..." 
+                            aria-label="Cerca per marca o modello"
+                        >
+                    </div>
+                </div>
+
+                <!-- Filter: Ordinamento -->
+                <div class="col-md-4">
+                    <div class="filter-group">
+                        <label for="sort-by" class="form-label fw-semibold">
+                            Ordina per
+                        </label>
+                        <select 
+                            id="sort-by" 
+                            class="form-select" 
+                            v-model="filters.sort" 
+                            aria-label="Ordina veicoli"
+                        >
+                            <option value="price-asc">Prezzo crescente</option>
+                            <option value="price-desc">Prezzo decrescente</option>
+                            <option value="year-desc">Anno più recente</option>
+                            <option value="km-asc">Km minori</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================
+             INVENTORY SECTION
+        ================================ -->
+        <section id="inventory" class="py-5" aria-label="Sezione inventario veicoli">
+            <div class="inventory-header d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <h2 class="mb-0">Il nostro inventario</h2>
+
+                <div class="sort-controls">
+                    <select 
+                        id="sort-by-header" 
+                        class="form-select" 
+                        v-model="filters.sort" 
+                        aria-label="Ordina veicoli"
+                    >
+                        <option value="price-asc">Prezzo crescente</option>
+                        <option value="price-desc">Prezzo decrescente</option>
+                        <option value="year-desc">Anno più recente</option>
+                        <option value="km-asc">Km minori</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Vehicle Grid -->
+            <div 
+                id="inventory-grid" 
+                class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" 
+                role="list" 
+                aria-label="Griglia veicoli"
+            >
+                <!-- Vehicle Card (Vue Template) -->
+                <article
+                    v-for="vehicle in sortedVehicles"
+                    :key="vehicle._id"
+                    class="col"
+                    role="listitem"
+                    tabindex="0"
+                    :aria-label="vehicle.marca + ' ' + vehicle.modello + ', anno ' + (vehicle.annoImmatricolazione || vehicle.anno || '') + ', prezzo ' + (vehicle.prezzo ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'N/A')"
+                >
+                    <div class="card h-100 shadow-sm" tabindex="-1">
+                        <!-- Image Carousel -->
+                        <div
+                            :id="'carousel-' + vehicle._id"
+                            class="carousel slide"
+                            data-bs-ride="carousel"
+                            :aria-label="'Carosello immagini di ' + vehicle.marca + ' ' + vehicle.modello"
+                        >
+                            <div class="carousel-inner">
+                                <div
+                                    v-for="(img, index) in (vehicle.immagini && vehicle.immagini.length ? vehicle.immagini : [vehicle.immagine || 'default-vehicle.jpg'])"
+                                    :key="index"
+                                    :class="['carousel-item', { active: index === 0 }]"
+                                >
+                                    <img
+                                        :src="(typeof img === 'string' ? img : img.url).replace('/upload/', '/upload/f_auto,q_auto/')"
+                                        class="d-block w-100"
+                                        :alt="'Immagine ' + (index + 1) + ' di ' + vehicle.marca + ' ' + vehicle.modello"
+                                        loading="lazy"
+                                        style="max-height: 200px; object-fit: cover;"
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Carousel Controls -->
+                            <button
+                                v-if="(vehicle.immagini && vehicle.immagini.length > 1)"
+                                class="carousel-control-prev"
+                                type="button"
+                                :data-bs-target="'#carousel-' + vehicle._id"
+                                data-bs-slide="prev"
+                                aria-label="Immagine precedente"
+                            >
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button
+                                v-if="(vehicle.immagini && vehicle.immagini.length > 1)"
+                                class="carousel-control-next"
+                                type="button"
+                                :data-bs-target="'#carousel-' + vehicle._id"
+                                data-bs-slide="next"
+                                aria-label="Immagine successiva"
+                            >
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                        <!-- Card Body -->
+<div class="card-body d-flex flex-column">
+  <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }}</h3>
+  
+  <p class="card-text">
+    <strong>📅 Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
+    <strong>🚗 Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
+    <strong>💶 Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
+    <strong>⚙️ Categoria Euro:</strong> {{ vehicle.categoriaEuro || "N/A" }}<br>
+    <strong>📌 Stato vendita:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
+    <strong>⛽ Carburante:</strong> {{ vehicle.carburante || "N/A" }}<br>
+    <strong>⚙️ Cambio:</strong> {{ vehicle.cambio || "N/A" }}<br>
+    <strong>🎨 Colore:</strong> {{ vehicle.colore || "N/A" }}<br>
+    <strong>🔧 Cilindrata:</strong> {{ vehicle.cilindrata ? vehicle.cilindrata + " cc" : "N/A" }}<br>
+    <strong>🚪 Porte:</strong> {{ vehicle.porte || "N/A" }}<br>
+    <strong>🚘 Tipo Auto:</strong> {{ vehicle.tipoAuto || "N/A" }}<br>
+  </p>
+</div>
+
+                            <!-- Toggle Description Button -->
+                            <button
+                                class="btn btn-link p-0 mb-3"
+                                @click="toggleDescrizione(vehicle.id)"
+                                :aria-expanded="descrizioniVisibili.includes(vehicle.id) ? 'true' : 'false'"
+                                :aria-controls="'descrizione-' + vehicle.id"
+                            >
+                                {{ descrizioniVisibili.includes(vehicle.id) ? 'Nascondi descrizione' : 'Mostra descrizione' }}
+                            </button>
+
+                            <!-- Description Content -->
+                            <div
+                                v-if="descrizioniVisibili.includes(vehicle.id)"
+                                class="descrizioni"
+                                :id="'descrizione-' + vehicle.id"
+                                aria-live="polite"
+                            >
+                                <template v-if="Array.isArray(vehicle.descrizioni) && vehicle.descrizioni.length > 0">
+                                    <p v-for="(d, index) in vehicle.descrizioni" :key="index">{{ d }}</p>
+                                </template>
+                                <template v-else-if="vehicle.descrizione && typeof vehicle.descrizione === 'string'">
+                                    <p>{{ vehicle.descrizione }}</p>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================================
+         VANTAGGI SECTION
+    ================================ -->
+    <section class="vantaggi" aria-label="Perché scegliere DP CARS">
+        <div class="container text-center">
+            <h2>
+                Perché scegliere <span class="hero-accent">DP CARS</span>
+            </h2>
+            <div class="vantaggi-grid">
+                <!-- Vantaggio 1 -->
+                <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="vantaggio-icon">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3>Qualità Garantita</h3>
+                    <p>Controlli rigorosi prima di entrare in showroom.</p>
+                </div>
+
+                <!-- Vantaggio 2 -->
+                <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="vantaggio-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Finanziamenti</h3>
+                    <p>Soluzioni personalizzate direttamente in sede.</p>
+                </div>
+
+                <!-- Vantaggio 3 -->
+                <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="vantaggio-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Assistenza Post-Vendita</h3>
+                    <p>Supporto continuo anche dopo l'acquisto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================
+         CHI SIAMO SECTION
+    ================================ -->
+    <section id="chi-siamo" class="text-center">
+        <div class="container">
+            <h2 data-aos="fade-up">Chi siamo</h2>
+            <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+                <p class="lead">
+                    DP CARS è una concessionaria di auto e moto a Marcianise, 
+                    con decenni di esperienza, passione e trasparenza. 
+                    Offriamo solo veicoli controllati e selezionati.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================
+         WHATSAPP CTA
+    ================================ -->
+    <section class="py-5 text-center bg-dark-custom">
+        <div class="container">
+            <a 
+                href="https://api.whatsapp.com/send?phone=393333330834&text=Ciao,%20vorrei%20maggiori%20informazioni%20su%20un%20veicolo" 
+                class="btn btn-success btn-lg px-5 py-3" 
+                target="_blank" 
+                rel="noopener noreferrer"
+            >
+                <i class="fab fa-whatsapp me-2 fs-4"></i>
+                Contattaci ora su WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- ================================
+         RECENSIONI SECTION
+    ================================ -->
+    <section id="reviews" aria-label="Recensioni clienti">
+        <div class="container text-center">
+            <h2>Recensioni dei nostri clienti</h2>
+            <div class="row g-4">
+                <!-- Recensione 1 -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card p-4 h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">
+                            "Ottima esperienza, personale qualificato e gentile."
+                        </p>
+                        <strong>- Mario R.</strong>
+                    </div>
+                </div>
+
+                <!-- Recensione 2 -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card p-4 h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">
+                            "Ho trovato l'auto dei miei sogni, consigliatissimo."
+                        </p>
+                        <strong>- Lucia B.</strong>
+                    </div>
+                </div>
+
+                <!-- Recensione 3 -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card p-4 h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">
+                            "Professionalità e trasparenza, mai avuto problemi."
+                        </p>
+                        <strong>- Antonio F.</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Sezione blog lazy (dopo veicoli o dove preferisci) -->
+<section id="blog-section" class="container my-5 py-5" style="opacity:0; transition:opacity 0.5s;">
+  <h2 class="text-center mb-4">Blog DP Cars</h2>
+  
+  <p id="blog-loading" class="text-center">Caricamento articoli...</p>
+  
+  <!-- Filtri (visibili solo dopo caricamento riuscito) -->
+  <div class="btn-group mb-4 d-flex flex-wrap justify-content-center gap-2" id="filtri" style="display:none;">
+    <button class="btn btn-outline-primary filtro-btn active" data-argomento="">Tutti</button>
+    <button class="btn btn-outline-primary filtro-btn" data-argomento="Auto Sportive">Sportive</button>
+    <button class="btn btn-outline-primary filtro-btn" data-argomento="Manutenzione">Manutenzione</button>
+    <button class="btn btn-outline-primary filtro-btn" data-argomento="Novità">Novità</button>
+  </div>
+  
+  <div id="blog-grid" class="row g-4"></div>
+</section>
+
+<script>
+// Lazy loading della sezione blog
+const blogSection = document.getElementById('blog-section');
+if (blogSection) {
+  const blogObserver = new IntersectionObserver(async (entries) => {
+    if (entries[0].isIntersecting) {
+      await caricaBlog();
+      blogObserver.disconnect();
+    }
+  }, { 
+    threshold: 0.1, 
+    rootMargin: '80px' 
+  });
+
+  blogObserver.observe(blogSection);
+}
+
+async function caricaBlog() {
+  const loadingEl = document.getElementById('blog-loading');
+  const gridEl   = document.getElementById('blog-grid');
+  const filtriEl = document.getElementById('filtri');
+
+  loadingEl.textContent = 'Caricamento articoli...';
+
+  try {
+    const response = await fetch('/api/blog');
+    
+    if (!response.ok) {
+      throw new Error(`Errore ${response.status} – ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('[BLOG] Risposta ricevuta:', data);
+
+    // Gestione flessibile del formato (array diretto o {data: [...], posts: [...]})
+    window.tuttiBlog = Array.isArray(data) ? data 
+      : (data.data || data.posts || data.blog || data.articoli || []);
+
+    console.log('[BLOG] Articoli estratti:', window.tuttiBlog.length, 'elementi');
+
+    loadingEl.style.display = 'none';
+    filtriEl.style.display = 'flex';
+    blogSection.style.opacity = '1';
+
+    renderizzaArticoli(window.tuttiBlog);
+
+  } catch (error) {
+    console.error('[BLOG] Errore durante il caricamento:', error);
+    loadingEl.innerHTML = `
+      <span class="text-danger">Impossibile caricare gli articoli al momento</span><br>
+      <small>${error.message}</small>
+    `;
+  }
+}
+
+function renderizzaArticoli(posts) {
+  const grid = document.getElementById('blog-grid');
+
+  if (!posts || posts.length === 0) {
+    grid.innerHTML = `
+      <div class="col-12 text-center py-5 text-muted">
+        Nessun articolo disponibile al momento.
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = posts.map(post => {
+    const argomento = (post.argomento || 'Generale').trim();
+    const immagine = post.immagine 
+      ? `<img src="${post.immagine}" class="card-img-top" alt="${post.titolo || 'Articolo DP Cars'}" loading="lazy" style="height:200px; object-fit:cover;">`
+      : `<div class="bg-dark d-flex align-items-center justify-content-center" style="height:200px;">
+           <i class="fas fa-car-side fa-4x text-secondary"></i>
+         </div>`;
+
+    return `
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow bg-dark border-0 text-white overflow-hidden">
+          ${immagine}
+          <div class="card-body d-flex flex-column p-4">
+            <span class="badge bg-danger mb-3 align-self-start">${argomento}</span>
+            <h5 class="card-title mb-3">${post.titolo || 'Titolo non disponibile'}</h5>
+            <p class="card-text flex-grow-1 small opacity-85">
+              ${(post.contenuto || post.descrizione || '').substring(0, 110)}${(post.contenuto || '').length > 110 ? '...' : ''}
+            </p>
+            <small class="text-muted mt-auto">
+              ${post.data ? new Date(post.data).toLocaleDateString('it-IT', {
+                day: 'numeric', month: 'short', year: 'numeric'
+              }) : 'Data non disponibile'}
+            </small>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Gestione click sui filtri
+document.addEventListener('click', function(e) {
+  if (!e.target.classList.contains('filtro-btn')) return;
+
+  // Rimuove active da tutti i pulsanti
+  document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
+  // Aggiunge active al pulsante cliccato
+  e.target.classList.add('active');
+
+  const argomentoFiltro = (e.target.dataset.argomento || '').trim();
+  
+  const articoliFiltrati = argomentoFiltro
+    ? window.tuttiBlog.filter(post => 
+        (post.argomento || '').trim().toLowerCase() === argomentoFiltro.toLowerCase()
+      )
+    : window.tuttiBlog;
+
+  renderizzaArticoli(articoliFiltrati);
+});
+</script>
+
+<!-- QUI INCOLLA IL FORM -->
+<section id="richiedi-form">
+<div class="container">
+<h2 class="text-center mb-4">Richiedi Informazioni o Prenota Appuntamento</h2>
+
+<form id="whatsappForm" class="row g-4 justify-content-center">
+<div class="col-md-6">
+<input id="name" type="text" class="form-control form-control-lg" placeholder="Nome e Cognome *" required>
+</div>
+
+<div class="col-md-6">
+<input id="email" type="email" class="form-control form-control-lg" placeholder="Email *" required>
+</div>
+
+<div class="col-md-6">
+<input id="phone" type="tel" class="form-control form-control-lg" placeholder="Telefono *" required>
+</div>
+
+<div class="col-md-6">
+<select id="reason" class="form-select form-select-lg" required>
+<option value="" disabled selected>Motivo della richiesta *</option>
+<option>Informazioni generali</option>
+<option>Richiesta test drive</option>
+<option>Finanziamento</option>
+<option>Prenotazione appuntamento</option>
+<option>Altro</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<label class="form-label text-white">Data appuntamento</label>
+<input id="date" type="date" class="form-control form-control-lg">
+</div>
+
+<div class="col-md-6">
+<label class="form-label text-white">Ora appuntamento</label>
+<input id="time" type="time" class="form-control form-control-lg">
+</div>
+
+<div class="col-12">
+<textarea id="message" class="form-control form-control-lg" rows="4" placeholder="Messaggio aggiuntivo (opzionale)..."></textarea>
+</div>
+
+<!-- ✅ CONSENSO GDPR OBBLIGATORIO (Art. 7) -->
+<div class="col-12 mt-3 px-3">
+  <div class="form-check ps-0">
+    <input class="form-check-input me-3" type="checkbox" id="privacyOk" name="privacyOk" required>
+    <label class="form-check-label text-light fs-6" for="privacyOk">
+      ✅ Accetto trattamento dati personali per contatto 
+      <a href="privacy.html" target="_blank" class="text-warning fw-bold text-decoration-none">
+        (Privacy Policy)
+      </a>
+    </label>
+    <div class="form-text text-muted small mt-1">
+      Solo per rispondere alla tua richiesta.
+    </div>
+  </div>
+</div>
+
+<div class="col-12 text-center">
+  <button type="submit" class="btn btn-success btn-lg">
+    <i class="fab fa-whatsapp me-2"></i> Invia su WhatsApp
+  </button>
+</div>
+
+</form>
+</div>
+</section>
+
+<!-- ================================
+     CONTATTI SECTION (con mappa)
+================================= -->
+<section id="contact" class="contact-section">
+    <div class="container">
+        <h2 class="text-center">Siamo qui</h2>
+
+        <!-- Google Maps -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+                <div class="map-container" id="map-container">
+                    <div id="map-placeholder" class="alert alert-info text-center p-5 bg-dark text-white border border-secondary rounded-3">
+                        <h4 class="mb-3">Rispettiamo la tua privacy</h4>
+                        <p class="lead mb-4">
+                            La mappa interattiva di Google è bloccata di default.<br>
+                            Accetta i cookie di "Statistiche" per visualizzarla.
+                        </p>
+                        <button id="show-consent-btn" class="btn btn-primary btn-lg px-5">
+                            Gestisci preferenze / Carica mappa
+                        </button>
+                    </div>
+                </div>
+
+                <script>
+                function loadGoogleMaps() {
+                    const container = document.getElementById('map-container');
+                    if (container.querySelector('iframe')) return; // già caricata
+
+                    container.innerHTML = ''; // rimuove placeholder
+
+                    const iframe = document.createElement('iframe');
+                    iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6436197951984!2d14.2973727!3d41.0330522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x133a556893b69169%3A0x878871b151079c02!2sDP%20Cars%20srl!5e0!3m2!1sit!2sit!4v1770720958779!5m2!1sit!2sit";
+                    iframe.width = "100%";
+                    iframe.height = "400";
+                    iframe.style.border = "none";
+                    iframe.allowFullscreen = "";
+                    iframe.loading = "lazy";
+                    iframe.referrerpolicy = "no-referrer-when-downgrade";
+                    iframe.title = "Mappa DP CARS Marcianise";
+                    container.appendChild(iframe);
+                }
+
+               // ✅ MAPPA + SILKTIDE PERFETTA (NO ALERT)
+function checkAndLoadMaps() {
+  const container = document.getElementById('map-container');
+  if (container.querySelector('iframe')) return; // già caricata
+  
+  // Check Silktide consent (sicuro)
+  if (typeof window.silktideConsentManager !== 'undefined' && 
+      window.silktideConsentManager.hasGivenConsent('statistics')) {
+    loadGoogleMaps();
+  } else {
+    // Ritenta dopo 2s (NO alert)
+    setTimeout(checkAndLoadMaps, 2000);
+  }
+}
+
+// ✅ Inizializza dopo DOM + Silktide
+document.addEventListener('DOMContentLoaded', function() {
+  // Check dopo 1.5s (Silktide init)
+  setTimeout(checkAndLoadMaps, 1500);
+  // Safety check 3s
+  setTimeout(checkAndLoadMaps, 3000);
+});
+
+// ✅ Bottone "Gestisci Cookie" 
+document.getElementById('show-consent-btn')?.addEventListener('click', function() {
+  if (typeof window.silktideConsentManager !== 'undefined') {
+    window.silktideConsentManager.show(); // riapre banner
+    setTimeout(checkAndLoadMaps, 1000);   // check dopo preferenze
+  } else {
+    loadGoogleMaps(); // fallback silenzioso
+  }
+});
+document.addEventListener('DOMContentLoaded', function() {
+                });
+                </script>
+            </div>
+        </div>
+
+        <!-- Contact Cards -->
+        <div class="row justify-content-center g-4">
+            <!-- Telefono -->
+            <div class="col-md-4">
+                <div class="card p-4 text-center h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-phone fa-3x text-primary-custom"></i>
+                    </div>
+                    <h4 class="fw-bold">Telefono</h4>
+                    <p class="fs-5 mb-3">333 3330834</p>
+                    <a href="tel:+393333330834" class="btn btn-primary w-100">
+                        Chiama ora
+                    </a>
+                </div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="col-md-4">
+                <div class="card p-4 text-center h-100">
+                    <div class="mb-3">
+                        <i class="fab fa-whatsapp fa-3x" style="color: #25d366;"></i>
+                    </div>
+                    <h4 class="fw-bold">WhatsApp</h4>
+                    <p class="fs-5 mb-3">333 3330834</p>
+                    <a 
+                        href="https://api.whatsapp.com/send?phone=393333330834&text=Ciao%20DP%20CARS,%20vorrei%20informazioni%20su..." 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="btn btn-success w-100"
+                    >
+                        Invia messaggio
+                    </a>
+                </div>
+            </div>
+
+            <!-- Email PEC -->
+            <div class="col-md-4">
+                <div class="card p-4 text-center h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-envelope fa-3x text-primary-custom"></i>
+                    </div>
+                    <h4 class="fw-bold">Email PEC</h4>
+                    <p class="fs-6 mb-2"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c3a7b3a0a2b1b0b0b1af83b3a6a0edaab7">[email&#160;protected]</a></p>
+                    <p class="small text-muted">Per comunicazioni ufficiali</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>   
+
+ <!-- ================================
+         FOOTER
+============================= -->
+<footer class="main-footer bg-light py-4">  <!-- Aggiunto bg-light e py-4 per un look più pulito, opzionale -->
+    <div class="container">
+        <div class="row align-items-center g-3 text-center text-md-start">
+            <!-- Info Azienda -->
+            <div class="col-md-5">
+                <strong>DP CARS Srl</strong><br>
+                Via Roma 43/47, 81025 Marcianise (CE)<br>
+                REA CE-347605 | P.IVA e C.F. 04695310617<br>  <!-- Aggiunto REA, P.IVA e CF – obbligatorio -->
+                <i class="fas fa-phone me-1"></i> 333 333 0834 • 
+                <i class="fas fa-envelope me-1"></i> 
+                <a href="mailto:dpcarssrl@pec.it">dpcarssrl@pec.it</a>  <!-- Usa PEC ufficiale, meglio di info@dpcars.it -->
+            </div>
+
+            <!-- Orari -->
+            <div class="col-md-4">
+                <i class="fas fa-clock me-1"></i>
+                Lun–Ven 09:00–19:00<br>
+                Sab 09:00–13:00 • Dom chiuso
+            </div>
+
+            <!-- Link legali – NUOVA COLONNA o riga dedicata -->
+            <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
+                <small>
+                    <a href="/privacy-policy.html">Privacy Policy</a> • 
+                    <a href="/cookie-policy.html">Cookie Policy</a><br>
+                    Informativa ai sensi dell'art. 13 GDPR
+                </small>
+            </div>
+        </div>
+
+        <!-- Riga extra in basso per copyright e disclaimer (opzionale ma consigliata) -->
+        <div class="row mt-3">
+            <div class="col-12 text-center small text-muted">
+                © 2026 DP CARS S.r.l. – Tutti i diritti riservati | 
+                Concessionaria auto e moto usate a Marcianise (CE)
+            </div>
+        </div>
+    </div>
+</footer>
+ <!-- ================================
+         JAVASCRIPT LIBRARIES
+    ================================ -->
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    
+    <!-- GSAP Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    
+    <!-- AOS Scroll Animation -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ================================
+         INITIALIZE AOS
+    ================================ -->
+    <script>
+        AOS.init({ 
+            duration: 800, 
+            once: true,
+            offset: 100
+        });
+    </script>
+
+ <!-- ================================
+     VUE.JS APPLICATION + WHATSAPP
+================================= -->
+<script>
+  const { createApp } = Vue;
+
+  createApp({
+
+      data() {
+          return {
+              vehicles: [],
+              descrizioniVisibili: [],
+              filters: {
+                  type: 'all',
+                  search: '',
+                  sort: 'price-asc'
+              }
+          };
+      },
+
+      computed: {
+
+          filteredVehicles() {
+              return this.vehicles.filter(vehicle => {
+
+                  const matchType =
+                      this.filters.type === 'all' ||
+                      this.filters.type === vehicle.tipo;
+
+                  const search = this.filters.search.toLowerCase();
+
+                  const matchSearch =
+                      (vehicle.marca || '')
+                          .toLowerCase()
+                          .includes(search) ||
+
+                      (vehicle.modello || '')
+                          .toLowerCase()
+                          .includes(search);
+
+                  return matchType && matchSearch;
+              });
+          },
+
+          sortedVehicles() {
+
+              let sorted = [...this.filteredVehicles];
+
+              switch (this.filters.sort) {
+
+                  case 'price-asc':
+                      sorted.sort((a, b) =>
+                          (a.prezzo || 0) - (b.prezzo || 0));
+                      break;
+
+                  case 'price-desc':
+                      sorted.sort((a, b) =>
+                          (b.prezzo || 0) - (a.prezzo || 0));
+                      break;
+
+                  case 'year-desc':
+                      sorted.sort((a, b) => {
+
+                          const ya =
+                              a.annoImmatricolazione ||
+                              a.anno ||
+                              0;
+
+                          const yb =
+                              b.annoImmatricolazione ||
+                              b.anno ||
+                              0;
+
+                          return yb - ya;
+                      });
+                      break;
+
+                  case 'km-asc':
+                      sorted.sort((a, b) =>
+                          (a.chilometri || 0) -
+                          (b.chilometri || 0));
+                      break;
+              }
+
+              return sorted;
+          }
+      },
+
+      methods: {
+
+          formatMeseAnno(vehicle) {
+
+              const mesi = [
+                  'Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+                  'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'
+              ];
+
+              if (
+                  vehicle.meseImmatricolazione &&
+                  vehicle.annoImmatricolazione
+              ) {
+
+                  return mesi[
+                      vehicle.meseImmatricolazione - 1
+                  ] + ' ' +
+                  vehicle.annoImmatricolazione;
+              }
+
+              return vehicle.annoImmatricolazione ||
+                     vehicle.anno ||
+                     'N/A';
+          },
+
+
+          toggleDescrizione(vehicleId) {
+
+              const idx =
+                  this.descrizioniVisibili.indexOf(vehicleId);
+
+              if (idx > -1)
+                  this.descrizioniVisibili.splice(idx, 1);
+
+              else
+                  this.descrizioniVisibili.push(vehicleId);
+          },
+
+
+          async loadVehicles() {
+
+              try {
+
+                  let res = await fetch('/veicoli');
+
+                  if (!res.ok)
+                      res = await fetch('veicoli.json');
+
+                  if (!res.ok)
+                      throw new Error(`HTTP ${res.status}`);
+
+                  this.vehicles = await res.json();
+
+              }
+              catch (err) {
+
+                  console.error(
+                      'Errore caricamento veicoli:',
+                      err
+                  );
+              }
+          }
+
+      },
+
+      mounted() {
+          this.loadVehicles();
+      }
+
+  }).mount('#app');
+/* ===============================
+   WHATSAPP FORM SCRIPT
+================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("whatsappForm");
+
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const phoneNumber = "393333330834";
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const reason = document.getElementById("reason").value;
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
+        const message = document.getElementById("message").value.trim();
+
+        const appointment =
+            (date || time)
+                ? `📅 Appuntamento: ${date || "-"} ${time || ""}`
+                : "📅 Appuntamento: Non specificato";
+
+        const text =
+`📩 Nuova richiesta DP CARS
+
+👤 Nome: ${name}
+📞 Telefono: ${phone}
+📧 Email: ${email}
+
+📌 Motivo: ${reason}
+${appointment}
+
+📝 Messaggio: ${message || "Nessun messaggio"}`;
+
+        const url =
+            "https://wa.me/" +
+            phoneNumber +
+            "?text=" +
+            encodeURIComponent(text);
+
+        window.open(url, "_blank");
+
+        form.reset();
+
+    });
+
+});
+</script>
+<!-- Aggiungi in index.html, dopo sezione veicoli, prima </body> -->
+<button id="chat-toggle" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#00b3ff;color:white;border:none;width:60px;height:60px;border-radius:50%;cursor:pointer;font-size:16px;box-shadow:0 4px 12px rgba(0,0,0,0.3);">💬</button>
+
+<script>
+let tawkLoaded = false;
+document.getElementById('chat-toggle').addEventListener('click', function() {
+  if (!tawkLoaded) {
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/6995e7286040871c3853a0ee/1jhootu01';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+    tawkLoaded = true;
+    this.style.display = 'none';  // Nascondi dopo load
+    // Callback WhatsApp per lead auto
+    Tawk_API.onChatEnded = function() {
+      window.open('https://wa.me/393333330834?text=' + encodeURIComponent('Ciao, vorrei info su un\'auto dal sito DP Cars.'), '_blank');
+    };
+  }
+});
+// Auto-load su scroll (opzionale, dopo schede veicoli)
+window.addEventListener('scroll', function() {
+  if (!tawkLoaded && window.scrollY > 800) {
+    document.getElementById('chat-toggle').click();
+  }
+}, { once: true });
+</script>
+
+</body>
+</html>
