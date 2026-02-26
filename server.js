@@ -1,6 +1,7 @@
 console.log("SERVER FILE:", __filename);
 
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -11,8 +12,14 @@ const http = require("http");
 const { WebSocketServer } = require("ws");
 
 const app = express();
+
 app.set("trust proxy", 1);
 app.disable("x-powered-by");
+
+
+// ==========================
+// SECURITY
+// ==========================
 
 app.use(
   helmet({
@@ -22,27 +29,40 @@ app.use(
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.FRONTEND_URL || "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
-app.use(express.json());
+
+// ==========================
+// BODY PARSER
+// ==========================
+
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limit
+
+// ==========================
+// RATE LIMIT
+// ==========================
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
+
 app.use(limiter);
 
-/* =========================================================
-   🔐 ADMIN PROTETTO
-   FILE DEVE ESSERE IN /private/admin.html
-========================================================= */
+
+// ==========================
+// ADMIN BASIC AUTH
+// ==========================
 
 app.get("/admin", (req, res) => {
+
   const auth = req.headers.authorization;
 
   if (!auth || !auth.startsWith("Basic ")) {
@@ -68,57 +88,131 @@ app.get("/admin", (req, res) => {
   res.sendFile(
     path.join(__dirname, "private", "admin.html")
   );
+
 });
 
-// 🔧 STATIC FILES CORRETTI
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "dist")));  // ⭐ VUE BUILD
-// Cloudinary
+
+// ==========================
+// STATIC FILES
+// ==========================
+
+// uploads pubblici
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
+
+// frontend statico
+app.use(
+  express.static(path.join(__dirname, "public"))
+);
+
+
+// ==========================
+// CLOUDINARY CONFIG
+// ==========================
+
 require("./cloudinary");
 
-// Routes
+
+// ==========================
+// ROUTES
+// ==========================
+
 app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
 
+
+// ==========================
+// TEST ROUTE
+// ==========================
+
 app.get("/api/test", (req, res) => {
-  res.json({ message: "DP Cars Backend + Cloudinary 🏁" });
+  res.json({
+    message: "DP Cars Backend attivo 🚀"
+  });
 });
 
-// 🔧 SPA FALLBACK CORRETTO
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));  // ⭐ dist/
+
+// ==========================
+// 404 API HANDLER
+// ==========================
+
+app.use("/api", (req, res) => {
+  res.status(404).json({
+    error: "Endpoint API non trovato"
+  });
 });
+
+
+// ==========================
+// GLOBAL ERROR HANDLER
+// ==========================
+
+app.use((err, req, res, next) => {
+
+  console.error("Errore server:", err);
+
+  res.status(500).json({
+    error: "Errore interno server"
+  });
+
+});
+
+
+// ==========================
+// SERVER + WEBSOCKET
+// ==========================
 
 const PORT = process.env.PORT || 3000;
 
 async function start() {
+
   try {
-    if (!process.env.MONGODB_URI) throw new Error("MONGODB_URI mancante");
+
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI mancante");
+    }
 
     await mongoose.connect(process.env.MONGODB_URI);
+
     console.log("✅ MongoDB connesso");
 
     const server = http.createServer(app);
 
     const wss = new WebSocketServer({ server });
+
     wss.on("connection", (ws, req) => {
-      console.log("🟢 WS connesso:", req.url || "/");
+
+      console.log("🟢 WebSocket connesso:", req.socket.remoteAddress);
 
       ws.on("message", (message) => {
         console.log("📨 WS messaggio:", message.toString());
       });
 
-      ws.on("close", () => console.log("🔴 WS disconnesso"));
+      ws.on("close", () => {
+        console.log("🔴 WS disconnesso");
+      });
+
+      ws.on("error", (err) => {
+        console.log("⚠️ WS errore:", err.message);
+      });
+
     });
 
     server.listen(PORT, "0.0.0.0", () => {
-      console.log(`🚀 Server HTTP + WS su porta ${PORT}`);
+      console.log(`🚀 Server avviato su porta ${PORT}`);
     });
-  } catch (err) {
-    console.error("❌ Errore:", err.message);
-    process.exit(1);
+
   }
+  catch (err) {
+
+    console.error("❌ Errore avvio server:", err.message);
+
+    process.exit(1);
+
+  }
+
 }
 
 start();
