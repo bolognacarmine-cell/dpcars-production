@@ -59,7 +59,7 @@ app.get("/admin.html", (req, res) => {
     return res.status(401).send("Credenziali non valide");
   }
 
-  res.sendFile(path.join(__dirname, "public", "admin.html"));
+  res.sendFile(path.join(__dirname, "admin.html"));
 });
 
 // Cloudinary
