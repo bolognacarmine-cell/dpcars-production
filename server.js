@@ -107,6 +107,16 @@ app.use(
   express.static(path.join(__dirname, "public"))
 );
 
+// Rotte prioritarie per i file SEO
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
+});
 
 // ==========================
 // CLOUDINARY CONFIG
