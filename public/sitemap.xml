@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://dpcars-production.onrender.com/</loc>
+    <lastmod>2026-02-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- 
+  Se in futuro hai URL distinti per ogni auto (es. /auto/123 o /veicolo/fiat-panda-abc), 
+  aggiungili qui come nuove <url> 
+  Per ora teniamo semplice perché sembra una SPA con tutto su /
+  -->
+</urlset>
