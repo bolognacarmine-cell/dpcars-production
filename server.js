@@ -169,6 +169,14 @@ app.use((err, req, res, next) => {
 
 });
 
+// ==========================
+// CATCH-ALL PER SPA (molto importante!)
+// Serve index.html per tutti i percorsi non gestiti sopra
+// ==========================
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // ==========================
 // SERVER + WEBSOCKET
