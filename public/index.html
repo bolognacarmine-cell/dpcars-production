@@ -1353,14 +1353,15 @@ function renderizzaArticoli(posts) {
           <div class="card-body d-flex flex-column p-4">
             <span class="badge bg-danger mb-3 align-self-start">${argomento}</span>
             <h5 class="card-title mb-3">${post.titolo || 'Titolo non disponibile'}</h5>
-            <p class="card-text flex-grow-1 small opacity-85">
-              ${(post.contenuto || post.descrizione || '').substring(0, 110)}${(post.contenuto || '').length > 110 ? '...' : ''}
-            </p>
+            <!-- ✅ FIX: FULL contenuto (no substring) -->
+            <div class="card-text-full flex-grow-1 small opacity-85">${post.contenuto.replace(/\n/g, '<br>')}</div>
             <small class="text-muted mt-auto">
               ${post.data ? new Date(post.data).toLocaleDateString('it-IT', {
                 day: 'numeric', month: 'short', year: 'numeric'
               }) : 'Data non disponibile'}
             </small>
+            <!-- Link a pagina full -->
+            <a href="/blog.html#${post.slug}" class="btn btn-outline-danger btn-sm mt-2">Articolo completo</a>
           </div>
         </div>
       </div>

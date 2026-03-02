@@ -424,7 +424,7 @@ a {
 }
 
 /* =========================================================
-   BLOG
+   BLOG - FIX COMPLETO
 ========================================================= */
 .blog-grid {
   display: flex;
@@ -437,8 +437,12 @@ a {
   max-width: 350px;
   background: var(--surface-card);
   border-radius: 16px;
-  overflow: hidden;
+  /* ✅ FIX: overflow visible per contenuto full */
+  overflow: visible;
   transition: all 0.4s;
+  /* ✅ Altezza dinamica */
+  height: auto;
+  min-height: 500px;
 }
 
 .blog-card:hover {
@@ -453,6 +457,17 @@ a {
 
 .blog-content {
   padding: 1.5rem;
+  /* ✅ Contenuto full */
+  height: auto;
+}
+
+/* ✅ NUOVO: Classe per testo full */
+.blog-text-full {
+  white-space: pre-line !important;
+  overflow: visible !important;
+  line-height: 1.6;
+  max-height: none !important;
+  margin-bottom: 1rem;
 }
 
 /* =========================================================
