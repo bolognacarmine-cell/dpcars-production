@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog Autorivendita</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
+    div { margin-bottom: 40px; }
+    h2 { color: #e74c3c; }
+    img { max-width: 100%; height: auto; border-radius: 8px; }
+    .contenuto-full { 
+      white-space: pre-line;  /* ✅ Preserva \n come <br> */
+      line-height: 1.6; 
+      overflow: visible;
+    }
+    .meta { color: #666; font-size: 14px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <h1>Blog Autorivendita DP CARS</h1>
+  <div id="blog-container"></div>
+
+  <script>
+    fetch('/api/blog')
+      .then(res => res.json())
+      .then(articles => {
+        const container = document.getElementById('blog-container');
+        articles.forEach(article => {
+          const div = document.createElement('div');
+          div.style.border = '1px solid #eee';
+          div.style.padding = '20px';
+          div.style.borderRadius = '8px';
+          div.style.marginBottom = '40px';
+
+          // Titolo
+          const h2 = document.createElement('h2');
+          h2.textContent = article.titolo;
+          div.appendChild(h2);
+
+          // META (argomento + data)
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.textContent = `${article.argomento} | ${new Date(article.data).toLocaleDateString('it-IT')}`;
+          div.appendChild(meta);
+
+          // Immagine ✅ FIX: immagine diretta (non .url)
+          if (article.immagine) {
+            const img = document.createElement('img');
+            img.src = article.immagine;  // ← DIRETTO, non .url!
+            img.alt = article.titolo;
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+            div.appendChild(img);
+          }
+
+          // Contenuto COMPLETO ✅ FIX: replace \n
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'contenuto-full';
+          contentDiv.innerHTML = article.contenuto.replace(/\n/g, '<br>');  // ← FULL!
+          div.appendChild(contentDiv);
+
+          container.appendChild(div);
+        });
+      })
+      .catch(err => console.error('Errore:', err));
+  </script>
+</body>
+</html>
