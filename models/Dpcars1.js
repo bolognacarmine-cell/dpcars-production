@@ -16,27 +16,24 @@ const dpcarsSchema = new mongoose.Schema({
   anteprima: {
     type: String,
     required: true,
-    maxlength: 160  // breve, per la card
+    maxlength: 160  // limite ragionevole per la card
   },
   contenuto: {
     type: String,
     required: true  // testo completo, può contenere HTML
   },
-  icona: {          // opzionale: nome icona Bootstrap Icons / Font Awesome
+  icona: {
     type: String,
-    default: 'shield-check'
+    default: 'shield-check'  // default sensato per Bootstrap Icons
   },
   ordine: {
     type: Number,
     default: 999,
     min: 1
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
 }, {
-  timestamps: true  // aggiunge updatedAt automaticamente
+  timestamps: true  // aggiunge automaticamente createdAt e updatedAt
 });
 
-module.exports = mongoose.model('Dpcars', dpcarsSchema);
+// Rinominiamo il modello in 'Dpcars1' per coerenza con il file routes/dpcars1.js
+module.exports = mongoose.model('Dpcars1', dpcarsSchema);

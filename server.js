@@ -123,7 +123,7 @@ require("./cloudinary");
 
 app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
-app.use("/api/dpcars", require("./routes/dpcars"));   // ← Aggiunta corretta qui
+app.use("/api/dpcars", require("./routes/dpcars1"));   // ← Aggiunta corretta qui
 
 // ==========================
 // TEST ROUTE

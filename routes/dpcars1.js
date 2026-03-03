@@ -1,12 +1,12 @@
-// routes/dpcars.js
+// routes/dpcars1.js
 const express = require('express');
 const router = express.Router();
-const Dpcars = require('../models/Dpcars');  // importa il modello che hai appena creato
+const Dpcars1 = require('../models/Dpcars1');  // importa il modello che hai appena creato
 
 // GET - Recupera tutte le card (solo campi necessari per la visualizzazione in homepage)
 router.get('/', async (req, res) => {
   try {
-    const vantaggi = await Dpcars.find()
+    const vantaggi = await Dpcars1.find()
       .select('slug titolo anteprima icona ordine')   // campi leggeri, no contenuto lungo
       .sort({ ordine: 1 })                             // ordine che hai definito
       .lean();                                         // più veloce, restituisce plain objects
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 // GET - Singolo vantaggio/articolo per slug (per la pagina di dettaglio)
 router.get('/:slug', async (req, res) => {
   try {
-    const vantaggio = await Dpcars.findOne({ slug: req.params.slug }).lean();
+    const vantaggio = await Dpcars1.findOne({ slug: req.params.slug }).lean();
 
     if (!vantaggio) {
       return res.status(404).json({ success: false, message: 'Vantaggio non trovato' });
