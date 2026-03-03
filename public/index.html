@@ -1330,43 +1330,41 @@ function renderizzaArticoli(posts) {
   const grid = document.getElementById('blog-grid');
 
   if (!posts || posts.length === 0) {
-    grid.innerHTML = `
-      <div class="col-12 text-center py-5 text-muted">
-        Nessun articolo disponibile al momento.
-      </div>
-    `;
+    grid.innerHTML = `<div class="col-12 text-center py-5 text-muted">Nessun articolo disponibile al momento.</div>`;
     return;
   }
 
   grid.innerHTML = posts.map(post => {
     const argomento = (post.argomento || 'Generale').trim();
     const immagine = post.immagine 
-      ? `<img src="${post.immagine}" class="card-img-top" alt="${post.titolo || 'Articolo DP Cars'}" loading="lazy" style="height:200px; object-fit:cover;">`
-      : `<div class="bg-dark d-flex align-items-center justify-content-center" style="height:200px;">
-           <i class="fas fa-car-side fa-4x text-secondary"></i>
-         </div>`;
+      ? `<img src="${post.immagine}" class="card-img-top" alt="${post.titolo}" loading="lazy" style="height:200px; object-fit:cover;">`
+      : `<div class="bg-dark d-flex align-items-center justify-content-center" style="height:200px;"><i class="fas fa-car-side fa-4x text-secondary"></i></div>`;
 
+    // ✅ PREVIEW INTELLIGENTE: Taglia frase finita (max 180 char)
+    const preview = post.contenuto 
+      ? post.contenuto.substring(0, 180).trim() + '...'
+      : 'Articolo senza descrizione.';
+    
     return `
-      <div class="col-lg-4 col-md-6">
-        <div class="card h-100 shadow bg-dark border-0 text-white overflow-hidden">
+      <div class="col-lg-4 col-md-6" onclick="apriArticolo('${post.slug}')" style="cursor:pointer;">
+        <div class="card h-100 shadow bg-dark border-0 text-white overflow-hidden blog-card-hover">
           ${immagine}
           <div class="card-body d-flex flex-column p-4">
             <span class="badge bg-danger mb-3 align-self-start">${argomento}</span>
-            <h5 class="card-title mb-3">${post.titolo || 'Titolo non disponibile'}</h5>
-            <!-- ✅ FIX: FULL contenuto (no substring) -->
-            <div class="card-text-full flex-grow-1 small opacity-85">${post.contenuto.replace(/\n/g, '<br>')}</div>
-            <small class="text-muted mt-auto">
-              ${post.data ? new Date(post.data).toLocaleDateString('it-IT', {
-                day: 'numeric', month: 'short', year: 'numeric'
-              }) : 'Data non disponibile'}
-            </small>
-            <!-- Link a pagina full -->
-            <a href="/blog.html#${post.slug}" class="btn btn-outline-danger btn-sm mt-2">Articolo completo</a>
+            <h5 class="card-title mb-3">${post.titolo}</h5>
+            <p class="card-text-preview small opacity-85 flex-grow-1">${preview}</p>
+            <small class="text-muted mt-auto">${new Date(post.data).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'})}</small>
+            <button class="btn btn-outline-danger btn-sm mt-2 w-100">Leggi tutto l'articolo</button>
           </div>
         </div>
       </div>
     `;
   }).join('');
+}
+
+// ✅ FUNZIONE CLICK → Full articolo
+function apriArticolo(slug) {
+  window.open(`/blog.html?slug=${slug}`, '_blank');
 }
 
 // Gestione click sui filtri
