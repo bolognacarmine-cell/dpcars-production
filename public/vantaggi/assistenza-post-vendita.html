@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistenza Post-Vendita - DP CARS</title>
+    <!-- Includi qui i tuoi link CSS, font, meta tags, favicon, ecc. -->
+    <!-- Esempio: -->
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+</head>
+<body>
+
+    <!-- Il tuo header/nav qui se lo hai separato -->
+    <!-- <header>...</header> -->
+
+    <section class="container py-5">
+        <h1>Assistenza Post-Vendita</h1>
+        <div id="vantaggio-contenuto" class="vantaggio-dettaglio">
+            Caricamento contenuto...
+        </div>
+        <a href="/" class="btn btn-primary mt-4">Torna alla home</a>
+    </section>
+
+    <!-- Il tuo footer qui se lo hai separato -->
+    <!-- <footer>...</footer> -->
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contenuto = document.getElementById('vantaggio-contenuto');
+
+        // Slug fisso per questa pagina
+        const slug = 'assistenza-post-vendita';
+
+        fetch(`/api/dpcars/${slug}`)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Contenuto non trovato');
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.contenuto) {
+                    contenuto.innerHTML = data.contenuto;
+                } else {
+                    contenuto.innerHTML = '<p class="text-center py-4">Contenuto non disponibile.</p>';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                contenuto.innerHTML = '<p class="text-danger text-center py-4">Errore durante il caricamento del contenuto.</p>';
+            });
+    });
+    </script>
+
+</body>
+</html>
