@@ -182,8 +182,8 @@ app.use((err, req, res, next) => {
 
 });
 
-// ✅ Catch-all SPA FIXATO - NON rompe API routes
-app.get('*', (req, res) => {
+
+app.get("/{*path}", (req, res) => {
   if (!req.path.match(/^\/(api|admin|uploads|veicoli|robots\.txt|sitemap\.xml)/) && 
       !req.path.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|xml|txt)$/)) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
