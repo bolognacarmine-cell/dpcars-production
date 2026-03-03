@@ -132,23 +132,17 @@ require("./cloudinary");
 app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
 
-// SOSTITUISCI SOLO la route dpcars con questa (NO model esterno)
+// 👇 AGGIUNGI QUI LA NUOVA ROUTE DPCARS (prima del test route)
 app.get("/api/dpcars/:argomento", async (req, res) => {
   try {
     const { argomento } = req.params;
+    const Dpcars = mongoose.model('Dpcars') || require('./models/Dpcars'); // Adatta al tuo schema
     
-    // Schema temporaneo DIRETTAMENTE nella route
-    const DpcarsTemp = mongoose.model('DpcarsTemp', new mongoose.Schema({
-      argomento: String,
-      titolo: String,
-      testo: String
-    }));
-    
-    const dati = await DpcarsTemp.find({ argomento }).lean();
+    const dati = await Dpcars.find({ argomento: argomento }).lean();
     res.json(dati);
   } catch (error) {
-    console.error('Dpcars error:', error);
-    res.status(500).json({ error: 'DB error' });
+    console.error('Errore dpcars:', error);
+    res.status(500).json({ error: 'Errore recupero dati' });
   }
 });
 
