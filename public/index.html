@@ -1962,27 +1962,25 @@ document.addEventListener('DOMContentLoaded', function () {
             // Ordina per il campo "ordine" (se esiste)
             data.sort((a, b) => (a.ordine || 999) - (b.ordine || 999));
 
-            let html = '';
+        let html = '';
+        data.forEach(item => {
+        const icona = item.icona || 'shield-check';
+        const slug = item.slug || '';
+        const href = slug ? `/vantaggi/${slug}.html` : '#';  // crea pagine come vantaggi/qualita-garantita.html
 
-            data.forEach(item => {
-                const icona = item.icona || 'shield-check'; // fallback se manca
-                const slug = item.slug || '';
-                const link = slug ? `/vantaggi/${slug}` : '#'; // cambia path se preferisci
-
-                html += `
-                    <a href="${link}" class="vantaggio-card-link">
-                        <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
-                            <div class="vantaggio-icon">
-                                <i class="fas fa-${icona}"></i>
-                            </div>
-                            <h3>${item.titolo || 'Titolo mancante'}</h3>
-                            <p>${item.anteprima || 'Descrizione non disponibile'}</p>
-                        </div>
-                    </a>
-                `;
-            });
-
-            grid.innerHTML = html;
+        html += `
+          <a href="${href}" class="vantaggio-card-link">
+           <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="vantaggio-icon">
+              <i class="fas fa-${icona}"></i>
+           </div>
+        <h3>${item.titolo || 'Titolo mancante'}</h3>
+        <p>${item.anteprima || 'Descrizione non disponibile'}</p>
+      </div>
+    </a>
+  `;
+});
+grid.innerHTML = html;  
         })
         .catch(error => {
             console.error('Errore nel caricamento dei vantaggi:', error);
