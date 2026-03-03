@@ -1131,12 +1131,58 @@ window.silktideConsentManagerConfig = {
             Perché scegliere <span class="hero-accent">DP CARS</span>
         </h2>
         <div class="vantaggi-grid" id="vantaggi-grid">
+            <!-- Loading iniziale (rimosso dal JS quando arrivano i dati) -->
             <div class="text-center py-4" id="vantaggi-loading">
                 Caricamento vantaggi...
             </div>
+
+            <!-- Card di fallback / esempio (visibili finché il JS non sovrascrive) -->
+            <!-- Vantaggio 1 -->
+            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="vantaggio-icon">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+                <h3>Qualità Garantita</h3>
+                <p>Controlli rigorosi prima di entrare in showroom.</p>
+            </div>
+
+            <!-- Vantaggio 2 -->
+            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="vantaggio-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3>Finanziamenti</h3>
+                <p>Soluzioni personalizzate direttamente in sede.</p>
+            </div>
+
+            <!-- Vantaggio 3 -->
+            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="vantaggio-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Assistenza Post-Vendita</h3>
+                <p>Supporto continuo anche dopo l'acquisto.</p>
+            </div>
         </div>
     </div>
-</section>   
+</section>
+
+    <!-- ================================
+         CHI SIAMO SECTION
+    ================================ -->
+    <section id="chi-siamo" class="text-center">
+        <div class="container">
+            <h2 data-aos="fade-up">Chi siamo</h2>
+            <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+                <p class="lead">
+                    DP CARS è una concessionaria di auto e moto a Marcianise, 
+                    con decenni di esperienza, passione e trasparenza. 
+                    Offriamo solo veicoli controllati e selezionati.
+                </p>
+            </div>
+        </div>
+    </section>
+
 
     <!-- ================================
          CHI SIAMO SECTION
