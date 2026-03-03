@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <!-- tuo <head> con meta, title, css link, etc. -->
+    <title>Qualità Garantita - DP CARS</title>
+</head>
+<body>
+    <!-- tuo header/nav -->
+
+    <section class="container py-5">
+        <h1>Qualità Garantita</h1>
+        <div id="vantaggio-contenuto" class="vantaggio-dettaglio">
+            Caricamento contenuto...
+        </div>
+        <a href="/" class="btn btn-primary mt-4">Torna alla home</a>
+    </section>
+
+    <!-- tuo footer -->
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contenuto = document.getElementById('vantaggio-contenuto');
+
+        // slug dal filename o URL
+        const slug = 'qualita-garantita'; // cambia per ogni file
+
+        fetch(`/api/dpcars/${slug}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Non trovato');
+                return res.json();
+            })
+            .then(data => {
+                if (data.contenuto) {
+                    contenuto.innerHTML = data.contenuto;
+                } else {
+                    contenuto.innerHTML = '<p>Contenuto non disponibile.</p>';
+                }
+            })
+            .catch(() => {
+                contenuto.innerHTML = '<p class="text-danger">Errore caricamento contenuto.</p>';
+            });
+    });
+    </script>
+</body>
+</html>
