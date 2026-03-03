@@ -132,17 +132,23 @@ require("./cloudinary");
 app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
 
-// 👇 AGGIUNGI QUI LA NUOVA ROUTE DPCARS (prima del test route)
+// SOSTITUISCI SOLO la route dpcars con questa (NO model esterno)
 app.get("/api/dpcars/:argomento", async (req, res) => {
   try {
     const { argomento } = req.params;
-    const Dpcars = mongoose.model('Dpcars') || require('./models/Dpcars'); // Adatta al tuo schema
     
-    const dati = await Dpcars.find({ argomento: argomento }).lean();
+    // Schema temporaneo DIRETTAMENTE nella route
+    const DpcarsTemp = mongoose.model('DpcarsTemp', new mongoose.Schema({
+      argomento: String,
+      titolo: String,
+      testo: String
+    }));
+    
+    const dati = await DpcarsTemp.find({ argomento }).lean();
     res.json(dati);
   } catch (error) {
-    console.error('Errore dpcars:', error);
-    res.status(500).json({ error: 'Errore recupero dati' });
+    console.error('Dpcars error:', error);
+    res.status(500).json({ error: 'DB error' });
   }
 });
 
@@ -182,9 +188,14 @@ app.use((err, req, res, next) => {
 
 });
 
-// Catch-all per SPA – FIX per Express v5
-app.get('{*path}', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// ✅ Catch-all SPA FIXATO - NON rompe API routes
+app.get('*', (req, res) => {
+  if (!req.path.match(/^\/(api|admin|uploads|veicoli|robots\.txt|sitemap\.xml)/) && 
+      !req.path.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|xml|txt)$/)) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  } else {
+    res.status(404).json({ error: 'Risorsa non trovata' });
+  }
 });
 
 // ==========================
