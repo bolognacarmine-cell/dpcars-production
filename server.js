@@ -125,22 +125,25 @@ app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
 app.use("/api/dpcars", require("./routes/dpcars1"));   // ← Aggiunta corretta qui
 
-// ✅ Route HTML per pagine articoli vantaggi (AGGIUNGI QUI)
+// 🔥 VERSIONE PREMIUM - Pagina articolo migliorata
 app.get('/vantaggi/:slug', async (req, res) => {
     try {
         const { slug } = req.params;
-        
-       const Dpcars1 = mongoose.model('Dpcars1'); // Più sicuro
- 
+        const Dpcars1 = mongoose.model('Dpcars1');
         
         const articolo = await Dpcars1.findOne({ slug }).lean();
 
         if (!articolo) {
             return res.status(404).send(`
-                <div class="container mt-5 p-5 text-center text-white bg-dark rounded">
-                    <h1 class="display-1">404</h1>
-                    <h2>Vantaggio non trovato</h2>
-                    <a href="/" class="btn btn-primary btn-lg mt-3">← Torna alla home</a>
+                <div class="vh-100 d-flex align-items-center justify-content-center bg-dark text-white">
+                    <div class="text-center p-5">
+                        <i class="fas fa-search fa-5x mb-4 opacity-50"></i>
+                        <h1 class="display-1 fw-bold mb-3">404</h1>
+                        <h2 class="fs-2 mb-4">Vantaggio non trovato</h2>
+                        <a href="/" class="btn btn-primary btn-lg px-5 py-3">
+                            <i class="fas fa-home me-2"></i>Torna alla home
+                        </a>
+                    </div>
                 </div>
             `);
         }
@@ -151,69 +154,125 @@ app.get('/vantaggi/:slug', async (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${articolo.titolo} | DP CARS</title>
+    <title>${articolo.titolo} | DP CARS Marcianise</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; }
-        .navbar-brand img { height: 45px; }
-        .hero-image { max-height: 500px; object-fit: cover; }
+        :root {
+            --primary: #e11d48;
+            --dark: #0a0a0a;
+            --dark2: #111;
+            --glass: rgba(255,255,255,0.05);
+        }
+        * { font-family: 'Inter', sans-serif; }
+        body { 
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a1a 100%);
+            color: #fff; 
+            overflow-x: hidden;
+        }
+        .navbar { backdrop-filter: blur(20px); background: rgba(10,10,10,0.95); }
+        .hero-section { min-height: 60vh; display: flex; align-items: center; }
+        .article-card { 
+            background: linear-gradient(145deg, var(--dark2), var(--dark));
+            backdrop-filter: blur(20px); border: 1px solid var(--glass);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        .icon-hero { 
+            background: linear-gradient(135deg, var(--primary), #ff4569);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .content-html { line-height: 1.8; }
+        .content-html h2 { color: var(--primary); font-weight: 700; }
+        .content-html h3 { color: #fff; }
+        .btn-cta { 
+            background: linear-gradient(135deg, var(--primary), #ff4569);
+            border: none; font-weight: 600; box-shadow: 0 10px 30px rgba(225,29,72,0.4);
+        }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(225,29,72,0.6); }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top py-2">
+    <!-- NAVBAR PREMIUM -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top py-3">
         <div class="container">
-            <a href="/" class="navbar-brand d-flex align-items-center">
-                <img src="/logo-og.jpg" alt="DP CARS" class="me-3">
-                <span class="fw-bold fs-3">DP CARS</span>
+            <a href="/" class="navbar-brand d-flex align-items-center text-white">
+                <img src="/logo-og.jpg" alt="DP CARS" class="rounded me-3" style="height:50px; border:2px solid rgba(225,29,72,0.5);">
+                <div>
+                    <div class="fw-bold fs-3 lh-1">DP CARS</div>
+                    <small class="text-muted">Marcianise (CE)</small>
+                </div>
             </a>
-            <a href="/" class="btn btn-outline-light px-4">
-                <i class="fas fa-arrow-left me-2"></i>Torna ai vantaggi
+            <a href="/" class="btn btn-outline-light px-4 py-2 rounded-pill">
+                <i class="fas fa-arrow-left me-2"></i>Vantaggi
             </a>
         </div>
     </nav>
 
-    <div class="container-fluid mt-5 pt-5 min-vh-100">
-        <div class="row justify-content-center">
-            <div class="col-lg-9 col-xl-8">
-                <!-- Titolo -->
-                <header class="text-center mb-5">
-                    <h1 class="display-3 fw-bold mb-0">${articolo.titolo}</h1>
-                    <div class="vantaggio-icon fs-1 text-primary mt-4 mb-4">
-                        <i class="fas fa-${articolo.icona || 'star'}"></i>
+    <!-- HERO SECTION -->
+    <section class="hero-section pt-5 mt-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <div class="icon-hero mb-4">
+                        <i class="fas fa-${articolo.icona || 'star'} fa-6x"></i>
                     </div>
-                </header>
-
-                <!-- Immagine (se presente) -->
-                ${articolo.immagine ? 
-                    `<div class="text-center mb-5">
-                        <img src="${articolo.immagine.replace('/upload/', '/upload/f_auto,q_auto,w_1000,c_scale/')}" 
-                             alt="${articolo.titolo}" 
-                             class="img-fluid rounded-4 shadow-lg hero-image">
-                    </div>` : ''}
-
-                <!-- Contenuto principale -->
-                <article class="bg-black p-5 rounded-4 shadow-lg">
-                    <div class="fs-4 lh-lg">${articolo.contenuto || articolo.descrizione || articolo.anteprima}</div>
-                </article>
-
-                <!-- CTA finale -->
-                <div class="text-center mt-5">
-                    <a href="/" class="btn btn-primary btn-lg px-5 py-3">
-                        <i class="fas fa-rocket me-2"></i>Scopri tutti i vantaggi
-                    </a>
+                    <h1 class="display-2 fw-800 mb-4 lh-1" style="text-shadow: 0 0 40px rgba(225,29,72,0.6);">
+                        ${articolo.titolo}
+                    </h1>
+                    <p class="lead fs-4 opacity-90 mb-0">${articolo.anteprima}</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- ARTICOLO PRINCIPALE -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-9">
+                    <!-- IMMAGINE COPERTINA -->
+                    ${articolo.immagine ? `
+                    <div class="text-center mb-5">
+                        <img src="${articolo.immagine.replace('/upload/', '/upload/f_auto,q_auto,w_1200,c_scale/')}" 
+                             alt="${articolo.titolo}" 
+                             class="img-fluid rounded-4 shadow-lg" 
+                             style="max-height:500px; width:100%; object-fit:cover;">
+                    </div>
+                    ` : ''}
+
+                    <!-- CONTENT CARD PREMIUM -->
+                    <article class="article-card p-5 p-lg-7 rounded-5">
+                        <div class="content-html">${articolo.contenuto}</div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINALE -->
+    <section class="py-5 bg-dark">
+        <div class="container text-center">
+            <h2 class="fs-1 fw-bold mb-4" style="color: var(--primary);">Pronto a scoprire di più?</h2>
+            <div class="d-flex flex-column flex-lg-row gap-3 justify-content-center">
+                <a href="/" class="btn btn-cta btn-lg px-5 py-3">
+                    <i class="fas fa-thumbs-up me-2"></i>Tutti i vantaggi
+                </a>
+                <a href="#contact" class="btn btn-outline-light btn-lg px-5 py-3">
+                    <i class="fas fa-phone me-2"></i>Contattaci ora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
         `);
     } catch (error) {
-        console.error('Errore pagina vantaggi:', error);
+        console.error('Errore vantaggi:', error);
         res.status(500).send('Errore server');
     }
 });
