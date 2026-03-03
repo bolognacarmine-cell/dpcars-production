@@ -132,6 +132,19 @@ require("./cloudinary");
 app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
 
+// 👇 AGGIUNGI QUI LA NUOVA ROUTE DPCARS (prima del test route)
+app.get("/api/dpcars/:argomento", async (req, res) => {
+  try {
+    const { argomento } = req.params;
+    const Dpcars = mongoose.model('Dpcars') || require('./models/Dpcars'); // Adatta al tuo schema
+    
+    const dati = await Dpcars.find({ argomento: argomento }).lean();
+    res.json(dati);
+  } catch (error) {
+    console.error('Errore dpcars:', error);
+    res.status(500).json({ error: 'Errore recupero dati' });
+  }
+});
 
 // ==========================
 // TEST ROUTE
