@@ -251,23 +251,42 @@ app.get('/vantaggi/:slug', async (req, res) => {
         </div>
     </section>
 
-    <!-- CTA FINALE -->
-    <section class="py-5 bg-dark">
-        <div class="container text-center">
-            <h2 class="fs-1 fw-bold mb-4" style="color: var(--primary);">Pronto a scoprire di più?</h2>
-            <div class="d-flex flex-column flex-lg-row gap-3 justify-content-center">
-                <a href="/" class="btn btn-cta btn-lg px-5 py-3">
-                    <i class="fas fa-thumbs-up me-2"></i>Tutti i vantaggi
-                </a>
-                <a href="#contact" class="btn btn-outline-light btn-lg px-5 py-3">
-                    <i class="fas fa-phone me-2"></i>Contattaci ora
-                </a>
+    <!-- 🔥 CTA PREMIUM CON WHATSAPP -->
+<section class="py-5" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);">
+    <div class="container text-center py-5">
+        <h2 class="display-5 fw-bold mb-4" style="color: #e11d48; text-shadow: 0 0 30px rgba(225,29,72,0.5);">
+            Pronto per la tua prossima auto?
+        </h2>
+        <p class="lead fs-4 opacity-90 mb-5 pb-4">Scopri tutti i nostri vantaggi o scrivici su WhatsApp!</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex flex-column flex-lg-row gap-3 justify-content-center">
+                    <!-- SCROLL AI VANTAGGI -->
+                    <a href="/#vantaggi-grid" class="btn btn-primary btn-lg px-5 py-3 shadow-lg fs-5" style="
+                        background: linear-gradient(135deg, #e11d48, #ff4569) !important;
+                        border: none; font-weight: 600;
+                        box-shadow: 0 15px 35px rgba(225,29,72,0.4);
+                    ">
+                        <i class="fas fa-thumbs-up me-2"></i>Tutti i Vantaggi
+                    </a>
+                    
+                    <!-- WHATSAPP PERSONALIZZATO -->
+                    <a href="https://wa.me/393333330834?text=Ciao%20DP%20CARS!%20Mi%20interessa%20${encodeURIComponent(articolo.titolo)}%20%F0%9F%9A%97%0AVorrei%20maggiori%20informazioni!" 
+                       class="btn btn-success btn-lg px-5 py-3 shadow-lg fs-5" target="_blank" style="
+                        background: linear-gradient(135deg, #25D366, #128C7E) !important;
+                        border: none; font-weight: 600;
+                        box-shadow: 0 15px 35px rgba(37,211,102,0.4);
+                    ">
+                        <i class="fab fa-whatsapp me-2"></i>WhatsApp Ora
+                    </a>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
         `);
