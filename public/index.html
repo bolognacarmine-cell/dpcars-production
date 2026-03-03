@@ -1123,7 +1123,11 @@ window.silktideConsentManagerConfig = {
     </main>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!-- ================================
+=======
+ <!-- ================================
+>>>>>>> d0f96d41968d0f3a838e0c00fc738d177870e1a3
 =======
  <!-- ================================
 >>>>>>> d0f96d41968d0f3a838e0c00fc738d177870e1a3
@@ -1136,9 +1140,60 @@ window.silktideConsentManagerConfig = {
         </h2>
         <div class="vantaggi-grid" id="vantaggi-grid">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <!-- Solo il loading – il JS inserirà le 3 card -->
             <div class="text-center py-4" id="vantaggi-loading">
                 Caricamento vantaggi...
+=======
+            <!-- Loading iniziale (rimosso dal JS quando arrivano i dati) -->
+            <div class="text-center py-4" id="vantaggi-loading">
+                Caricamento vantaggi...
+            </div>
+
+            <!-- Card di fallback / esempio (visibili finché il JS non sovrascrive) -->
+            <!-- Vantaggio 1 -->
+            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="vantaggio-icon">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+                <h3>Qualità Garantita</h3>
+                <p>Controlli rigorosi prima di entrare in showroom.</p>
+            </div>
+
+            <!-- Vantaggio 2 -->
+            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="vantaggio-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3>Finanziamenti</h3>
+                <p>Soluzioni personalizzate direttamente in sede.</p>
+            </div>
+
+            <!-- Vantaggio 3 -->
+            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="vantaggio-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Assistenza Post-Vendita</h3>
+                <p>Supporto continuo anche dopo l'acquisto.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- ================================
+         CHI SIAMO SECTION
+    ================================ -->
+    <section id="chi-siamo" class="text-center">
+        <div class="container">
+            <h2 data-aos="fade-up">Chi siamo</h2>
+            <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+                <p class="lead">
+                    DP CARS è una concessionaria di auto e moto a Marcianise, 
+                    con decenni di esperienza, passione e trasparenza. 
+                    Offriamo solo veicoli controllati e selezionati.
+                </p>
+>>>>>>> d0f96d41968d0f3a838e0c00fc738d177870e1a3
             </div>
 =======
             <!-- Loading iniziale (rimosso dal JS quando arrivano i dati) -->
@@ -1177,6 +1232,7 @@ window.silktideConsentManagerConfig = {
         </div>
     </div>
 </section>
+
 
     <!-- ================================
          CHI SIAMO SECTION
@@ -1962,6 +2018,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Ordina per il campo "ordine" (se esiste)
             data.sort((a, b) => (a.ordine || 999) - (b.ordine || 999));
 
+<<<<<<< HEAD
         let html = '';
         data.forEach(item => {
         const icona = item.icona || 'shield-check';
@@ -1981,6 +2038,29 @@ document.addEventListener('DOMContentLoaded', function () {
   `;
 });
 grid.innerHTML = html;  
+=======
+            let html = '';
+
+            data.forEach(item => {
+                const icona = item.icona || 'shield-check'; // fallback se manca
+                const slug = item.slug || '';
+                const link = slug ? `/vantaggi/${slug}` : '#'; // cambia path se preferisci
+
+                html += `
+                    <a href="${link}" class="vantaggio-card-link">
+                        <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="vantaggio-icon">
+                                <i class="fas fa-${icona}"></i>
+                            </div>
+                            <h3>${item.titolo || 'Titolo mancante'}</h3>
+                            <p>${item.anteprima || 'Descrizione non disponibile'}</p>
+                        </div>
+                    </a>
+                `;
+            });
+
+            grid.innerHTML = html;
+>>>>>>> d0f96d41968d0f3a838e0c00fc738d177870e1a3
         })
         .catch(error => {
             console.error('Errore nel caricamento dei vantaggi:', error);
@@ -1994,7 +2074,11 @@ grid.innerHTML = html;
 </script>
 </body>
 <<<<<<< HEAD
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> d0f96d41968d0f3a838e0c00fc738d177870e1a3
 =======
 </html>
 >>>>>>> d0f96d41968d0f3a838e0c00fc738d177870e1a3
