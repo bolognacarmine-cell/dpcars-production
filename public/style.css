@@ -635,3 +635,13 @@ a {
 .vantaggio-card:first-child:hover .vantaggio-icon i {
     transform: scale(1.2);
 }
+.vantaggio-card:first-child .vantaggio-icon i {
+    font-size: 48px; /* larghezza/altezza in pixel */
+    color: #ffbb00;  /* colore dorato per evidenziare */
+    transition: transform 0.3s ease;
+}
+
+/* Piccolo effetto hover per ingrandire leggermente */
+.vantaggio-card:first-child:hover .vantaggio-icon i {
+    transform: scale(1.1);
+}
