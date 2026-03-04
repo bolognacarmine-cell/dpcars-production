@@ -624,4 +624,14 @@ a {
 .vantaggio-icon {
     margin-bottom: 0.7rem;
 }
+/* Icona prima card dorata */
+.vantaggio-card:first-child .vantaggio-icon i {
+    color: #ffbb00; /* oro brillante */
+    font-size: 3.2rem;
+    transition: transform 0.3s ease;
+}
 
+/* Piccolo effetto hover per far risaltare la card */
+.vantaggio-card:first-child:hover .vantaggio-icon i {
+    transform: scale(1.2);
+}
