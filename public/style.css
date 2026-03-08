@@ -645,3 +645,24 @@ a {
 .vantaggio-card:first-child:hover .vantaggio-icon i {
     transform: scale(1.1);
 }
+.hero {
+  position: relative; /* Per overlay */
+  height: 100vh; overflow: hidden;
+}
+
+.hero-video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; align-items: flex-start; justify-content: flex-start; /* Angolo top-left */
+  padding: 20px;
+  pointer-events: none; /* Non blocca interazioni */
+}
+
+.hero-logo {
+  max-height: 80px; /* Adatta al tuo logo */
+  width: auto; opacity: 0.9; /* Semi-trasparente */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); /* Ombra per visibilità */
+}
