@@ -52,7 +52,7 @@ function updateYear() {
 ========================================================= */
 async function fetchVehicles() {
   try {
-    const res = await fetch('/api/vehicles');  // ← /api/vehicles invece /vehicles
+    const res = await fetch('/veicoli');
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     console.log(`📊 Trovati ${data.length} veicoli`);
@@ -132,9 +132,9 @@ function renderVehicles(vehicles) {
 </div>
 
     <div class="actions">
-      <a href="tel:+393921234567" class="btn call">📞 Chiama</a>
+      <a href="tel:+393333330834" class="btn call">📞 Chiama</a>
   
-      <a href="https://wa.me/393921234567?text=Interessato ${v.marca || ''} ${v.modello || ''}" target="_blank" class="btn whatsapp">💬 WhatsApp</a>
+      <a href="https://wa.me/393333330834?text=Interessato ${v.marca || ''} ${v.modello || ''}" target="_blank" class="btn whatsapp">💬 WhatsApp</a>
       <button class="btn info js-show-indicazioni">📝 Indicazioni</button>
     </div>
 

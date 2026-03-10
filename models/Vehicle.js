@@ -26,6 +26,13 @@ const ImageSchema = new mongoose.Schema(
 // -------------------
 const VehicleSchema = new mongoose.Schema(
   {
+    tipo: {
+      type: String,
+      enum: ["auto", "moto"],
+      default: "auto",
+      trim: true,
+    },
+
     marca: {
       type: String,
       required: true,

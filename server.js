@@ -13,6 +13,17 @@ const { WebSocketServer } = require("ws");
 
 const app = express();
 
+// Helper per escape HTML (prevenzione XSS)
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 app.set("trust proxy", 1);
 app.disable("x-powered-by");
 
@@ -154,7 +165,7 @@ app.get('/vantaggi/:slug', async (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${articolo.titolo} | DP CARS Marcianise</title>
+    <title>${escapeHtml(articolo.titolo)} | DP CARS Marcianise</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -216,12 +227,12 @@ app.get('/vantaggi/:slug', async (req, res) => {
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
                     <div class="icon-hero mb-4">
-                        <i class="fas fa-${articolo.icona || 'star'} fa-6x"></i>
+                        <i class="fas fa-${escapeHtml(articolo.icona) || 'star'} fa-6x"></i>
                     </div>
                     <h1 class="display-2 fw-800 mb-4 lh-1" style="text-shadow: 0 0 40px rgba(225,29,72,0.6);">
-                        ${articolo.titolo}
+                        ${escapeHtml(articolo.titolo)}
                     </h1>
-                    <p class="lead fs-4 opacity-90 mb-0">${articolo.anteprima}</p>
+                    <p class="lead fs-4 opacity-90 mb-0">${escapeHtml(articolo.anteprima)}</p>
                 </div>
             </div>
         </div>
@@ -235,8 +246,8 @@ app.get('/vantaggi/:slug', async (req, res) => {
                     <!-- IMMAGINE COPERTINA -->
                     ${articolo.immagine ? `
                     <div class="text-center mb-5">
-                        <img src="${articolo.immagine.replace('/upload/', '/upload/f_auto,q_auto,w_1200,c_scale/')}" 
-                             alt="${articolo.titolo}" 
+                        <img src="${escapeHtml(articolo.immagine.replace('/upload/', '/upload/f_auto,q_auto,w_1200,c_scale/'))}" 
+                             alt="${escapeHtml(articolo.titolo)}" 
                              class="img-fluid rounded-4 shadow-lg" 
                              style="max-height:500px; width:100%; object-fit:cover;">
                     </div>
@@ -272,7 +283,7 @@ app.get('/vantaggi/:slug', async (req, res) => {
                     </a>
                     
                     <!-- WHATSAPP PERSONALIZZATO -->
-                    <a href="https://wa.me/393333330834?text=Ciao%20DP%20CARS!%20Mi%20interessa%20${encodeURIComponent(articolo.titolo)}%20%F0%9F%9A%97%0AVorrei%20maggiori%20informazioni!" 
+                    <a href="https://wa.me/393333330834?text=Ciao%20DP%20CARS!%20Mi%20interessa%20${encodeURIComponent(escapeHtml(articolo.titolo))}%20%F0%9F%9A%97%0AVorrei%20maggiori%20informazioni!" 
                        class="btn btn-success btn-lg px-5 py-3 shadow-lg fs-5" target="_blank" style="
                         background: linear-gradient(135deg, #25D366, #128C7E) !important;
                         border: none; font-weight: 600;

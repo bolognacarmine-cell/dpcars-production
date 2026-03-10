@@ -444,9 +444,10 @@
 <script>
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
 const headers = new Headers();
-// INSERISCI QUI LE STESSE CREDENZIALI DI RENDER
-const ADMIN_USER = "dpcars";
-const ADMIN_PASS = "dpcars2026";
+// Le credenziali vengono prese dall'autenticazione Basic già fornita al caricamento della pagina /admin
+// L'utente è già autenticato tramite il prompt del browser
+const ADMIN_USER = prompt('Inserisci username admin:') || '';
+const ADMIN_PASS = prompt('Inserisci password admin:') || '';
 
 headers.append(
   "Authorization",
@@ -638,6 +639,7 @@ if ('WebSocket' in window) {
       else if (msg.data == 'refreshcss') refreshCSS();
     };
 
+  })();
 }
 </script>
 

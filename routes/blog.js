@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Blog = require('../models/Blog');
+const basicAuth = require('../middleware/basicAuth');
 
 // GET lista articoli (con filtro opzionale per argomento)
 router.get('/', async (req, res) => {
@@ -51,8 +52,8 @@ router.get('/:slug', async (req, res) => {
   }
 });
 
-// POST - creazione nuovo articolo (solo per admin / test)
-router.post('/', async (req, res) => {
+// POST - creazione nuovo articolo (protetto da autenticazione)
+router.post('/', basicAuth, async (req, res) => {
   try {
     const { titolo, argomento, contenuto, immagine, slug } = req.body;
 
