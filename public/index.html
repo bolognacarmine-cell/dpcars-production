@@ -29,6 +29,7 @@
   <meta property="og:image" content="https://dpcars-production.onrender.com/logo-og.jpg" />
   <meta property="og:url" content="https://dpcars-production.onrender.com/" />
   <meta property="og:type" content="website" />
+  <base href="/">
 
   <!-- Twitter/X Cards -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -48,7 +49,7 @@
     "image": "https://dpcars-production.onrender.com/logo.jpg",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Via Roma 43/47",
+      "streetAddress": "Via F. Petrarca, 16",
       "addressLocality": "Marcianise",
       "addressRegion": "CE",
       "postalCode": "81025",
@@ -56,8 +57,8 @@
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 41.0330522,
-      "longitude": 14.2973727
+      "latitude": 41.03262,
+      "longitude": 14.29741
     },
     "openingHours": "Mo-Fr 09:00-19:00, Sa 09:00-13:00",
     "priceRange": "€",
@@ -95,6 +96,97 @@
   --accent-red:   #b91c1c;    /* rosso scuro, meno “fuoco” */
   --secondary-sport: #38bdf8; /* opzionale: azzurro più soft */
 }
+
+        /* Footer Moderno Professional */
+        .main-footer {
+            background: #0a0a0a !important;
+            color: #fff !important;
+            border-top: 1px solid rgba(255, 23, 68, 0.2);
+            padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-sport), transparent);
+        }
+
+        .footer-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-sport);
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7) !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-sport) !important;
+            transform: translateX(5px);
+        }
+
+        .footer-social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff !important;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-social-link:hover {
+            background: var(--primary-sport);
+            border-color: var(--primary-sport);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(225, 29, 72, 0.4);
+        }
+
+        .footer-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-info-item i {
+            color: var(--primary-sport);
+            margin-top: 4px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .footer-legal-link {
+            color: rgba(255, 255, 255, 0.5) !important;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-legal-link:hover {
+            color: #fff !important;
+        }
             
 
         * {
@@ -147,7 +239,7 @@
         }
 
         /* Brand Text */
-        .brand-name {
+        .navbar-brand .brand-name {
             font-weight: 900;
             font-size: 1.5rem;
             letter-spacing: 0.12em;
@@ -155,7 +247,7 @@
             text-shadow: 0 0 16px rgba(255, 23, 68, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        .brand-tagline {
+        .navbar-brand .brand-tagline {
             font-weight: 700;
             font-size: 0.75rem;
             letter-spacing: 0.25em;
@@ -241,10 +333,12 @@
 
             .brand-name {
                 font-size: 1.3rem;
+                color: #ff1744 !important;
             }
 
             .brand-tagline {
                 font-size: 0.7rem;
+                color: #ffffff !important;
             }
         }
 
@@ -376,6 +470,12 @@
             flex-wrap: wrap;
             gap: 2rem;
             justify-content: center;
+        }
+
+        .vantaggio-card-link {
+            text-decoration: none !important;
+            color: inherit !important;
+            display: block;
         }
 
         .vantaggio-card {
@@ -750,10 +850,10 @@ window.silktideConsentManagerConfig = {
          HEADER / NAVIGATION
     ================================ -->
     <header class="main-header">
-        <nav class="navbar navbar-expand-lg fixed-top" role="navigation" aria-label="Navigazione principale">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" role="navigation" aria-label="Navigazione principale">
             <div class="container">
                 <!-- Brand -->
-                <a href="#home" class="navbar-brand d-flex align-items-center">
+                <a href="/" class="navbar-brand d-flex align-items-center">
                     <img 
                         src="/logo-og.jpg"
                         alt="DP CARS Logo"
@@ -764,7 +864,7 @@ window.silktideConsentManagerConfig = {
                     >
                     <div class="brand-text d-flex flex-column">
                         <span class="brand-name">DP CARS</span>
-                        <span class="brand-tagline">EXCELLENCE</span>
+                        <span class="brand-tagline">MARCIANISE</span>
                     </div>
                 </a>
 
@@ -824,11 +924,11 @@ window.silktideConsentManagerConfig = {
             loop 
             playsinline 
             preload="metadata" 
-            poster="hero-poster.jpg"
+            poster="/hero-poster.jpg"
             aria-hidden="true"
         >
-            <source src="video.mp4" type="video/mp4">
-            <source src="video.webm" type="video/webm">
+            <source src="/video.mp4" type="video/mp4">
+            <source src="/video.webm" type="video/webm">
             Il tuo browser non supporta il tag video.
         </video>
 
@@ -1077,17 +1177,17 @@ window.silktideConsentManagerConfig = {
   <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }}</h3>
   
   <p class="card-text">
-    <strong>📅 Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
-    <strong>🚗 Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
-    <strong>💶 Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
-    <strong>⚙️ Categoria Euro:</strong> {{ vehicle.categoriaEuro || "N/A" }}<br>
-    <strong>📌 Stato vendita:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
-    <strong>⛽ Carburante:</strong> {{ vehicle.carburante || "N/A" }}<br>
-    <strong>⚙️ Cambio:</strong> {{ vehicle.cambio || "N/A" }}<br>
-    <strong>🎨 Colore:</strong> {{ vehicle.colore || "N/A" }}<br>
-    <strong>🔧 Cilindrata:</strong> {{ vehicle.cilindrata ? vehicle.cilindrata + " cc" : "N/A" }}<br>
-    <strong>🚪 Porte:</strong> {{ vehicle.porte || "N/A" }}<br>
-    <strong>🚘 Tipo Auto:</strong> {{ vehicle.tipoAuto || "N/A" }}<br>
+    <strong><i class="fas fa-calendar-alt text-primary-custom me-1"></i> Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
+    <strong><i class="fas fa-tachometer-alt text-primary-custom me-1"></i> Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
+    <strong><i class="fas fa-tag text-primary-custom me-1"></i> Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
+    <strong><i class="fas fa-leaf text-primary-custom me-1"></i> Euro:</strong> {{ vehicle.categoriaEuro || "N/A" }}<br>
+    <strong><i class="fas fa-info-circle text-primary-custom me-1"></i> Stato:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
+    <strong><i class="fas fa-gas-pump text-primary-custom me-1"></i> Carburante:</strong> {{ vehicle.carburante || "N/A" }}<br>
+    <strong><i class="fas fa-cog text-primary-custom me-1"></i> Cambio:</strong> {{ vehicle.cambio || "N/A" }}<br>
+    <strong><i class="fas fa-palette text-primary-custom me-1"></i> Colore:</strong> {{ vehicle.colore || "N/A" }}<br>
+    <strong><i class="fas fa-wrench text-primary-custom me-1"></i> Cilindrata:</strong> {{ vehicle.cilindrata ? vehicle.cilindrata + " cc" : "N/A" }}<br>
+    <strong><i class="fas fa-door-closed text-primary-custom me-1"></i> Porte:</strong> {{ vehicle.porte || "N/A" }}<br>
+    <strong><i class="fas fa-car text-primary-custom me-1"></i> Tipo:</strong> {{ vehicle.tipoAuto || "N/A" }}<br>
   </p>
 </div>
 
@@ -1131,43 +1231,14 @@ window.silktideConsentManagerConfig = {
             Perché scegliere <span class="hero-accent">DP CARS</span>
         </h2>
         <div class="vantaggi-grid" id="vantaggi-grid">
-            <!-- Loading iniziale (rimosso dal JS quando arrivano i dati) -->
             <div class="text-center py-4" id="vantaggi-loading">
                 Caricamento vantaggi...
             </div>
-
-            <!-- Card di fallback / esempio (visibili se JS non carica i dati dal DB) -->
-            <!-- Vantaggio 1 -->
-            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="vantaggio-icon">
-                    <i class="fas fa-shield-check"></i>
-                </div>
-                <h3>Qualità Garantita</h3>
-                <p>Controlli rigorosi prima di entrare in showroom.</p>
-            </div>
-
-            <!-- Vantaggio 2 -->
-            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="vantaggio-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <h3>Finanziamenti</h3>
-                <p>Soluzioni personalizzate direttamente in sede.</p>
-            </div>
-
-            <!-- Vantaggio 3 -->
-            <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="vantaggio-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h3>Assistenza Post-Vendita</h3>
-                <p>Supporto continuo anche dopo l'acquisto.</p>
-            </div>
         </div>
     </div>
-</section>
-    
- <!-- ================================
+</section>   
+
+    <!-- ================================
          CHI SIAMO SECTION
     ================================ -->
     <section id="chi-siamo" class="text-center">
@@ -1209,52 +1280,52 @@ window.silktideConsentManagerConfig = {
             <div class="row g-4">
                 <!-- Recensione 1 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card p-4 h-100">
-                        <div class="mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
+                    <div class="card p-4 h-100 shadow-sm">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
                         <p class="mb-3">
-                            "Ottima esperienza, personale qualificato e gentile."
+                            "Oggi ho acquistato una 500x da Dp cars. Sono stato sempre appassionato di questa macchina e nella scelta sono stato seguito passo per passo in tutto. Staff super disponibile, cordiali e gentili. Lo consiglio 👍🏻"
                         </p>
-                        <strong>- Mario R.</strong>
+                        <strong class="text-primary-custom">- Gennaro Molignano</strong>
                     </div>
                 </div>
 
                 <!-- Recensione 2 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card p-4 h-100">
-                        <div class="mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
+                    <div class="card p-4 h-100 shadow-sm">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
                         <p class="mb-3">
-                            "Ho trovato l'auto dei miei sogni, consigliatissimo."
+                            "Esperienza eccezionale, Domenico è stato molto cordiale e ha saputo trovare subito la macchina perfetta per me ed è stato sempre disponibile, condizioni generali perfette, davvero un ottimo acquisto. Rispetto alla concorrenza qui si parla di qualità e professionalità. Mi affiderò sicuramente a loro per futuri acquisti, consiglio a tutti questa concessionaria. Davvero grazie"
                         </p>
-                        <strong>- Lucia B.</strong>
+                        <strong class="text-primary-custom">- Christian Giuliano</strong>
                     </div>
                 </div>
 
                 <!-- Recensione 3 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card p-4 h-100">
-                        <div class="mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
+                    <div class="card p-4 h-100 shadow-sm">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
                         <p class="mb-3">
-                            "Professionalità e trasparenza, mai avuto problemi."
+                            "Ho acquistato qui la mia prima auto e sono stato trattato in maniera indescrivibilmente positiva. Disponibilità, affidabilità e professionalità assicurate! Mi sento inoltre di sottolineare la cura che c’è stata per le necessità del cliente, richieste e non. Consigliatissimi!!"
                         </p>
-                        <strong>- Antonio F.</strong>
+                        <strong class="text-primary-custom">- Vincenzo Tartaglione</strong>
                     </div>
                 </div>
             </div>
@@ -1346,10 +1417,21 @@ function renderizzaArticoli(posts) {
       ? `<img src="${post.immagine}" class="card-img-top" alt="${post.titolo}" loading="lazy" style="height:200px; object-fit:cover;">`
       : `<div class="bg-dark d-flex align-items-center justify-content-center" style="height:200px;"><i class="fas fa-car-side fa-4x text-secondary"></i></div>`;
 
-    // ✅ PREVIEW INTELLIGENTE: Taglia frase finita (max 180 char)
-    const preview = post.contenuto 
-      ? post.contenuto.substring(0, 180).trim() + '...'
-      : 'Articolo senza descrizione.';
+    // ✅ PREVIEW INTELLIGENTE: Taglia alla fine di una frase o aumenta il limite
+    let preview = post.contenuto || 'Articolo senza descrizione.';
+    const limit = 400; // Aumentato a 400 per accogliere elenchi più lunghi
+    
+    if (preview.length > limit) {
+        // Cerca l'ultimo punto, punto esclamativo o interrogativo entro il limite
+        const lastSentence = preview.substring(0, limit).lastIndexOf('.');
+        if (lastSentence > 150) {
+            preview = preview.substring(0, lastSentence + 1);
+        } else {
+            // Altrimenti taglia all'ultimo spazio
+            const lastSpace = preview.substring(0, limit).lastIndexOf(' ');
+            preview = preview.substring(0, lastSpace > 0 ? lastSpace : limit) + '...';
+        }
+    }
     
     return `
       <div class="col-lg-4 col-md-6" onclick="apriArticolo('${post.slug}')" style="cursor:pointer;">
@@ -1382,12 +1464,17 @@ document.addEventListener('click', function(e) {
   // Aggiunge active al pulsante cliccato
   e.target.classList.add('active');
 
-  const argomentoFiltro = (e.target.dataset.argomento || '').trim();
+  const argomentoFiltro = (e.target.dataset.argomento || '').trim().toLowerCase();
   
+  // Rimuove l'accento per un confronto più robusto (es. Novità -> novita)
+  const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const argomentoFiltroNorm = normalize(argomentoFiltro);
+
   const articoliFiltrati = argomentoFiltro
-    ? window.tuttiBlog.filter(post => 
-        (post.argomento || '').trim().toLowerCase() === argomentoFiltro.toLowerCase()
-      )
+    ? window.tuttiBlog.filter(post => {
+        const postArg = (post.argomento || '').trim();
+        return normalize(postArg).includes(argomentoFiltroNorm);
+      })
     : window.tuttiBlog;
 
   renderizzaArticoli(articoliFiltrati);
@@ -1494,7 +1581,7 @@ document.addEventListener('click', function(e) {
                     container.innerHTML = ''; // rimuove placeholder
 
                     const iframe = document.createElement('iframe');
-                    iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6436197951984!2d14.2973727!3d41.0330522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x133a556893b69169%3A0x878871b151079c02!2sDP%20Cars%20srl!5e0!3m2!1sit!2sit!4v1770720958779!5m2!1sit!2sit";
+                    iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6436!2d14.29741!3d41.03262!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAxJzU3LjQiTiAxNMKwMTcnNTAuNyJF!5e0!3m2!1sit!2sit!4v1710432000000!5m2!1sit!2sit";
                     iframe.width = "100%";
                     iframe.height = "400";
                     iframe.style.border = "none";
@@ -1593,44 +1680,100 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>   
 
- <!-- ================================
-         FOOTER
+<!-- ================================
+     FOOTER MODERN
 ============================= -->
-<footer class="main-footer bg-light py-4">  <!-- Aggiunto bg-light e py-4 per un look più pulito, opzionale -->
+<footer class="main-footer">
     <div class="container">
-        <div class="row align-items-center g-3 text-center text-md-start">
-            <!-- Info Azienda -->
-            <div class="col-md-5">
-                <strong>DP CARS Srl</strong><br>
-                Via Roma 43/47, 81025 Marcianise (CE)<br>
-                REA CE-347605 | P.IVA e C.F. 04695310617<br>  <!-- Aggiunto REA, P.IVA e CF – obbligatorio -->
-                <i class="fas fa-phone me-1"></i> 333 333 0834 • 
-                <i class="fas fa-envelope me-1"></i> 
-                <a href="mailto:dpcarssrl@pec.it">dpcarssrl@pec.it</a>  <!-- Usa PEC ufficiale, meglio di info@dpcars.it -->
+        <div class="row g-4">
+            <!-- Colonna 1: Brand & Social -->
+            <div class="col-lg-4">
+                <div class="footer-title">DP CARS</div>
+                <p class="mb-4 text-white-50">
+                    Concessionaria di auto e moto usate selezionate a Marcianise. 
+                    Qualità, trasparenza e passione per i motori al tuo servizio.
+                </p>
+                <div class="d-flex">
+                    <a href="https://www.facebook.com/p/Dp-cars-100067019164899" target="_blank" class="footer-social-link" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/dpcars_marcianise" target="_blank" class="footer-social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/393333330834" target="_blank" class="footer-social-link" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- Orari -->
-            <div class="col-md-4">
-                <i class="fas fa-clock me-1"></i>
-                Lun–Ven 09:00–19:00<br>
-                Sab 09:00–13:00 • Dom chiuso
+            <!-- Colonna 2: Link Rapidi -->
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-title">LINK RAPIDI</div>
+                <ul class="list-unstyled">
+                    <li><a href="#inventory" class="footer-link">Inventario</a></li>
+                    <li><a href="#reviews" class="footer-link">Recensioni</a></li>
+                    <li><a href="#blog-section" class="footer-link">Blog</a></li>
+                    <li><a href="#contact" class="footer-link">Dove siamo</a></li>
+                </ul>
             </div>
 
-            <!-- Link legali – NUOVA COLONNA o riga dedicata -->
-            <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
-                <small>
-                    <a href="/privacy-policy.html">Privacy Policy</a> • 
-                    <a href="/cookie-policy.html">Cookie Policy</a><br>
-                    Informativa ai sensi dell'art. 13 GDPR
-                </small>
+            <!-- Colonna 3: Orari -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-title">ORARI APERTURA</div>
+                <div class="footer-info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Lun - Ven</strong><br>
+                        09:00 – 13:00 | 15:00 – 19:00
+                    </div>
+                </div>
+                <div class="footer-info-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <div>
+                        <strong>Sabato</strong><br>
+                        09:00 – 13:00
+                    </div>
+                </div>
+                <div class="footer-info-item">
+                    <i class="fas fa-calendar-times"></i>
+                    <div>
+                        <strong>Domenica</strong><br>
+                        Chiuso
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonna 4: Contatti -->
+            <div class="col-lg-3">
+                <div class="footer-title">CONTATTI</div>
+                <div class="footer-info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>Via F. Petrarca, 16,<br>81025 Marcianise (CE)</div>
+                </div>
+                <div class="footer-info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>333 333 0834</div>
+                </div>
+                <div class="footer-info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div><a href="mailto:dpcarssrl@pec.it" class="footer-link mb-0">dpcarssrl@pec.it</a></div>
+                </div>
             </div>
         </div>
 
-        <!-- Riga extra in basso per copyright e disclaimer (opzionale ma consigliata) -->
-        <div class="row mt-3">
-            <div class="col-12 text-center small text-muted">
-                © 2026 DP CARS S.r.l. – Tutti i diritti riservati | 
-                Concessionaria auto e moto usate a Marcianise (CE)
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="row align-items-center g-3">
+                <div class="col-md-6 text-center text-md-start">
+                    © 2026 <strong>DP CARS S.r.l.</strong> | REA CE-347605 | P.IVA 04695310617
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="/privacy.html" class="footer-legal-link">Privacy Policy</a>
+                    <span class="mx-2 opacity-25">•</span>
+                    <a href="/cookie-policy.html" class="footer-legal-link">Cookie Policy</a>
+                    <span class="mx-2 opacity-25">•</span>
+                    <span class="text-white-50">Art. 13 GDPR</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1933,14 +2076,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let html = '';
 
-            data.forEach(item => {
-                const icona = item.icona || 'shield-check'; // fallback se manca
+            data.forEach((item, index) => {
+                const icona = item.icona || 'shield-halved'; // fallback free FA6
                 const slug = item.slug || '';
-                const link = slug ? `/vantaggi/${slug}` : '#'; // cambia path se preferisci
+                const link = slug ? `/vantaggi/${slug}.html` : '#'; // aggiungi .html per servire i file statici
+                const delay = index * 100; // Inizia da 0 (0, 100, 200...) per la prima card
 
                 html += `
                     <a href="${link}" class="vantaggio-card-link">
-                        <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="vantaggio-card" data-aos="fade-up" data-aos-delay="${delay}">
                             <div class="vantaggio-icon">
                                 <i class="fas fa-${icona}"></i>
                             </div>
@@ -1952,6 +2096,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             grid.innerHTML = html;
+
+            // Forza il refresh di AOS per rilevare i nuovi elementi dinamici
+            if (typeof AOS !== 'undefined') {
+                setTimeout(() => {
+                    AOS.refresh();
+                }, 100);
+            }
         })
         .catch(error => {
             console.error('Errore nel caricamento dei vantaggi:', error);

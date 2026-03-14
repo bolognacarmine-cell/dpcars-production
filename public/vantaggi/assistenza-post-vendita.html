@@ -1,18 +1,36 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistenza Post-Vendita - DP CARS</title>
-    <!-- Includi qui i tuoi link CSS, font, meta tags, favicon, ecc. -->
-    <!-- Esempio: -->
-    <!-- <link rel="stylesheet" href="/css/style.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/darkly/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-sport: #e11d48;
+        }
+        body { background: #0a0a0a; color: #fff; padding-top: 100px; }
+        .navbar { background: rgba(10, 10, 10, 0.9) !important; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .brand-logo { height: 50px; border-radius: 8px; border: 2px solid rgba(255, 23, 68, 0.45); }
+        .navbar-brand .brand-name { font-weight: 900; font-size: 1.5rem; letter-spacing: 0.12em; color: #ff1744 !important; text-shadow: 0 0 16px rgba(255, 23, 68, 0.9); }
+        .navbar-brand .brand-tagline { font-weight: 700; font-size: 0.75rem; letter-spacing: 0.25em; color: #ffffff !important; }
+        .vantaggio-dettaglio { background: #1a1a1a; padding: 2rem; border-radius: 12px; margin-top: 2rem; border: 1px solid rgba(255,255,255,0.1); }
+    </style>
 </head>
 <body>
-
-    <!-- Il tuo header/nav qui se lo hai separato -->
-    <!-- <header>...</header> -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img src="/logo-og.jpg" alt="DP CARS Logo" class="brand-logo me-3" width="50" height="50">
+                <div class="brand-text d-flex flex-column">
+                    <span class="brand-name">DP CARS</span>
+                    <span class="brand-tagline">MARCIANISE</span>
+                </div>
+            </a>
+        </div>
+    </nav>
 
     <section class="container py-5">
         <h1>Assistenza Post-Vendita</h1>
@@ -22,36 +40,19 @@
         <a href="/" class="btn btn-primary mt-4">Torna alla home</a>
     </section>
 
-    <!-- Il tuo footer qui se lo hai separato -->
-    <!-- <footer>...</footer> -->
-
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const contenuto = document.getElementById('vantaggio-contenuto');
-
-        // Slug fisso per questa pagina
         const slug = 'assistenza-post-vendita';
-
         fetch(`/api/dpcars/${slug}`)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Contenuto non trovato');
-                }
-                return res.json();
-            })
+            .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
-                if (data.contenuto) {
-                    contenuto.innerHTML = data.contenuto;
-                } else {
-                    contenuto.innerHTML = '<p class="text-center py-4">Contenuto non disponibile.</p>';
-                }
+                contenuto.innerHTML = data.contenuto || '<p>Contenuto non disponibile.</p>';
             })
-            .catch(err => {
-                console.error(err);
-                contenuto.innerHTML = '<p class="text-danger text-center py-4">Errore durante il caricamento del contenuto.</p>';
+            .catch(() => {
+                contenuto.innerHTML = '<p class="text-danger">Errore caricamento contenuto.</p>';
             });
     });
     </script>
-
 </body>
 </html>

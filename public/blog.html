@@ -1,67 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="it" data-bs-theme="dark">
 <head>
-  <title>Blog Autorivendita</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
-    div { margin-bottom: 40px; }
-    h2 { color: #e74c3c; }
-    img { max-width: 100%; height: auto; border-radius: 8px; }
-    .contenuto-full { 
-      white-space: pre-line;  /* ✅ Preserva \n come <br> */
-      line-height: 1.6; 
-      overflow: visible;
-    }
-    .meta { color: #666; font-size: 14px; margin-bottom: 15px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - DP CARS</title>
+    
+    <!-- Bootstrap Core -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/darkly/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Icon Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-sport: #e11d48;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            padding-top: 100px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(10, 10, 10, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-logo {
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 23, 68, 0.45);
+        }
+
+        .navbar-brand .brand-name {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.12em;
+            color: #ff1744 !important;
+            text-shadow: 0 0 16px rgba(255, 23, 68, 0.9);
+        }
+
+        .navbar-brand .brand-tagline {
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            color: #ffffff !important;
+        }
+
+        .blog-article {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-article h2 {
+            color: var(--primary-sport);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .meta i {
+            color: var(--primary-sport);
+        }
+
+        .blog-article img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .contenuto-full {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: pre-line;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #ff1744, #d32f2f);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 23, 68, 0.4);
+            color: white;
+        }
+    </style>
 </head>
 <body>
-  <h1>Blog Autorivendita DP CARS</h1>
-  <div id="blog-container"></div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img src="/logo-og.jpg" alt="DP CARS Logo" class="brand-logo me-3" width="50" height="50">
+                <div class="brand-text d-flex flex-column">
+                    <span class="brand-name">DP CARS</span>
+                    <span class="brand-tagline">MARCIANISE</span>
+                </div>
+            </a>
+            <a href="/" class="btn-back d-none d-lg-flex">
+                <i class="fas fa-arrow-left"></i> Torna al Sito
+            </a>
+        </div>
+    </nav>
 
-  <script>
-    fetch('/api/blog')
-      .then(res => res.json())
-      .then(articles => {
-        const container = document.getElementById('blog-container');
-        articles.forEach(article => {
-          const div = document.createElement('div');
-          div.style.border = '1px solid #eee';
-          div.style.padding = '20px';
-          div.style.borderRadius = '8px';
-          div.style.marginBottom = '40px';
+    <main class="container py-5">
+        <div id="blog-container">
+            <div class="text-center py-5">
+                <div class="spinner-border text-danger" role="status">
+                    <span class="visually-hidden">Caricamento...</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Torna alla Home
+            </a>
+        </div>
+    </main>
 
-          // Titolo
-          const h2 = document.createElement('h2');
-          h2.textContent = article.titolo;
-          div.appendChild(h2);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.search || window.location.search);
+            const slug = urlParams.get('slug');
+            const apiEndpoint = slug ? `/api/blog/${slug}` : '/api/blog';
 
-          // META (argomento + data)
-          const meta = document.createElement('div');
-          meta.className = 'meta';
-          meta.textContent = `${article.argomento} | ${new Date(article.data).toLocaleDateString('it-IT')}`;
-          div.appendChild(meta);
+            fetch(apiEndpoint)
+                .then(res => res.ok ? res.json() : Promise.reject('Errore API'))
+                .then(data => {
+                    const container = document.getElementById('blog-container');
+                    container.innerHTML = '';
+                    
+                    // Se abbiamo uno slug, data sarà un singolo oggetto, altrimenti un array
+                    const articles = slug ? [data] : (Array.isArray(data) ? data : []);
+                    
+                    if (!articles || articles.length === 0 || (slug && !data.titolo)) {
+                        container.innerHTML = '<p class="text-center py-5">Articolo non trovato o non disponibile.</p>';
+                        return;
+                    }
 
-          // Immagine ✅ FIX: immagine diretta (non .url)
-          if (article.immagine) {
-            const img = document.createElement('img');
-            img.src = article.immagine;  // ← DIRETTO, non .url!
-            img.alt = article.titolo;
-            img.style.maxWidth = '100%';
-            img.style.height = 'auto';
-            div.appendChild(img);
-          }
+                    articles.forEach(article => {
+                        const articleEl = document.createElement('article');
+                        articleEl.className = 'blog-article';
 
-          // Contenuto COMPLETO ✅ FIX: replace \n
-          const contentDiv = document.createElement('div');
-          contentDiv.className = 'contenuto-full';
-          contentDiv.innerHTML = article.contenuto.replace(/\n/g, '<br>');  // ← FULL!
-          div.appendChild(contentDiv);
+                        const dataFormattata = new Date(article.data).toLocaleDateString('it-IT', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        });
 
-          container.appendChild(div);
+                        articleEl.innerHTML = `
+                            <h2>${article.titolo}</h2>
+                            <div class="meta">
+                                <span><i class="fas fa-tag"></i> ${article.argomento}</span>
+                                <span><i class="fas fa-calendar-alt"></i> ${dataFormattata}</span>
+                            </div>
+                            ${article.immagine ? `<img src="${article.immagine}" alt="${article.titolo}">` : ''}
+                            <div class="contenuto-full">${article.contenuto.replace(/\n/g, '<br>')}</div>
+                        `;
+                        container.appendChild(articleEl);
+                    });
+
+                    // Aggiorna il titolo della pagina se è un singolo articolo
+                    if (slug && data.titolo) {
+                        document.title = `${data.titolo} - DP CARS Blog`;
+                    }
+                })
+                .catch(err => {
+                    console.error('Errore:', err);
+                    document.getElementById('blog-container').innerHTML = `
+                        <div class="alert alert-danger">
+                            Errore nel caricamento del blog. Riprova più tardi.
+                        </div>
+                    `;
+                });
         });
-      })
-      .catch(err => console.error('Errore:', err));
-  </script>
+    </script>
 </body>
 </html>
