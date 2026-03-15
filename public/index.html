@@ -507,6 +507,22 @@
         .badge.bg-warning { background-color: #f59e0b !important; color: #000; }
         .badge.bg-danger { background-color: #ef4444 !important; }
 
+        .type-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 5;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .type-badge.usato { background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255,255,255,0.2); }
+        .type-badge.nuovo { background: var(--primary-sport); border: 1px solid rgba(255,255,255,0.1); }
+
         /* =========================================================
            VANTAGGI SECTION
         ========================================================= */
@@ -1188,6 +1204,11 @@ window.silktideConsentManagerConfig = {
                             data-bs-ride="carousel"
                             :aria-label="'Carosello immagini di ' + vehicle.marca + ' ' + vehicle.modello"
                         >
+                            <!-- Badge Usato/Nuovo -->
+                            <div :class="['type-badge', vehicle.usato ? 'usato' : 'nuovo']">
+                                {{ vehicle.usato ? 'Usato' : 'Nuovo' }}
+                            </div>
+
                             <div class="carousel-inner">
                                 <div
                                     v-for="(img, index) in (vehicle.immagini && vehicle.immagini.length ? vehicle.immagini : [vehicle.immagine || 'default-vehicle.jpg'])"
