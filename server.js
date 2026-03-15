@@ -85,6 +85,11 @@ app.get("/admin", (req, res) => {
   );
 });
 
+// Endpoint specifico per il logo admin
+app.get("/admin/logo.jpg", (req, res) => {
+  res.sendFile(path.join(__dirname, "private", "logo.jpg"));
+});
+
 // ==========================
 // STATIC FILES
 // ==========================
