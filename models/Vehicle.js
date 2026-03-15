@@ -70,19 +70,9 @@ const VehicleSchema = new mongoose.Schema(
       min: 1900,
       max: 2100,
     },
-    categoriaEuro: {
-    type: String,
-    trim: true,
-    },
-    
     tipoAuto: {
-    type: String,
-    trim: true,
-   },
-   
-    cilindrata: {
-      type: Number,
-      min: 0,
+      type: String,
+      trim: true,
     },
 
     carburante: {
@@ -91,6 +81,21 @@ const VehicleSchema = new mongoose.Schema(
     },
 
     cambio: {
+      type: String,
+      trim: true,
+    },
+
+    marce: {
+      type: String,
+      trim: true,
+    },
+
+    trasmissione: {
+      type: String,
+      trim: true,
+    },
+
+    potenza: {
       type: String,
       trim: true,
     },

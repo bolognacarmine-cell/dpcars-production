@@ -1174,20 +1174,19 @@ window.silktideConsentManagerConfig = {
 
                         <!-- Card Body -->
 <div class="card-body d-flex flex-column">
-  <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }}</h3>
+  <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }} <span v-if="vehicle.versione" class="text-muted small">({{ vehicle.versione }})</span></h3>
   
   <p class="card-text">
     <strong><i class="fas fa-calendar-alt text-primary-custom me-1"></i> Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
     <strong><i class="fas fa-tachometer-alt text-primary-custom me-1"></i> Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
     <strong><i class="fas fa-tag text-primary-custom me-1"></i> Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
-    <strong><i class="fas fa-leaf text-primary-custom me-1"></i> Euro:</strong> {{ vehicle.categoriaEuro || "N/A" }}<br>
-    <strong><i class="fas fa-info-circle text-primary-custom me-1"></i> Stato:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
+    <strong><i class="fas fa-cog text-primary-custom me-1"></i> Cambio:</strong> {{ vehicle.cambio || "N/A" }} <span v-if="vehicle.marce">({{ vehicle.marce }} marce)</span><br>
+    <strong><i class="fas fa-project-diagram text-primary-custom me-1"></i> Trasmissione:</strong> {{ vehicle.trasmissione || "N/A" }}<br>
+    <strong><i class="fas fa-bolt text-primary-custom me-1"></i> Potenza:</strong> {{ vehicle.potenza || "N/A" }}<br>
     <strong><i class="fas fa-gas-pump text-primary-custom me-1"></i> Carburante:</strong> {{ vehicle.carburante || "N/A" }}<br>
-    <strong><i class="fas fa-cog text-primary-custom me-1"></i> Cambio:</strong> {{ vehicle.cambio || "N/A" }}<br>
     <strong><i class="fas fa-palette text-primary-custom me-1"></i> Colore:</strong> {{ vehicle.colore || "N/A" }}<br>
-    <strong><i class="fas fa-wrench text-primary-custom me-1"></i> Cilindrata:</strong> {{ vehicle.cilindrata ? vehicle.cilindrata + " cc" : "N/A" }}<br>
     <strong><i class="fas fa-door-closed text-primary-custom me-1"></i> Porte:</strong> {{ vehicle.porte || "N/A" }}<br>
-    <strong><i class="fas fa-car text-primary-custom me-1"></i> Tipo:</strong> {{ vehicle.tipoAuto || "N/A" }}<br>
+    <strong><i class="fas fa-info-circle text-primary-custom me-1"></i> Stato:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
   </p>
 </div>
 

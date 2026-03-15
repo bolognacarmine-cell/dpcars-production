@@ -371,9 +371,10 @@
   </label>
   <label>Marca <input name="marca" required></label>
   <label>Modello <input name="modello" required></label>
+  <label>Versione <input name="versione"></label>
   <label>Mese Immatricolazione <input name="meseImmatricolazione" type="number"></label>
   <label>Anno Immatricolazione <input name="annoImmatricolazione" type="number"></label>
-  <label>Categoria Euro <input name="categoriaEuro"></label>
+  <label>Potenza <input name="potenza" placeholder="es. 110 CV o 81 kW"></label>
   <label>Usato
     <select name="usato">
       <option value="false">No</option>
@@ -413,8 +414,9 @@
       <option value="semiautomatico">Semiautomatico</option>
     </select>
   </label>
+  <label>Marce <input name="marce" placeholder="es. 5, 6, 7"></label>
+  <label>Trasmissione <input name="trasmissione" placeholder="es. Anteriore, Integrale"></label>
   <label>Colore <input name="colore"></label>
-  <label>Cilindrata <input name="cilindrata" type="number"></label>
   <label>Porte <input name="porte" type="number"></label>
   <label>Prezzo <input name="prezzo" type="number" step="0.01" required></label>
   <label>Tipo Auto
@@ -524,16 +526,18 @@ async function caricaVeicoli() {
         document.querySelector('[name="tipo"]').value = vehicle.tipo || 'auto';
         document.querySelector('[name="marca"]').value = vehicle.marca || '';
         document.querySelector('[name="modello"]').value = vehicle.modello || '';
+        document.querySelector('[name="versione"]').value = vehicle.versione || '';
         document.querySelector('[name="meseImmatricolazione"]').value = vehicle.meseImmatricolazione || '';
         document.querySelector('[name="annoImmatricolazione"]').value = vehicle.annoImmatricolazione || '';
-        document.querySelector('[name="categoriaEuro"]').value = vehicle.categoriaEuro || '';
+        document.querySelector('[name="potenza"]').value = vehicle.potenza || '';
         document.querySelector('[name="usato"]').value = vehicle.usato ? 'true' : 'false';
         document.querySelector('[name="statoVendita"]').value = vehicle.statoVendita || 'disponibile';
         document.querySelector('[name="chilometri"]').value = vehicle.chilometri || '';
         document.querySelector('[name="carburante"]').value = vehicle.carburante || 'benzina';
         document.querySelector('[name="cambio"]').value = vehicle.cambio || 'manuale';
+        document.querySelector('[name="marce"]').value = vehicle.marce || '';
+        document.querySelector('[name="trasmissione"]').value = vehicle.trasmissione || '';
         document.querySelector('[name="colore"]').value = vehicle.colore || '';
-        document.querySelector('[name="cilindrata"]').value = vehicle.cilindrata || '';
         document.querySelector('[name="porte"]').value = vehicle.porte || '';
         document.querySelector('[name="prezzo"]').value = vehicle.prezzo || '';
         document.querySelector('[name="tipoAuto"]').value = vehicle.tipoAuto || 'suv';

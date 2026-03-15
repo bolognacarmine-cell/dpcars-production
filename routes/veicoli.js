@@ -154,25 +154,27 @@ router.post(
       }
 
       const newVehicle = new Vehicle({
-  tipo: data.tipo || "auto",
-  marca: data.marca,
-  modello: data.modello,
-  usato: data.usato === "true",
-  chilometri: data.chilometri ? Number(data.chilometri) : undefined,
-  meseImmatricolazione: data.meseImmatricolazione ? Number(data.meseImmatricolazione) : undefined,
-  annoImmatricolazione: data.annoImmatricolazione ? Number(data.annoImmatricolazione) : undefined,
-  categoriaEuro: data.categoriaEuro || undefined,  // ✅ ESPLICITO!
-  tipoAuto: data.tipoAuto || undefined,            // ✅ ESPLICITO!
-  cilindrata: data.cilindrata ? Number(data.cilindrata) : undefined,
-  carburante: data.carburante || undefined,
-  cambio: data.cambio || undefined,
-  porte: data.porte ? Number(data.porte) : undefined,
-  colore: data.colore || undefined,
-  prezzo: data.prezzo ? Number(data.prezzo) : undefined,
-  descrizioni: descrizioniArr,
-  immagini: immaginiArr,
-  statoVendita: data.statoVendita || "disponibile",
-});
+        tipo: data.tipo || "auto",
+        marca: data.marca,
+        modello: data.modello,
+        versione: data.versione || undefined,
+        usato: data.usato === "true",
+        chilometri: data.chilometri ? Number(data.chilometri) : undefined,
+        meseImmatricolazione: data.meseImmatricolazione ? Number(data.meseImmatricolazione) : undefined,
+        annoImmatricolazione: data.annoImmatricolazione ? Number(data.annoImmatricolazione) : undefined,
+        marce: data.marce || undefined,
+        trasmissione: data.trasmissione || undefined,
+        tipoAuto: data.tipoAuto || undefined,
+        potenza: data.potenza || undefined,
+        carburante: data.carburante || undefined,
+        cambio: data.cambio || undefined,
+        porte: data.porte ? Number(data.porte) : undefined,
+        colore: data.colore || undefined,
+        prezzo: data.prezzo ? Number(data.prezzo) : undefined,
+        descrizioni: descrizioniArr,
+        immagini: immaginiArr,
+        statoVendita: data.statoVendita || "disponibile",
+      });
 
       const savedVehicle = await newVehicle.save();
 
@@ -210,8 +212,11 @@ router.put(
       // ✅ AGGIUNGI TUTTI I CAMPI MANCANTI!
       vehicle.marca = data.marca || vehicle.marca;
       vehicle.modello = data.modello || vehicle.modello;
-      vehicle.categoriaEuro = data.categoriaEuro || vehicle.categoriaEuro;
+      vehicle.versione = data.versione || vehicle.versione;
+      vehicle.marce = data.marce || vehicle.marce;
+      vehicle.trasmissione = data.trasmissione || vehicle.trasmissione;
       vehicle.tipoAuto = data.tipoAuto || vehicle.tipoAuto;
+      vehicle.potenza = data.potenza || vehicle.potenza;
       vehicle.carburante = data.carburante || vehicle.carburante;
       vehicle.colore = data.colore || vehicle.colore;
       vehicle.cambio = data.cambio || vehicle.cambio;
@@ -224,7 +229,6 @@ router.put(
       if (data.chilometri) vehicle.chilometri = Number(data.chilometri);
       if (data.meseImmatricolazione) vehicle.meseImmatricolazione = Number(data.meseImmatricolazione);
       if (data.annoImmatricolazione) vehicle.annoImmatricolazione = Number(data.annoImmatricolazione);
-      if (data.cilindrata) vehicle.cilindrata = Number(data.cilindrata);
       if (data.porte) vehicle.porte = Number(data.porte);
       if (data.prezzo) vehicle.prezzo = Number(data.prezzo);
 
