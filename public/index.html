@@ -494,12 +494,36 @@
             text-shadow: 0 0 10px rgba(225, 29, 72, 0.3);
         }
 
+        .carousel-item {
+            height: 240px;
+            background: #000;
+        }
+
         .carousel-item img {
-            transition: transform 0.6s ease;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .card:hover .carousel-item img {
-            transform: scale(1.05);
+            transform: scale(1.08);
+        }
+
+        .carousel-control-prev, .carousel-control-next {
+            width: 10%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover .carousel-control-prev, .card:hover .carousel-control-next {
+            opacity: 0.8;
+        }
+
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            width: 2rem;
+            height: 2rem;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
         }
 
         /* Badge Styles */
@@ -1220,7 +1244,6 @@ window.silktideConsentManagerConfig = {
                                         class="d-block w-100"
                                         :alt="'Immagine ' + (index + 1) + ' di ' + vehicle.marca + ' ' + vehicle.modello"
                                         loading="lazy"
-                                        style="max-height: 200px; object-fit: cover;"
                                     >
                                 </div>
                             </div>
