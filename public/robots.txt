@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dpcars-production.onrender.com/sitemap.xml
+Sitemap: https://www.dpcars.it/sitemap.xml
