@@ -452,6 +452,62 @@
 
         
         /* =========================================================
+           INVENTORY SECTION & CARDS
+        ========================================================= */
+        #inventory-grid .card {
+            background: rgba(30, 30, 30, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden;
+        }
+
+        #inventory-grid .card:hover {
+            transform: translateY(-10px);
+            background: rgba(40, 40, 40, 0.8) !important;
+            border-color: rgba(255, 23, 68, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .vehicle-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .spec-item i {
+            color: var(--primary-sport);
+            width: 16px;
+            text-align: center;
+        }
+
+        .price-tag .h4 {
+            color: #fff !important;
+            text-shadow: 0 0 10px rgba(225, 29, 72, 0.3);
+        }
+
+        .carousel-item img {
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .carousel-item img {
+            transform: scale(1.05);
+        }
+
+        /* Badge Styles */
+        .badge.bg-success { background-color: #10b981 !important; }
+        .badge.bg-warning { background-color: #f59e0b !important; color: #000; }
+        .badge.bg-danger { background-color: #ef4444 !important; }
+
+        /* =========================================================
            VANTAGGI SECTION
         ========================================================= */
         .vantaggi {
@@ -1173,47 +1229,95 @@ window.silktideConsentManagerConfig = {
                         </div>
 
                         <!-- Card Body -->
-<div class="card-body d-flex flex-column">
-  <h3 class="card-title">{{ vehicle.marca }} {{ vehicle.modello }} <span v-if="vehicle.versione" class="text-muted small">({{ vehicle.versione }})</span></h3>
-  
-  <p class="card-text">
-    <strong><i class="fas fa-calendar-alt text-primary-custom me-1"></i> Anno:</strong> {{ formatMeseAnno(vehicle) }}<br>
-    <strong><i class="fas fa-tachometer-alt text-primary-custom me-1"></i> Km:</strong> {{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() : "N/A" }}<br>
-    <strong><i class="fas fa-tag text-primary-custom me-1"></i> Prezzo:</strong> {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString("it-IT", { style: "currency", currency: "EUR" }) : "N/A" }}<br>
-    <strong><i class="fas fa-cog text-primary-custom me-1"></i> Cambio:</strong> {{ vehicle.cambio || "N/A" }} <span v-if="vehicle.marce">({{ vehicle.marce }} marce)</span><br>
-    <strong><i class="fas fa-project-diagram text-primary-custom me-1"></i> Trasmissione:</strong> {{ vehicle.trasmissione || "N/A" }}<br>
-    <strong><i class="fas fa-bolt text-primary-custom me-1"></i> Potenza:</strong> {{ vehicle.potenza || "N/A" }}<br>
-    <strong><i class="fas fa-gas-pump text-primary-custom me-1"></i> Carburante:</strong> {{ vehicle.carburante || "N/A" }}<br>
-    <strong><i class="fas fa-palette text-primary-custom me-1"></i> Colore:</strong> {{ vehicle.colore || "N/A" }}<br>
-    <strong><i class="fas fa-door-closed text-primary-custom me-1"></i> Porte:</strong> {{ vehicle.porte || "N/A" }}<br>
-    <strong><i class="fas fa-info-circle text-primary-custom me-1"></i> Stato:</strong> {{ vehicle.statoVendita || "N/D" }}<br>
-  </p>
-</div>
-
-                            <!-- Toggle Description Button -->
-                            <button
-                                class="btn btn-link p-0 mb-3"
-                                @click="toggleDescrizione(vehicle.id)"
-                                :aria-expanded="descrizioniVisibili.includes(vehicle.id) ? 'true' : 'false'"
-                                :aria-controls="'descrizione-' + vehicle.id"
-                            >
-                                {{ descrizioniVisibili.includes(vehicle.id) ? 'Nascondi descrizione' : 'Mostra descrizione' }}
-                            </button>
-
-                            <!-- Description Content -->
-                            <div
-                                v-if="descrizioniVisibili.includes(vehicle.id)"
-                                class="descrizioni"
-                                :id="'descrizione-' + vehicle.id"
-                                aria-live="polite"
-                            >
-                                <template v-if="Array.isArray(vehicle.descrizioni) && vehicle.descrizioni.length > 0">
-                                    <p v-for="(d, index) in vehicle.descrizioni" :key="index">{{ d }}</p>
-                                </template>
-                                <template v-else-if="vehicle.descrizione && typeof vehicle.descrizione === 'string'">
-                                    <p>{{ vehicle.descrizione }}</p>
-                                </template>
+                        <div class="card-body d-flex flex-column p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h3 class="card-title h5 mb-0 fw-bold">
+                                     {{ vehicle.marca }} {{ vehicle.modello }}
+                                     <span v-if="vehicle.versione" class="d-block text-muted small mt-1">{{ vehicle.versione }}</span>
+                                 </h3>
+                                <span 
+                                    :class="['badge', { 
+                                        'bg-success': vehicle.statoVendita === 'disponibile' || !vehicle.statoVendita, 
+                                        'bg-warning': vehicle.statoVendita === 'trattativa',
+                                        'bg-danger': vehicle.statoVendita === 'venduto'
+                                    }]"
+                                    style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;"
+                                >
+                                    {{ vehicle.statoVendita || 'Disponibile' }}
+                                </span>
                             </div>
+                            
+                            <div class="vehicle-specs-grid mb-4">
+                                <div class="spec-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>{{ formatMeseAnno(vehicle) }}</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>{{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() + ' km' : 'N/A' }}</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-cog"></i>
+                                    <span>{{ vehicle.cambio || 'N/A' }} <small v-if="vehicle.marce">({{ vehicle.marce }})</small></span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span>{{ vehicle.carburante || 'N/A' }}</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>{{ vehicle.potenza || 'N/A' }}</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-palette"></i>
+                                    <span>{{ vehicle.colore || 'N/A' }}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <div class="price-tag">
+                                    <span class="h4 fw-bold mb-0 text-primary-custom">
+                                        {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'N/A' }}
+                                    </span>
+                                </div>
+                                <button
+                                    class="btn btn-outline-light btn-sm rounded-pill px-3"
+                                    @click="toggleDescrizione(vehicle._id)"
+                                    :aria-expanded="descrizioniVisibili.includes(vehicle._id) ? 'true' : 'false'"
+                                >
+                                    {{ descrizioniVisibili.includes(vehicle._id) ? 'Meno info' : 'Dettagli' }}
+                                </button>
+                            </div>
+
+                            <!-- Expandable Description -->
+                            <div
+                                v-show="descrizioniVisibili.includes(vehicle._id)"
+                                class="mt-3 p-3 bg-dark-subtle rounded small border-start border-primary-custom border-3"
+                                style="transition: all 0.3s ease;"
+                            >
+                                <p class="mb-0 text-white-50">
+                                    {{ vehicle.descrizione || (Array.isArray(vehicle.descrizioni) ? vehicle.descrizioni[0] : 'Nessuna descrizione disponibile.') }}
+                                </p>
+                            </div>
+
+                            <!-- Card Actions -->
+                            <div class="row g-2 mt-3 pt-3 border-top border-secondary-subtle">
+                                <div class="col-6">
+                                    <a :href="'tel:+393333330834'" class="btn btn-outline-primary w-100 btn-sm">
+                                        <i class="fas fa-phone-alt me-1"></i> Chiama
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a 
+                                        :href="'https://wa.me/393333330834?text=Ciao, sono interessato a ' + vehicle.marca + ' ' + vehicle.modello" 
+                                        target="_blank" 
+                                        class="btn btn-success w-100 btn-sm"
+                                    >
+                                        <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </article>
