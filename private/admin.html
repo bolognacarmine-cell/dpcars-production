@@ -172,9 +172,19 @@
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--ferrari-red);
-      background: rgba(255,255,255,.15);
-      box-shadow: var(--speed-blur), 0 0 0 4px rgba(220,38,38,.25), inset 0 2px 15px rgba(220,38,38,.1);
+      background: rgba(255,255,255,0.15);
+      box-shadow: var(--speed-blur), 0 0 0 4px rgba(220,38,38,0.25), inset 0 2px 15px rgba(220,38,38,0.1);
       transform: translateY(-2px);
+    }
+
+    /* Disabilita frecce e scroll accidentale su input numero */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
     }
 
     input::placeholder, textarea::placeholder { color: rgba(255,255,255,.5); }
@@ -614,6 +624,13 @@ document.getElementById('form-veicolo').addEventListener('submit', async e => {
 });
 
 caricaVeicoli();
+
+// Impedisce il cambio valore con la rotella del mouse sugli input numerici
+document.addEventListener("wheel", function (event) {
+  if (document.activeElement.type === "number") {
+    document.activeElement.blur();
+  }
+});
 </script>
 
 <script>
