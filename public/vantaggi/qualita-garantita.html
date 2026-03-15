@@ -35,23 +35,34 @@
     <section class="container py-5">
         <h1>Qualità Garantita</h1>
         <div id="vantaggio-contenuto" class="vantaggio-dettaglio">
-            Caricamento contenuto...
+            <!-- Sezione Codacons Aggiunta Manualmente -->
+            <div class="codacons-section mb-4 p-4 border border-success rounded bg-dark" style="border-width: 2px !important; border-color: #198754 !important;">
+                <div class="d-flex align-items-center mb-3 flex-wrap">
+                    <img src="/immagini/codacons-logo.png" alt="Codacons Logo" style="width: 100px; height: auto;" class="me-3 mb-2">
+                    <h4 class="text-success mb-0 fw-bold fs-3">🌟 PARCO AUTO CERTIFICATO OK CODACONS 🌟</h4>
+                </div>
+                <ul class="list-unstyled mb-4 fs-5">
+                    <li class="mb-2">✅ <strong>Garanzia Legale 12-24 mesi</strong> su tutti i veicoli usati</li>
+                    <li class="mb-2">✅ <strong>Controlli meccanici certificati</strong> Garanzia Mec</li>
+                    <li class="mb-2">✅ <strong>Tutela consumatori</strong> Codice del Consumo</li>
+                    <li class="mb-2">✅ <strong>Riparazioni gratuite</strong> difetti conformità</li>
+                    <li class="mb-2">✅ <strong>Certificato Conformità UE (COC)</strong> incluso</li>
+                    <li class="mb-2">✅ <strong>Sistema ConSenso</strong> per reclami rapidi</li>
+                </ul>
+                <p class="mt-3 mb-2 fs-4">👉 <strong>Azienda AFFIDABILE</strong> riconosciuta da Codacons</p>
+                <p class="text-danger mb-0 fw-bold fs-4">🅾️ Solo auto selezionate e garantite al 100%</p>
+            </div>
+
+            <h3>Il nostro impegno per la qualità</h3>
+            <p>Da DP CARS, la qualità non è un'opzione, ma uno standard. Ogni veicolo nel nostro parco auto viene sottoposto a rigorosi controlli tecnici prima di essere messo in vendita, garantendo trasparenza e sicurezza totale per il cliente.</p>
         </div>
         <a href="/" class="btn btn-primary mt-4">Torna alla home</a>
     </section>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const contenuto = document.getElementById('vantaggio-contenuto');
-        const slug = 'qualita-garantita';
-        fetch(`/api/dpcars/${slug}`)
-            .then(res => res.ok ? res.json() : Promise.reject())
-            .then(data => {
-                contenuto.innerHTML = data.contenuto || '<p>Contenuto non disponibile.</p>';
-            })
-            .catch(() => {
-                contenuto.innerHTML = '<p class="text-danger">Errore caricamento contenuto.</p>';
-            });
+        // Caricamento dinamico disabilitato per questa pagina per mantenere le modifiche manuali
+        // o rimosso per evitare sovrascritture se l'API non è aggiornata
     });
     </script>
 </body>
