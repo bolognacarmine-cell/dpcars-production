@@ -477,6 +477,13 @@ async function caricaVeicoli() {
 
     const veicoli = await res.json();
 
+    // Ordina alfabeticamente per Marca e poi per Modello
+    veicoli.sort((a, b) => {
+      const nameA = (a.marca + ' ' + a.modello).toLowerCase();
+      const nameB = (b.marca + ' ' + b.modello).toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+
     veicoli.forEach(v => {
       const statoColor = v.statoVendita === 'venduto' ? '#EF4444' :
                          v.statoVendita === 'trattativa' ? '#F59E0B' : '#10B981';
