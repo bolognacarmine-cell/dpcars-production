@@ -1176,6 +1176,7 @@ window.silktideConsentManagerConfig = {
                             <option value="price-desc">Prezzo decrescente</option>
                             <option value="year-desc">Anno più recente</option>
                             <option value="km-asc">Km minori</option>
+                            <option value="alpha-asc">Marca/Modello (A-Z)</option>
                         </select>
                     </div>
                 </div>
@@ -1191,16 +1192,17 @@ window.silktideConsentManagerConfig = {
 
                 <div class="sort-controls">
                     <select 
-                        id="sort-by-header" 
-                        class="form-select" 
-                        v-model="filters.sort" 
-                        aria-label="Ordina veicoli"
-                    >
-                        <option value="price-asc">Prezzo crescente</option>
-                        <option value="price-desc">Prezzo decrescente</option>
-                        <option value="year-desc">Anno più recente</option>
-                        <option value="km-asc">Km minori</option>
-                    </select>
+                            id="sort-by-header" 
+                            class="form-select" 
+                            v-model="filters.sort" 
+                            aria-label="Ordina veicoli"
+                        >
+                            <option value="price-asc">Prezzo crescente</option>
+                            <option value="price-desc">Prezzo decrescente</option>
+                            <option value="year-desc">Anno più recente</option>
+                            <option value="km-asc">Km minori</option>
+                            <option value="alpha-asc">Marca/Modello (A-Z)</option>
+                        </select>
                 </div>
             </div>
 
@@ -2035,6 +2037,14 @@ document.addEventListener('DOMContentLoaded', function() {
                       sorted.sort((a, b) =>
                           (a.chilometri || 0) -
                           (b.chilometri || 0));
+                      break;
+
+                  case 'alpha-asc':
+                      sorted.sort((a, b) => {
+                          const nameA = (a.marca + ' ' + a.modello).toLowerCase();
+                          const nameB = (b.marca + ' ' + b.modello).toLowerCase();
+                          return nameA.localeCompare(nameB);
+                      });
                       break;
               }
 
