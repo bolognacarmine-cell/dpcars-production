@@ -35,23 +35,46 @@
     <section class="container py-5">
         <h1>Finanziamenti</h1>
         <div id="vantaggio-contenuto" class="vantaggio-dettaglio">
-            Caricamento contenuto...
+            <!-- Sezione Partner Finanziari Aggiunta Manualmente -->
+            <div class="partners-section mb-4 p-4 border border-primary rounded bg-dark" style="border-width: 2px !important; border-color: #0d6efd !important;">
+                <div class="text-center mb-4">
+                    <h2 class="text-primary fw-bold">💳 FINANZIAMENTI FACILI CON I MIGLIORI PARTNER 💳</h2>
+                </div>
+                
+                <div class="row align-items-center justify-content-center g-4 mb-4">
+                    <div class="col-6 col-md-3 text-center">
+                        <img src="/immagini/fiditalia.png" alt="Fiditalia" class="img-fluid rounded bg-white p-2" style="max-height: 60px;">
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <img src="/immagini/deutsche.png" alt="Deutsche Bank" class="img-fluid rounded bg-white p-2" style="max-height: 60px;">
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Santander_Logo.svg/1200px-Santander_Logo.svg.png" alt="Santander" class="img-fluid rounded bg-white p-2" style="max-height: 60px;">
+                    </div>
+                </div>
+
+                <ul class="list-unstyled mb-4 fs-5 text-center">
+                    <li class="mb-2">✅ <strong>Fiditalia</strong></li>
+                    <li class="mb-2">✅ <strong>Deutsche Bank</strong></li>
+                    <li class="mb-2">✅ <strong>Santander</strong></li>
+                    <li class="mb-2">✅ <strong>Rate personalizzabili</strong></li>
+                    <li class="mb-2">✅ <strong>Pratiche rapide</strong></li>
+                    <li class="mb-2">✅ <strong>Soluzioni per tutti</strong></li>
+                </ul>
+
+                <div class="text-center mt-4">
+                    <p class="fs-4 fw-bold">Contattaci per il tuo piano su misura!</p>
+                </div>
+            </div>
+
+            <p>Offriamo soluzioni di finanziamento flessibili e trasparenti, studiate per adattarsi alle tue esigenze. Grazie alla collaborazione con i principali istituti di credito, possiamo garantirti tassi competitivi e tempi di approvazione rapidissimi.</p>
         </div>
         <a href="/" class="btn btn-primary mt-4">Torna alla home</a>
     </section>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const contenuto = document.getElementById('vantaggio-contenuto');
-        const slug = 'finanziamenti';
-        fetch(`/api/dpcars/${slug}`)
-            .then(res => res.ok ? res.json() : Promise.reject())
-            .then(data => {
-                contenuto.innerHTML = data.contenuto || '<p>Contenuto non disponibile.</p>';
-            })
-            .catch(() => {
-                contenuto.innerHTML = '<p class="text-danger">Errore caricamento contenuto.</p>';
-            });
+        // Caricamento dinamico disabilitato per mantenere le modifiche manuali
     });
     </script>
 </body>
