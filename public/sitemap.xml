@@ -10,32 +10,48 @@
 
   <!-- CATALOGO VEICOLI - Alta rotazione -->
   <url>
-    <loc>https://www.dpcars.it/veicoli</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://www.dpcars.it/#inventory</loc>
+    <lastmod>2026-03-17</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- OFFERTA SPECIALI -->
-  <url>
-    <loc>https://www.dpcars.it/offerte</loc>
-    <lastmod>2026-03-03</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- FINANZIAMENTI -->
   <url>
-    <loc>https://www.dpcars.it/finanziamenti</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://www.dpcars.it/vantaggi/finanziamenti.html</loc>
+    <lastmod>2026-03-17</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- QUALITA GARANTITA -->
+  <url>
+    <loc>https://www.dpcars.it/vantaggi/qualita-garantita.html</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ASSISTENZA -->
+  <url>
+    <loc>https://www.dpcars.it/vantaggi/assistenza-post-vendita.html</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- BLOG -->
+  <url>
+    <loc>https://www.dpcars.it/blog.html</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- CONTATTI -->
   <url>
-    <loc>https://www.dpcars.it/contatti</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://www.dpcars.it/#contact</loc>
+    <lastmod>2026-03-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
