@@ -714,6 +714,46 @@
             background: #111;
         }
 
+        /* Stili Custom per il Checkbox Privacy */
+        #richiedi-form .form-check {
+            display: flex;
+            align-items: flex-start;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        #richiedi-form .form-check-input {
+            min-width: 22px;
+            height: 22px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--primary-sport);
+            margin-top: 2px;
+            margin-right: 12px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        #richiedi-form .form-check-input:checked {
+            background-color: var(--primary-sport);
+            border-color: var(--primary-sport);
+        }
+
+        #richiedi-form .form-check-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            #richiedi-form .form-check {
+                padding-left: 5px;
+            }
+            #richiedi-form .form-check-label {
+                font-size: 0.9rem;
+            }
+        }
+
         /* =========================================================
            CONTACT SECTION
         ========================================================= */
@@ -1674,18 +1714,18 @@ document.addEventListener('click', function(e) {
 </div>
 
 <!-- ✅ CONSENSO GDPR OBBLIGATORIO (Art. 7) -->
-<div class="col-12 mt-3 px-3">
-  <div class="form-check ps-0">
-    <input class="form-check-input me-3" type="checkbox" id="privacyOk" name="privacyOk" required>
-    <label class="form-check-label text-light fs-6" for="privacyOk">
-      ✅ Accetto trattamento dati personali per contatto 
+<div class="col-12 mt-3">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="privacyOk" name="privacyOk" required>
+    <label class="form-check-label" for="privacyOk">
+      Accetto il trattamento dei dati personali per essere ricontattato 
       <a href="privacy.html" target="_blank" class="text-warning fw-bold text-decoration-none">
         (Privacy Policy)
       </a>
     </label>
-    <div class="form-text text-muted small mt-1">
-      Solo per rispondere alla tua richiesta.
-    </div>
+  </div>
+  <div class="form-text text-muted small mt-2 ms-sm-4 ps-sm-2">
+    I tuoi dati saranno usati esclusivamente per rispondere alla tua richiesta.
   </div>
 </div>
 
