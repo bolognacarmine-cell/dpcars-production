@@ -1983,7 +1983,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                   const matchType =
                       this.filters.type === 'all' ||
-                      this.filters.type === vehicle.tipo;
+                      (vehicle.tipo || 'auto').toLowerCase() === this.filters.type.toLowerCase();
 
                   const search = this.filters.search.toLowerCase();
 

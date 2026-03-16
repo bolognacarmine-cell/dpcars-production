@@ -125,6 +125,12 @@ const VehicleSchema = new mongoose.Schema(
       enum: ["disponibile", "venduto", "in trattativa"],
       default: "disponibile",
     },
+
+    tipo: {
+      type: String,
+      enum: ["auto", "moto"],
+      default: "auto",
+    },
   },
   {
     timestamps: true, // aggiunge createdAt e updatedAt
