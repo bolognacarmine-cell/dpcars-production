@@ -157,18 +157,22 @@ function renderVehicles(vehicles) {
 }
 
 /* =========================================================
-   LAZY SLIDER INITIALIZATION
+   LAZY SLIDER INITIALIZATION (SMART AUTO-START)
 ========================================================= */
 function initLazySliders() {
-  $$('.vehicle-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      const slider = card.querySelector('.slider');
-      if (slider && !slider.classList.contains('initialized')) {
-        initSlider(slider);
-        slider.classList.add('initialized');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const slider = entry.target.querySelector('.slider');
+        if (slider && !slider.classList.contains('initialized')) {
+          initSlider(slider);
+          slider.classList.add('initialized');
+        }
       }
-    }, { once: true });
-  });
+    });
+  }, { threshold: 0.1 });
+
+  $$('.vehicle-card').forEach(card => observer.observe(card));
 }
 
 /* =========================================================
