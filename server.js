@@ -17,6 +17,18 @@ app.set("trust proxy", 1);
 app.disable("x-powered-by");
 
 // ==========================
+// REDIRECT TO CUSTOM DOMAIN (SEO 301)
+// ==========================
+app.use((req, res, next) => {
+  const host = req.get('host');
+  // Se l'host è quello di Render o il dominio senza www, reindirizza a www.dpcars.it
+  if (host === 'dpcars-production.onrender.com' || host === 'dpcars.it') {
+    return res.redirect(301, `https://www.dpcars.it${req.originalUrl}`);
+  }
+  next();
+});
+
+// ==========================
 // SECURITY
 // ==========================
 
