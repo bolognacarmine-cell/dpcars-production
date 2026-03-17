@@ -152,8 +152,69 @@ function renderVehicles(vehicles) {
   }).join('');
 
   console.log(`✅ Renderizzati ${vehicles.length} veicoli`);
-  setTimeout(initSliders, 50);
   initIndicazioniButtons();
+  initLazySliders();
+}
+
+/* =========================================================
+   LAZY SLIDER INITIALIZATION
+========================================================= */
+function initLazySliders() {
+  $$('.vehicle-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const slider = card.querySelector('.slider');
+      if (slider && !slider.classList.contains('initialized')) {
+        initSlider(slider);
+        slider.classList.add('initialized');
+      }
+    }, { once: true });
+  });
+}
+
+/* =========================================================
+   SINGLE SLIDER LOGIC
+========================================================= */
+function initSlider(slider) {
+  const slides = slider.querySelectorAll('.slide');
+  if (slides.length <= 1) return;
+
+  const dotsContainer = slider.querySelector('.dots');
+  const prevBtn = slider.querySelector('.prev');
+  const nextBtn = slider.querySelector('.next');
+
+  let index = 0;
+  let timer;
+
+  dotsContainer.innerHTML = Array.from(slides)
+    .map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-i="${i}"></span>`)
+    .join('');
+
+  const dots = dotsContainer.querySelectorAll('.dot');
+
+  const update = (newIndex) => {
+    slides.forEach((s, n) => s.classList.toggle('active', n === newIndex));
+    dots.forEach((d, n) => d.classList.toggle('active', n === newIndex));
+    index = newIndex;
+  };
+
+  prevBtn.onclick = () => update((index - 1 + slides.length) % slides.length);
+  nextBtn.onclick = () => update((index + 1) % slides.length);
+
+  dotsContainer.onclick = (e) => {
+    if (e.target.classList.contains('dot')) {
+      update(Number(e.target.dataset.i));
+    }
+  };
+
+  const startAutoplay = () => {
+    clearInterval(timer);
+    timer = setInterval(() => nextBtn.click(), CONFIG.AUTO_SLIDE_DELAY);
+  };
+
+  slider.onmouseenter = () => clearInterval(timer);
+  slider.onmouseleave = startAutoplay;
+
+  startAutoplay();
 }
 
 /* =========================================================
@@ -173,50 +234,8 @@ function initIndicazioniButtons() {
 }
 
 /* =========================================================
-   SLIDER
-========================================================= */
-function initSliders() {
-  $$('.slider').forEach(slider => {
-    const slides = slider.querySelectorAll('.slide');
-    if (slides.length <= 1) return;
-
-    const dots = slider.querySelector('.dots');
-    const prev = slider.querySelector('.prev');
-    const next = slider.querySelector('.next');
-
-    let index = 0;
-    let timer;
-
-    dots.innerHTML = slides
-      .map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-i="${i}"></span>`)
-      .join('');
-
-    const update = i => {
-      slides.forEach((s, n) => s.classList.toggle('active', n === i));
-      dots.querySelectorAll('.dot').forEach((d, n) => d.classList.toggle('active', n === i));
-      index = i;
-    };
-
-    prev.onclick = () => update((index - 1 + slides.length) % slides.length);
-    next.onclick = () => update((index + 1) % slides.length);
-
-    dots.onclick = e => {
-      if (e.target.classList.contains('dot')) {
-        update(+e.target.dataset.i);
-      }
-    };
-
-    timer = setInterval(() => next.click(), CONFIG.AUTO_SLIDE_DELAY);
-    slider.onmouseenter = () => clearInterval(timer);
-    slider.onmouseleave = () =>
-      timer = setInterval(() => next.click(), CONFIG.AUTO_SLIDE_DELAY);
-  });
-}
-
-/* =========================================================
    MODAL DETTAGLI
 ========================================================= */
-let currentModal = null;
 
 document.addEventListener('click', e => {
   const btn = e.target.closest('.js-details');
