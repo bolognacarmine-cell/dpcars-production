@@ -1442,26 +1442,7 @@ window.silktideConsentManagerConfig = {
         <!-- ================================
              INVENTORY SECTION
         ================================ -->
-        <section id="inventory" class="py-5" aria-label="Sezione inventario veicoli">
-            <div class="inventory-header d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                <h2 class="mb-0">Il nostro inventario</h2>
-
-                <div class="sort-controls">
-                    <select 
-                            id="sort-by-header" 
-                            class="form-select" 
-                            v-model="filters.sort" 
-                            aria-label="Ordina veicoli"
-                        >
-                            <option value="alpha-asc">Marca/Modello (A-Z)</option>
-                            <option value="price-asc">Prezzo crescente</option>
-                            <option value="price-desc">Prezzo decrescente</option>
-                            <option value="year-desc">Anno più recente</option>
-                            <option value="km-asc">Km minori</option>
-                        </select>
-                </div>
-            </div>
-
+        <section id="inventory" class="pb-5" aria-label="Sezione inventario veicoli">
             <!-- Vehicle Grid -->
             <div 
                 id="inventory-grid" 
