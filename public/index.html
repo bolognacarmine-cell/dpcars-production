@@ -315,37 +315,99 @@
             height: 1.3rem;
         }
 
-        /* Mobile Menu */
+        /* Mobile Menu Optimization */
         @media (max-width: 991px) {
             .navbar-collapse {
-                background: rgba(10, 10, 10, 0.95);
+                background: rgba(10, 10, 10, 0.98);
                 padding: 1.5rem;
                 margin-top: 0.5rem;
                 border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 23, 68, 0.2);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .navbar-nav {
+                align-items: flex-start !important;
             }
 
             .navbar-nav .nav-link {
-                padding: 0.75rem 1rem !important;
+                width: 100%;
+                padding: 1rem !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 1.1rem;
             }
 
-            .navbar-nav .nav-link:last-child {
-                border-bottom: none;
+            .navbar-nav .btn-primary {
+                width: 100%;
+                margin-top: 1rem;
+                padding: 1rem !important;
+                font-size: 1.1rem;
             }
 
+            .hero-content h1 {
+                font-size: 2.8rem;
+                line-height: 1.2;
+            }
+
+            .hero-content .lead {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Small devices (320px - 375px) */
+        @media (max-width: 375px) {
+            .navbar-brand .brand-name {
+                font-size: 1.1rem;
+            }
             .brand-logo {
-                height: 45px;
+                height: 38px;
+                width: 38px;
             }
-
-            .brand-name {
-                font-size: 1.3rem;
-                color: #ff1744 !important;
+            .hero-content h1 {
+                font-size: 2.2rem;
             }
+            .btn-lg {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
 
-            .brand-tagline {
-                font-size: 0.7rem;
-                color: #ffffff !important;
+        /* Responsive spacing for sections */
+        .py-5 {
+            padding-top: 3rem !important;
+            padding-bottom: 3rem !important;
+        }
+
+        @media (max-width: 768px) {
+            .py-5 {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+            
+            #inventory-grid {
+                padding: 0 10px;
+            }
+            
+            .card-body {
+                padding: 1.5rem !important;
+            }
+        }
+
+        /* Header logic for overlap */
+        body {
+            padding-top: 70px; /* Previene sovrapposizione header su contenuti */
+        }
+        
+        @media (min-width: 992px) {
+            body {
+                padding-top: 80px;
             }
         }
 
@@ -1231,31 +1293,31 @@ window.silktideConsentManagerConfig = {
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="#home">Home</a>
+                            <a class="nav-link" href="#home" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/#inventory">Inventario</a>
+                            <a class="nav-link" href="/#inventory" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Inventario</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#mondo-auto-hub">Mondo Auto</a>
+                            <a class="nav-link" href="#mondo-auto-hub" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Mondo Auto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#permuta">Permuta</a>
+                            <a class="nav-link" href="#permuta" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Permuta</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#chi-siamo">Chi siamo</a>
+                            <a class="nav-link" href="#chi-siamo" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Chi siamo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#reviews">Recensioni</a>
+                            <a class="nav-link" href="#reviews" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Recensioni</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#blog-section">Blog</a>
+                            <a class="nav-link" href="#blog-section" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Blog</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contatti</a>
+                            <a class="nav-link" href="#contact" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Contatti</a>
                         </li>
                         <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                            <a href="#contact" class="btn btn-primary">
+                            <a href="#contact" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
                                 <i class="fas fa-paper-plane me-1"></i> Richiedi
                             </a>
                         </li>
