@@ -1,58 +1,130 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
+const cloudinary = require('../cloudinary');
+const Permuta = require('../models/Permuta');
+const fs = require('fs');
 
-// Configurazione Multer per l'upload delle immagini
+// Configurazione Multer per storage temporaneo
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/') // Assicurati che la cartella 'uploads' esista
+  destination: (req, file, cb) => {
+    const dir = 'uploads/temp';
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// Rotta per gestire la richiesta di permuta
+// Rotta per inviare la richiesta di permuta
 router.post('/', upload.array('immagini', 10), async (req, res) => {
   try {
     const data = req.body;
-    const files = req.files;
+    const images = [];
 
-    console.log('--- NUOVA RICHIESTA DI PERMUTA ---');
-    console.log('Dati Personali:', {
-      nome: data.nome_cognome,
+    // Caricamento immagini su Cloudinary se presenti
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: 'permute'
+        });
+        images.push({
+          url: result.secure_url,
+          public_id: result.public_id
+        });
+        // Elimina file temporaneo
+        fs.unlinkSync(file.path);
+      }
+    }
+
+    // Creazione record nel database
+    const nuovaPermuta = new Permuta({
+      nome_cognome: data.nome_cognome,
       email: data.email,
       telefono: data.telefono,
-      citta: data.citta
-    });
-    console.log('Dati Veicolo:', {
+      citta: data.citta,
       marca: data.marca,
       modello: data.modello,
-      anno: data.anno,
-      km: data.km,
-      alimentazione: data.alimentazione
+      versione: data.versione,
+      anno: parseInt(data.anno),
+      mese: data.mese ? parseInt(data.mese) : undefined,
+      km: parseInt(data.km),
+      alimentazione: data.alimentazione,
+      cambio: data.cambio,
+      cilindrata: data.cilindrata ? parseInt(data.cilindrata) : undefined,
+      potenza: data.potenza,
+      colore: data.colore,
+      proprietari: data.proprietari ? parseInt(data.proprietari) : undefined,
+      targa: data.targa,
+      condizioni: data.condizioni,
+      incidentata: data.incidentata === 'si',
+      tagliandata: data.tagliandata === 'si',
+      revisione: data.revisione === 'si',
+      danni_esterni: data.danni_esterni === 'si',
+      danni_interni: data.danni_interni === 'si',
+      fumatori: data.fumatori === 'si',
+      gomme_ok: data.gomme_ok === 'si',
+      descrizione: data.descrizione,
+      auto_interesse: data.auto_interesse,
+      immagini: images,
+      privacy: data.privacy === 'on' || data.privacy === 'true' || data.privacy === true,
+      marketing: data.marketing === 'on' || data.marketing === 'true' || data.marketing === true
     });
-    console.log('Immagini caricate:', files ? files.length : 0);
-    console.log('---------------------------------');
 
-    // Qui andrebbe la logica per inviare un'email (es. con nodemailer)
-    // o salvare la richiesta nel database.
+    await nuovaPermuta.save();
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: 'Richiesta di permuta ricevuta con successo.'
+      message: 'Richiesta di permuta inviata con successo.'
     });
 
   } catch (error) {
-    console.error('Errore gestione permuta:', error);
+    console.error('Errore invio permuta:', error);
     res.status(500).json({
       success: false,
-      message: 'Si è verificato un errore nel server.'
+      message: 'Errore durante l\'invio della richiesta.'
     });
+  }
+});
+
+// Rotta per ottenere tutte le richieste (per Admin)
+router.get('/', async (req, res) => {
+  try {
+    const permute = await Permuta.find().sort({ createdAt: -1 });
+    res.json(permute);
+  } catch (error) {
+    res.status(500).json({ error: 'Errore nel recupero delle richieste.' });
+  }
+});
+
+// Rotta per aggiornare lo stato di una richiesta
+router.patch('/:id', async (req, res) => {
+  try {
+    const { stato } = req.body;
+    const permuta = await Permuta.findByIdAndUpdate(req.params.id, { stato }, { new: true });
+    res.json(permuta);
+  } catch (error) {
+    res.status(500).json({ error: 'Errore nell\'aggiornamento dello stato.' });
+  }
+});
+
+// Rotta per eliminare una richiesta
+router.delete('/:id', async (req, res) => {
+  try {
+    const permuta = await Permuta.findById(req.params.id);
+    if (permuta && permuta.immagini.length > 0) {
+      // Elimina immagini da Cloudinary
+      for (const img of permuta.immagini) {
+        await cloudinary.uploader.destroy(img.public_id);
+      }
+    }
+    await Permuta.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Errore nell\'eliminazione della richiesta.' });
   }
 });
 

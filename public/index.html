@@ -905,6 +905,201 @@
                 max-width: 350px;
             }
         }
+
+        /* =========================================================
+           PERMUTA SECTION (INTEGRATED)
+        ========================================================= */
+        :root {
+          --dark-card: rgba(20, 20, 20, 0.95);
+        }
+
+        .step-container {
+          background: var(--dark-card);
+          backdrop-filter: blur(20px);
+          border-radius: 24px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 50px;
+          box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+          margin: 20px auto 80px auto;
+          max-width: 900px;
+          position: relative;
+          z-index: 10;
+        }
+
+        .form-step {
+          display: none;
+        }
+
+        .form-step.active {
+          display: block;
+          animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-indicator {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 50px;
+          position: relative;
+          padding: 0 20px;
+        }
+
+        .step-indicator::before {
+          content: '';
+          position: absolute;
+          top: 20px;
+          left: 50px;
+          right: 50px;
+          height: 2px;
+          background: rgba(255,255,255,0.05);
+          z-index: 1;
+        }
+
+        .step-dot {
+          width: 44px;
+          height: 44px;
+          background: #151515;
+          border: 2px solid rgba(255,255,255,0.1);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 2;
+          font-weight: 800;
+          transition: all 0.4s ease;
+          position: relative;
+          color: rgba(255,255,255,0.3);
+        }
+
+        .step-dot.active {
+          background: var(--primary-sport);
+          border-color: var(--primary-sport);
+          color: #fff;
+          transform: scale(1.1);
+          box-shadow: 0 0 25px rgba(225, 29, 72, 0.4);
+        }
+
+        .step-dot.completed {
+          background: #fff;
+          color: #000;
+          border-color: #fff;
+        }
+
+        .step-label {
+          position: absolute;
+          top: 55px;
+          font-size: 0.7rem;
+          white-space: nowrap;
+          color: rgba(255,255,255,0.3);
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          font-weight: 700;
+        }
+
+        .step-dot.active .step-label {
+          color: #fff;
+        }
+
+        .section-title {
+          font-size: 1.75rem;
+          font-weight: 800;
+          margin-bottom: 30px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .section-title i {
+          color: var(--primary-sport);
+          font-size: 1.5rem;
+        }
+
+        .custom-check-card {
+          background: rgba(255,255,255,0.02);
+          padding: 18px 22px;
+          border-radius: 16px;
+          border: 1px solid rgba(255,255,255,0.05);
+          transition: all 0.3s ease;
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .custom-check-card:hover {
+          background: rgba(255,255,255,0.04);
+          border-color: rgba(255,255,255,0.1);
+        }
+
+        .custom-check-card.active {
+          border-color: var(--primary-sport);
+          background: rgba(225, 29, 72, 0.05);
+        }
+
+        .preview-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 15px;
+          margin-top: 25px;
+        }
+
+        .preview-item {
+          position: relative;
+          aspect-ratio: 1;
+          border-radius: 12px;
+          overflow: hidden;
+          border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .preview-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .btn-action {
+          padding: 16px 35px;
+          border-radius: 16px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-next {
+          background: linear-gradient(135deg, var(--primary-sport), var(--accent-red));
+          border: none;
+          color: #fff;
+          box-shadow: 0 10px 30px rgba(225, 29, 72, 0.3);
+        }
+
+        .btn-next:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(225, 29, 72, 0.5);
+          color: #fff;
+        }
+
+        .btn-prev {
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
+          color: #fff;
+        }
+
+        .btn-prev:hover {
+          background: rgba(255,255,255,0.1);
+          color: #fff;
+          transform: translateY(-2px);
+        }
+
+        .honeypot { display: none; }
+
+        @media (max-width: 768px) {
+          .step-container { padding: 30px 20px; border-radius: 0; margin-top: 0; }
+          .step-label { display: none; }
+          .step-indicator::before { left: 30px; right: 30px; }
+        }
     </style>
 <!-- Silktide Consent Manager GDPR ITALIANO -->
 <link rel="stylesheet" id="silktide-consent-manager-css" href="/cookie-banner/silktide-consent-manager.css">
@@ -1042,7 +1237,7 @@ window.silktideConsentManagerConfig = {
                             <a class="nav-link" href="#inventory">Inventario</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/permuta.html">Permuta</a>
+                            <a class="nav-link" href="#permuta">Permuta</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#chi-siamo">Chi siamo</a>
@@ -1242,39 +1437,6 @@ window.silktideConsentManagerConfig = {
         </section>
 
         <!-- ================================
-             PERMUTA SECTION (NUOVA)
-        ================================ -->
-        <section id="permuta-cta" class="py-5 bg-dark-custom" aria-label="Sezione permuta auto">
-            <div class="container">
-                <div class="row align-items-center g-5">
-                    <div class="col-lg-6" data-aos="fade-right">
-                        <h2 class="display-5 fw-bold mb-4">Vuoi cambiare auto? <span class="hero-accent">Permuta il tuo usato</span></h2>
-                        <p class="lead mb-4">
-                            Da DP CARS valutiamo il tuo usato in modo professionale e trasparente. 
-                            Puoi utilizzare il valore della tua vecchia auto come acconto per l'acquisto di un nuovo veicolo nel nostro salone.
-                        </p>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="fas fa-check-circle text-primary-custom me-2"></i> Valutazione gratuita e senza impegno</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-primary-custom me-2"></i> Gestione burocratica semplificata</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-primary-custom me-2"></i> Quotazioni competitive di mercato</li>
-                        </ul>
-                        <a href="/permuta.html" class="btn btn-primary btn-lg px-5 py-3">
-                            <i class="fas fa-calculator me-2"></i> Valuta la tua permuta
-                        </a>
-                    </div>
-                    <div class="col-lg-6" data-aos="fade-left">
-                        <div class="position-relative">
-                            <img src="/immagini/foto2.avif" alt="Permuta Auto DP CARS" class="img-fluid rounded-4 shadow-lg border border-secondary-subtle">
-                            <div class="position-absolute bottom-0 end-0 p-4 bg-primary-custom text-white rounded-start-4 d-none d-md-block" style="background: var(--primary-sport);">
-                                <h4 class="mb-0 fw-bold">Valutazione in 24h</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================================
              INVENTORY SECTION
         ================================ -->
         <section id="inventory" class="py-5" aria-label="Sezione inventario veicoli">
@@ -1458,6 +1620,157 @@ window.silktideConsentManagerConfig = {
                         </div>
                     </div>
                 </article>
+            </div>
+        </section>
+
+        <!-- ================================
+             PERMUTA SECTION (INTEGRATED FORM)
+        ================================ -->
+        <section id="permuta" class="py-5 bg-dark-custom" aria-label="Sezione permuta auto">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="display-5 fw-bold mb-3">Vuoi cambiare auto? <span class="hero-accent">Permuta il tuo usato</span></h2>
+                    <p class="lead text-white-50">Valutazione professionale, immediata e senza impegno.</p>
+                </div>
+
+                <div class="step-container" data-aos="fade-up" data-aos-delay="200">
+                    <!-- INDICATORE STEP -->
+                    <div class="step-indicator">
+                        <div class="step-dot active" data-step="1">1 <span class="step-label">Anagrafica</span></div>
+                        <div class="step-dot" data-step="2">2 <span class="step-label">Veicolo</span></div>
+                        <div class="step-dot" data-step="3">3 <span class="step-label">Stato</span></div>
+                        <div class="step-dot" data-step="4">4 <span class="step-label">Media</span></div>
+                    </div>
+
+                    <form id="permutaForm" novalidate>
+                        <div class="honeypot"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+
+                        <!-- STEP 1: DATI PERSONALI -->
+                        <div class="form-step active" id="step-1">
+                            <h2 class="section-title"><i class="fas fa-user-circle"></i> I tuoi contatti</h2>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nome e Cognome *</label>
+                                    <input type="text" name="nome_cognome" class="form-control" required placeholder="Mario Rossi">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" name="email" class="form-control" required placeholder="mario@email.it">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Telefono *</label>
+                                    <input type="tel" name="telefono" class="form-control" required placeholder="+39 333 0000000">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Città *</label>
+                                    <input type="text" name="citta" class="form-control" required placeholder="Marcianise">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-5">
+                                <button type="button" class="btn btn-action btn-next" onclick="nextStep(2)">Procedi <i class="fas fa-chevron-right ms-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: DATI VEICOLO -->
+                        <div class="form-step" id="step-2">
+                            <h2 class="section-title"><i class="fas fa-car"></i> Scheda Veicolo</h2>
+                            <div class="row g-4">
+                                <div class="col-md-4"><label class="form-label">Marca *</label><input type="text" name="marca" class="form-control" required></div>
+                                <div class="col-md-4"><label class="form-label">Modello *</label><input type="text" name="modello" class="form-control" required></div>
+                                <div class="col-md-4"><label class="form-label">Versione</label><input type="text" name="versione" class="form-control"></div>
+                                <div class="col-md-3"><label class="form-label">Anno *</label><input type="number" name="anno" class="form-control" required min="1950" max="2026"></div>
+                                <div class="col-md-3"><label class="form-label">Mese</label><select name="mese" class="form-select"><option value="">Seleziona...</option><option value="1">Gennaio</option><option value="2">Febbraio</option><option value="3">Marzo</option><option value="4">Aprile</option><option value="5">Maggio</option><option value="6">Giugno</option><option value="7">Luglio</option><option value="8">Agosto</option><option value="9">Settembre</option><option value="10">Ottobre</option><option value="11">Novembre</option><option value="12">Dicembre</option></select></div>
+                                <div class="col-md-3"><label class="form-label">Km *</label><input type="number" name="km" class="form-control" required></div>
+                                <div class="col-md-3"><label class="form-label">Carburante *</label><select name="alimentazione" class="form-select" required><option value="">Seleziona...</option><option value="Benzina">Benzina</option><option value="Diesel">Diesel</option><option value="Ibrida">Ibrida</option><option value="Elettrica">Elettrica</option><option value="GPL">GPL</option></select></div>
+                                <div class="col-md-4"><label class="form-label">Cambio *</label><select name="cambio" class="form-select" required><option value="Manuale">Manuale</option><option value="Automatico">Automatico</option></select></div>
+                                <div class="col-md-4"><label class="form-label">Proprietari</label><input type="number" name="proprietari" class="form-control"></div>
+                                <div class="col-md-4"><label class="form-label">Targa</label><input type="text" name="targa" class="form-control"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-5">
+                                <button type="button" class="btn btn-action btn-prev" onclick="prevStep(1)"><i class="fas fa-chevron-left me-2"></i> Indietro</button>
+                                <button type="button" class="btn btn-action btn-next" onclick="nextStep(3)">Continua <i class="fas fa-chevron-right ms-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3: STATO -->
+                        <div class="form-step" id="step-3">
+                            <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Stato e Condizioni</h2>
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <label class="form-label">Condizioni generali *</label>
+                                    <select name="condizioni" class="form-select" required>
+                                        <option value="Ottime">Ottime (come nuova)</option>
+                                        <option value="Buone">Buone (normale usura)</option>
+                                        <option value="Sufficienti">Sufficienti (necessita lavori)</option>
+                                        <option value="Scarse">Scarse (molti lavori)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom-check-card d-flex justify-content-between align-items-center" onclick="toggleSwitch(this)">
+                                        <span>Veicolo incidentato?</span>
+                                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="incidentata" value="si"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom-check-card d-flex justify-content-between align-items-center active" onclick="toggleSwitch(this)">
+                                        <span>Tagliandi regolari?</span>
+                                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="tagliandata" value="si" checked></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom-check-card d-flex justify-content-between align-items-center active" onclick="toggleSwitch(this)">
+                                        <span>Revisione ok?</span>
+                                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="revisione" value="si" checked></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom-check-card d-flex justify-content-between align-items-center" onclick="toggleSwitch(this)">
+                                        <span>Auto per fumatori?</span>
+                                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="fumatori" value="si"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-5">
+                                <button type="button" class="btn btn-action btn-prev" onclick="prevStep(2)"><i class="fas fa-chevron-left me-2"></i> Indietro</button>
+                                <button type="button" class="btn btn-action btn-next" onclick="nextStep(4)">Ultimo Step <i class="fas fa-chevron-right ms-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 4: MEDIA -->
+                        <div class="form-step" id="step-4">
+                            <h2 class="section-title"><i class="fas fa-camera"></i> Foto e Note</h2>
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <label class="form-label">Note aggiuntive</label>
+                                    <textarea name="descrizione" class="form-control" rows="4" placeholder="Optional, piccoli difetti, lavori recenti..."></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label">Foto del veicolo (max 10)</label>
+                                    <div class="upload-area p-5 text-center border-dashed rounded-4" style="border: 2px dashed rgba(255,255,255,0.1); background: rgba(255,255,255,0.01);">
+                                        <i class="fas fa-images fa-3x mb-3 opacity-25"></i>
+                                        <p class="small text-white-50">Trascina qui le foto o clicca per selezionarle</p>
+                                        <input type="file" name="immagini" id="immagini" class="form-control" multiple accept="image/*" onchange="handlePreview(this)">
+                                    </div>
+                                    <div class="preview-grid" id="imagePreview"></div>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="privacyPermuta" name="privacy" required>
+                                        <label class="form-check-label" for="privacyPermuta">
+                                            Accetto il trattamento dei dati personali * 
+                                            <a href="privacy.html" target="_blank" class="text-warning fw-bold text-decoration-none">(Privacy Policy)</a>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="statusMsgPermuta" class="mt-4"></div>
+                            <div class="d-flex justify-content-between mt-5">
+                                <button type="button" class="btn btn-action btn-prev" onclick="prevStep(3)"><i class="fas fa-chevron-left me-2"></i> Indietro</button>
+                                <button type="submit" class="btn btn-action btn-next" id="submitBtnPermuta">Invia Richiesta <i class="fas fa-paper-plane ms-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
@@ -2213,6 +2526,111 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
   }).mount('#app');
+
+/* ===============================
+   PERMUTA FORM LOGIC
+================================= */
+function nextStep(step) {
+  const current = step - 1;
+  const stepDiv = document.getElementById('step-' + current);
+  const inputs = stepDiv.querySelectorAll('[required]');
+  let valid = true;
+
+  inputs.forEach(i => {
+    if(!i.value || (i.type === 'checkbox' && !i.checked)) {
+      i.classList.add('is-invalid');
+      valid = false;
+    } else {
+      i.classList.remove('is-invalid');
+    }
+  });
+
+  if(!valid) return;
+
+  document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
+  updateDots(step);
+  
+  // Scroll to section start
+  const section = document.getElementById('permuta');
+  if (section) {
+    window.scrollTo({
+      top: section.offsetTop - 100,
+      behavior: 'smooth'
+    });
+  }
+}
+
+function prevStep(step) {
+  document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
+  updateDots(step);
+}
+
+function updateDots(step) {
+  document.querySelectorAll('.step-dot').forEach(dot => {
+    const s = parseInt(dot.dataset.step);
+    dot.classList.toggle('active', s === step);
+    dot.classList.toggle('completed', s < step);
+  });
+}
+
+function toggleSwitch(card) {
+  const checkbox = card.querySelector('input');
+  checkbox.checked = !checkbox.checked;
+  card.classList.toggle('active', checkbox.checked);
+}
+
+function handlePreview(input) {
+  const grid = document.getElementById('imagePreview');
+  grid.innerHTML = '';
+  if(input.files) {
+    Array.from(input.files).forEach(f => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        grid.innerHTML += `<div class="preview-item"><img src="${e.target.result}"></div>`;
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const permutaForm = document.getElementById('permutaForm');
+    if (permutaForm) {
+        permutaForm.onsubmit = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtnPermuta');
+            const msg = document.getElementById('statusMsgPermuta');
+            
+            if(this.querySelector('[name="website"]').value) return; // Spam
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Invio...';
+
+            const formData = new FormData(this);
+            
+            try {
+                const res = await fetch('/api/permuta', { method: 'POST', body: formData });
+                const result = await res.json();
+                
+                if(result.success) {
+                    msg.innerHTML = `<div class="alert alert-success border-0 rounded-4 p-4"><h5 class="fw-bold"><i class="fas fa-check-circle me-2"></i>Richiesta Inviata!</h5>Ti contatteremo prestissimo per la valutazione.</div>`;
+                    this.reset();
+                    document.getElementById('imagePreview').innerHTML = '';
+                    btn.innerHTML = 'Completato <i class="fas fa-check ms-2"></i>';
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = 'Riprova <i class="fas fa-paper-plane ms-2"></i>';
+                msg.innerHTML = `<div class="alert alert-danger border-0 rounded-4 p-4">Si è verificato un errore. Riprova o chiamaci direttamente.</div>`;
+            }
+        };
+    }
+});
+
 /* ===============================
    WHATSAPP FORM SCRIPT
 ================================= */

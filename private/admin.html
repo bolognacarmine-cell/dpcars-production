@@ -407,6 +407,129 @@
     @keyframes fadeOut {
       to { opacity: 0; transform: translateY(-25px); height: 0; margin: 0; padding: 0; border: none; }
     }
+
+    /* TABS */
+    .admin-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(220,38,38,0.3);
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tab-btn.active {
+      background: var(--ferrari-red);
+      box-shadow: var(--speed-blur);
+      border-color: var(--ferrari-red);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PERMUTE STYLE */
+    .permuta-card {
+      background: rgba(30, 30, 30, 0.8);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .permuta-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+    }
+
+    .permuta-badge {
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-nuova { background: #3B82F6; color: #fff; }
+    .badge-in_gestione { background: #F59E0B; color: #fff; }
+    .badge-completata { background: #10B981; color: #fff; }
+    .badge-rifiutata { background: #EF4444; color: #fff; }
+
+    .permuta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .info-group h4 {
+      color: var(--dp-gold);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+    }
+
+    .info-item {
+      margin-bottom: 0.3rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .permuta-images {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 1rem 0;
+    }
+
+    .permuta-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .permuta-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .status-select {
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -419,7 +542,14 @@
   <h1>DP CARS ADMIN PANEL</h1>
 </header>
 
-<form id="form-veicolo" enctype="multipart/form-data">
+<div class="admin-tabs">
+  <button class="tab-btn active" onclick="switchTab('garage')">🏎️ Garage F1</button>
+  <button class="tab-btn" onclick="switchTab('permute')">📋 Richieste Permuta</button>
+</div>
+
+<div id="garage-tab" class="tab-content active">
+  <form id="form-veicolo" enctype="multipart/form-data">
+    <!-- ... form existing ... -->
   <label>Tipo Veicolo
     <select name="tipo" required>
       <option value="auto">Auto</option>
@@ -498,10 +628,130 @@
     <input name="immagini" type="file" multiple>
   </label>
   <button type="submit">🏎️ INSERISCI VEICOLO F1</button>
-</form>
+  </form>
 
-<h2>🏁 Veicoli nel Paddock</h2>
-<div id="lista-veicoli"></div>
+  <h2>🏁 Veicoli nel Paddock</h2>
+  <div id="lista-veicoli"></div>
+</div>
+
+<div id="permute-tab" class="tab-content">
+  <h2>📋 Richieste di Permuta</h2>
+  <div id="lista-permute">
+    <p style="text-align:center; padding:2rem; opacity:0.5;">Caricamento richieste...</p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  
+  document.getElementById(tabId + '-tab').classList.add('active');
+  document.querySelector(`button[onclick="switchTab('${tabId}')"]`).classList.add('active');
+  
+  if (tabId === 'permute') caricaPermute();
+  else caricaVeicoli();
+}
+
+async function caricaPermute() {
+  try {
+    const res = await fetch(`${API_BASE}/api/permuta`, { headers });
+    const container = document.getElementById('lista-permute');
+    container.innerHTML = '';
+    
+    const permute = await res.json();
+    
+    if (permute.length === 0) {
+      container.innerHTML = '<p style="text-align:center; padding:3rem; opacity:0.5;">Nessuna richiesta di permuta trovata.</p>';
+      return;
+    }
+
+    permute.forEach(p => {
+      const date = new Date(p.createdAt).toLocaleDateString('it-IT', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      
+      const card = document.createElement('div');
+      card.className = 'permuta-card';
+      card.innerHTML = `
+        <div class="permuta-header">
+          <div>
+            <h3 style="color:#fff; margin-bottom:5px;">${p.marca} ${p.modello}</h3>
+            <span class="text-muted" style="font-size:0.8rem;">Inviata il ${date}</span>
+          </div>
+          <span class="permuta-badge badge-${p.stato}">${p.stato.replace('_', ' ')}</span>
+        </div>
+        
+        <div class="permuta-grid">
+          <div class="info-group">
+            <h4>👤 Cliente</h4>
+            <div class="info-item"><b>Nome:</b> ${p.nome_cognome}</div>
+            <div class="info-item"><b>Email:</b> ${p.email}</div>
+            <div class="info-item"><b>Tel:</b> ${p.telefono}</div>
+            <div class="info-item"><b>Città:</b> ${p.citta}</div>
+          </div>
+          
+          <div class="info-group">
+            <h4>🚗 Veicolo</h4>
+            <div class="info-item"><b>Anno:</b> ${p.anno} ${p.mese ? '/ '+p.mese : ''}</div>
+            <div class="info-item"><b>Km:</b> ${p.km.toLocaleString()}</div>
+            <div class="info-item"><b>Alimentazione:</b> ${p.alimentazione}</div>
+            <div class="info-item"><b>Cambio:</b> ${p.cambio}</div>
+            <div class="info-item"><b>Proprietari:</b> ${p.proprietari || 'N/D'}</div>
+            <div class="info-item"><b>Targa:</b> ${p.targa || 'N/D'}</div>
+          </div>
+          
+          <div class="info-group">
+            <h4>🛠️ Stato</h4>
+            <div class="info-item"><b>Condizioni:</b> ${p.condizioni}</div>
+            <div class="info-item"><b>Incidentata:</b> ${p.incidentata ? 'Sì' : 'No'}</div>
+            <div class="info-item"><b>Tagliandata:</b> ${p.tagliandata ? 'Sì' : 'No'}</div>
+            <div class="info-item"><b>Revisionata:</b> ${p.revisione ? 'Sì' : 'No'}</div>
+            <div class="info-item"><b>Fumatori:</b> ${p.fumatori ? 'Sì' : 'No'}</div>
+          </div>
+        </div>
+
+        ${p.descrizione ? `<div style="margin-top:1.5rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px;"><b>Note:</b> ${p.descrizione}</div>` : ''}
+        ${p.auto_interesse ? `<div style="margin-top:0.5rem; padding:1rem; background:rgba(225,29,72,0.1); border-radius:10px;"><b>Interessato a:</b> ${p.auto_interesse}</div>` : ''}
+
+        <div class="permuta-images">
+          ${p.immagini.map(img => `<img src="${img.url}" class="permuta-img" onclick="window.open('${img.url}', '_blank')">`).join('')}
+        </div>
+
+        <div class="permuta-actions">
+          <select class="status-select" onchange="updatePermutaStatus('${p._id}', this.value)">
+            <option value="nuova" ${p.stato === 'nuova' ? 'selected' : ''}>Nuova</option>
+            <option value="in_gestione" ${p.stato === 'in_gestione' ? 'selected' : ''}>In Gestione</option>
+            <option value="completata" ${p.stato === 'completata' ? 'selected' : ''}>Completata</option>
+            <option value="rifiutata" ${p.stato === 'rifiutata' ? 'selected' : ''}>Rifiutata</option>
+          </select>
+          <button class="delete-btn" style="margin-top:0;" onclick="eliminaPermuta('${p._id}')">🗑️ Elimina</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function updatePermutaStatus(id, stato) {
+  try {
+    await fetch(`${API_BASE}/api/permuta/${id}`, {
+      method: 'PATCH',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stato })
+    });
+    caricaPermute();
+  } catch (err) { console.error(err); }
+}
+
+async function eliminaPermuta(id) {
+  if (!confirm('Eliminare definitivamente questa richiesta?')) return;
+  try {
+    await fetch(`${API_BASE}/api/permuta/${id}`, { method: 'DELETE', headers });
+    caricaPermute();
+  } catch (err) { console.error(err); }
+}
+</script>
 
 <script>
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
