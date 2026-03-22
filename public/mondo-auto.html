@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mondo Auto | News, Guide e Sicurezza Stradale | DP CARS</title>
+  <meta name="description" content="Mondo Auto di DP CARS: il tuo hub di contenuti su novità auto, sicurezza, codice della strada, eventi e consigli pratici per viaggiare sicuri.">
+  
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --primary-sport: #e11d48;
+      --accent-red: #b91c1c;
+      --bg-dark: #0a0a0a;
+      --card-bg: rgba(20, 20, 20, 0.9);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      padding-top: 70px;
+    }
+
+    /* --- Navbar --- */
+    .navbar {
+      padding: 0.6rem 0 !important;
+      background: rgba(10, 10, 10, 0.95) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .brand-logo { height: 38px; border-radius: 4px; }
+    .brand-name { font-weight: 800; font-size: 1.15rem; color: #fff; }
+    .brand-tagline { font-size: 0.6rem; letter-spacing: 2px; opacity: 0.6; }
+
+    /* --- Hero --- */
+    .mondo-hero {
+      padding: 80px 0 100px;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920');
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      border-bottom: 1px solid var(--primary-sport);
+    }
+
+    .mondo-hero h1 {
+      font-weight: 900;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 1rem;
+    }
+
+    /* --- Category Grid --- */
+    .category-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 30px;
+      height: 100%;
+      transition: var(--transition-base);
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .category-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary-sport);
+      background: rgba(30, 30, 30, 0.95);
+    }
+
+    .category-icon {
+      font-size: 2.5rem;
+      color: var(--primary-sport);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .category-card h3 {
+      font-weight: 800;
+      margin-bottom: 15px;
+      font-size: 1.25rem;
+    }
+
+    /* --- Featured Article --- */
+    .featured-article {
+      background: var(--card-bg);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      margin-bottom: 60px;
+    }
+
+    .featured-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    /* --- News Section --- */
+    .news-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      margin-bottom: 30px;
+      transition: var(--transition-base);
+    }
+
+    .news-card:hover {
+      background: rgba(255,255,255,0.05);
+      transform: scale(1.02);
+    }
+
+    .news-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    /* --- Links Hub --- */
+    .links-hub {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.1), rgba(0,0,0,0.4));
+      border-radius: 24px;
+      padding: 40px;
+      border: 1px solid rgba(225, 29, 72, 0.2);
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: #fff;
+      transition: var(--transition-base);
+    }
+
+    .link-item:hover {
+      background: var(--primary-sport);
+      color: #fff;
+      transform: translateX(10px);
+    }
+
+    @media (max-width: 768px) {
+      .featured-img { height: 250px; }
+      .mondo-hero { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <img src="/logo-og.jpg" alt="DP CARS Logo" class="brand-logo me-2">
+          <div class="brand-text d-flex flex-column">
+            <span class="brand-name">DP CARS</span>
+            <span class="brand-tagline">MARCIANISE</span>
+          </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/mondo-auto.html">Mondo Auto</a></li>
+            <li class="nav-item"><a class="nav-link" href="/permuta.html">Permuta</a></li>
+            <li class="nav-item"><a class="nav-link" href="/#contact">Contatti</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="mondo-hero">
+    <div class="container">
+      <h1 data-aos="fade-up">Mondo <span class="text-danger">Auto</span></h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">Il tuo hub informativo sull'universo automobilistico: guide, novità e sicurezza.</p>
+    </div>
+  </section>
+
+  <main class="container py-5">
+    
+    <!-- CATEGORIES -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-3" data-aos="zoom-in">
+        <div class="category-card">
+          <i class="fas fa-newspaper category-icon"></i>
+          <h3>Notizie Auto</h3>
+          <p class="small text-muted">Nuovi modelli, mercato elettrico e innovazioni tecnologiche.</p>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
+        <div class="category-card">
+          <i class="fas fa-gavel category-icon"></i>
+          <h3>Codice della Strada</h3>
+          <p class="small text-muted">Aggiornamenti normativi, sanzioni e nuove regole 2024.</p>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+        <div class="category-card">
+          <i class="fas fa-shield-alt category-icon"></i>
+          <h3>Sicurezza</h3>
+          <p class="small text-muted">Consigli di guida, manutenzione preventiva e controlli stagionali.</p>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+        <div class="category-card">
+          <i class="fas fa-calendar-star category-icon"></i>
+          <h3>Eventi</h3>
+          <p class="small text-muted">Raduni, fiere locali e appuntamenti per appassionati.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- MAIN CONTENT -->
+      <div class="col-lg-8">
+        <h2 class="mb-4 fw-bold">In Evidenza</h2>
+        <div class="featured-article" data-aos="fade-up">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1200" class="featured-img" alt="Auto Elettrica">
+          <div class="p-4">
+            <span class="badge bg-danger mb-2">NOVITÀ</span>
+            <h3>Il futuro dell'elettrico: cosa cambia nel 2024</h3>
+            <p class="text-muted">Analisi completa sulle nuove infrastrutture di ricarica e i modelli in arrivo sul mercato italiano.</p>
+            <a href="#" class="btn btn-outline-light btn-sm mt-2">Leggi di più</a>
+          </div>
+        </div>
+
+        <h2 class="mb-4 fw-bold">Ultime News</h2>
+        <div class="row g-4">
+          <div class="col-md-6" data-aos="fade-up">
+            <div class="news-card">
+              <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=600" class="news-img" alt="Sicurezza">
+              <div class="p-3">
+                <span class="small text-danger fw-bold">SICUREZZA</span>
+                <h5 class="mt-2">Guida notturna: 5 consigli essenziali</h5>
+                <a href="#" class="stretched-link"></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="news-card">
+              <img src="https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&q=80&w=600" class="news-img" alt="Manutenzione">
+              <div class="p-3">
+                <span class="small text-danger fw-bold">GUIDA PRATICA</span>
+                <h5 class="mt-2">Check-up estivo: cosa controllare</h5>
+                <a href="#" class="stretched-link"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="col-lg-4">
+        <div class="links-hub mb-4" data-aos="fade-left">
+          <h4 class="fw-bold mb-3"><i class="fas fa-link me-2"></i>Link Utili</h4>
+          <p class="small text-muted mb-4">Risorse istituzionali e strumenti per il tuo viaggio.</p>
+          
+          <a href="https://www.viaggiaresicuri.it/" target="_blank" class="link-item">
+            <i class="fas fa-globe-europe me-3"></i>
+            <div>
+              <div class="fw-bold">Viaggiare Sicuri</div>
+              <div class="small opacity-75">Portale della Farnesina</div>
+            </div>
+          </a>
+
+          <a href="#" class="link-item">
+            <i class="fas fa-calculator me-3"></i>
+            <div>
+              <div class="fw-bold">Calcolo Bollo</div>
+              <div class="small opacity-75">Agenzia delle Entrate</div>
+            </div>
+          </a>
+
+          <a href="#" class="link-item">
+            <i class="fas fa-id-card me-3"></i>
+            <div>
+              <div class="fw-bold">Portale dell'Automobilista</div>
+              <div class="small opacity-75">Punti patente e scadenze</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="p-4 rounded-4 bg-dark border border-secondary" data-aos="fade-left" data-aos-delay="100">
+          <h5 class="fw-bold mb-3">Cerchi un'auto?</h5>
+          <p class="small text-muted">Scopri le nostre ultime offerte garantite DP CARS.</p>
+          <a href="/#inventory" class="btn btn-danger w-100">Vedi Inventario</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container text-center">
+      <p class="small text-muted">© 2024 DP CARS - Marcianise. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+  </script>
+</body>
+</html>
