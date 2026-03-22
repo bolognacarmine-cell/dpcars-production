@@ -137,6 +137,7 @@ app.get('/sitemap.xml', async (req, res) => {
   <!-- Pagine Statiche Principali -->
   <url><loc>${baseUrl}/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>${baseUrl}/#inventory</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>${baseUrl}/permuta.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>${baseUrl}/vantaggi/finanziamenti.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>${baseUrl}/vantaggi/qualita-garantita.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>${baseUrl}/vantaggi/assistenza-post-vendita.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -180,7 +181,8 @@ require("./cloudinary");
 
 app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
-app.use("/api/dpcars", require("./routes/dpcars1"));   // ← Aggiunta corretta qui
+app.use("/api/dpcars", require("./routes/dpcars1"));
+app.use("/api/permuta", require("./routes/permuta"));
 
 // ==========================
 // TEST ROUTE
