@@ -328,55 +328,6 @@
       background: linear-gradient(135deg, #DC2626, #B91C1C);
     }
 
-    .carosello {
-      position: relative;
-      max-width: 400px;
-      height: 220px;
-      margin: 1rem 0;
-      overflow: hidden;
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(220,38,38,.6);
-      background: #111;
-    }
-
-    .carosello-img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      border-radius: 16px;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .carosello-img.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .carosello-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(220,38,38,0.7);
-      border: none;
-      color: white;
-      font-size: 1.8rem;
-      padding: 0.2rem 0.8rem;
-      cursor: pointer;
-      border-radius: 8px;
-      user-select: none;
-      z-index: 10;
-      transition: background-color 0.3s ease;
-    }
-
-    .carosello-btn:hover { background: rgba(220,38,38,1); }
-
-    .carosello-btn.prev { left: 10px; }
-    .carosello-btn.next { right: 10px; }
-
     @media (max-width: 768px) {
       body { padding: 0.8rem; overflow-x: hidden; }
       .f1-header { padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 12px; }
@@ -410,12 +361,6 @@
         margin-bottom: 1.2rem;
       }
       .veicolo strong { font-size: 1.2rem; }
-      
-      .carosello { 
-        max-width: 100%; 
-        height: 200px; 
-        margin: 1rem 0;
-      }
 
       button.delete-btn, button.edit-btn {
         width: 100%;
@@ -430,10 +375,6 @@
     @media (max-width: 480px) {
       h1 { font-size: 1.3rem; }
       .dp-logo-container { width: 70px; height: 70px; }
-    }
-
-    @keyframes fadeOut {
-      to { opacity: 0; transform: translateY(-25px); height: 0; margin: 0; padding: 0; border: none; }
     }
 
     /* TABS */
@@ -586,8 +527,8 @@
 </header>
 
 <div class="admin-tabs">
-  <button class="tab-btn active" onclick="switchTab('garage')">🏎️ Garage F1</button>
-  <button class="tab-btn" onclick="switchTab('permute')">📋 Richieste Permuta</button>
+  <button class="tab-btn active" data-tab="garage">🏎️ Garage F1</button>
+  <button class="tab-btn" data-tab="permute">📋 Richieste Permuta</button>
 </div>
 
 <div id="garage-tab" class="tab-content active">
@@ -669,11 +610,11 @@
   <label>Immagini
     <input name="immagini" type="file" multiple>
   </label>
-  <button type="submit">🏎️ INSERISCI VEICOLO F1</button>
+  <button type="submit" id="submit-btn-veicolo">🏎️ INSERISCI VEICOLO F1</button>
   </form>
 
   <div class="text-center mb-4">
-    <button class="delete-btn" onclick="logout()" style="width: auto; padding: 0.8rem 2rem;">🚪 LOGOUT</button>
+    <button class="logout-btn delete-btn" style="width: auto; padding: 0.8rem 2rem;">🚪 LOGOUT</button>
   </div>
 
   <h2>🏁 Veicoli nel Paddock</h2>
@@ -682,7 +623,7 @@
 
 <div id="permute-tab" class="tab-content">
   <div class="text-center mb-4">
-    <button class="delete-btn" onclick="logout()" style="width: auto; padding: 0.8rem 2rem;">🚪 LOGOUT</button>
+    <button class="logout-btn delete-btn" style="width: auto; padding: 0.8rem 2rem;">🚪 LOGOUT</button>
   </div>
 
   <h2>📋 Richieste di Permuta</h2>
@@ -694,7 +635,9 @@
 <script nonce="NONCE_PLACEHOLDER">
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
 
-// Gestione Login
+// ==============================
+// AUTH & SESSION
+// ==============================
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const user = document.getElementById('login-user').value;
@@ -707,9 +650,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user, pass })
     });
-
     const data = await res.json();
-
     if (data.success) {
       document.getElementById('login-overlay').style.display = 'none';
       caricaVeicoli();
@@ -730,13 +671,134 @@ async function checkSession() {
       document.getElementById('login-overlay').style.display = 'none';
       caricaVeicoli();
     }
-  } catch (err) {
-    console.error("Errore controllo sessione");
-  }
+  } catch (err) { console.error("Session check failed"); }
 }
 
-checkSession();
+async function logout() {
+  try {
+    await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' });
+    window.location.reload();
+  } catch (err) { console.error("Logout failed"); }
+}
 
+document.querySelectorAll('.logout-btn').forEach(btn => {
+  btn.addEventListener('click', logout);
+});
+
+// ==============================
+// TABS
+// ==============================
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId + '-tab').classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+  if (tabId === 'permute') caricaPermute();
+  else caricaVeicoli();
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// ==============================
+// VEICOLI (GARAGE)
+// ==============================
+async function caricaVeicoli() {
+  try {
+    const res = await fetch(`${API_BASE}/veicoli`);
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+    const container = document.getElementById('lista-veicoli');
+    container.innerHTML = '';
+    const veicoli = await res.json();
+    veicoli.sort((a, b) => (a.marca + ' ' + a.modello).localeCompare(b.marca + ' ' + b.modello));
+    
+    veicoli.forEach(v => {
+      const statoColor = v.statoVendita === 'venduto' ? '#EF4444' : v.statoVendita === 'trattativa' ? '#F59E0B' : '#10B981';
+      const div = document.createElement('div');
+      div.className = 'veicolo';
+      div.innerHTML = `
+        <strong>${v.marca} ${v.modello}</strong>
+        <span style="color:${statoColor};font-weight:700">(${v.statoVendita || 'Disponibile'})</span><br>
+        💰 €${parseFloat(v.prezzo || 0).toLocaleString()}<br>
+        <button class="edit-btn-action edit-btn" data-id="${v._id}">✏️ MODIFICA</button>
+        <button class="delete-btn-action delete-btn" data-id="${v._id}">🗑️ ELIMINA</button>
+      `;
+      container.appendChild(div);
+    });
+
+    // Event Listeners for Dynamic Buttons (Event Delegation could be used too)
+    container.querySelectorAll('.edit-btn-action').forEach(btn => {
+      btn.addEventListener('click', () => editVeicolo(btn.dataset.id));
+    });
+    container.querySelectorAll('.delete-btn-action').forEach(btn => {
+      btn.addEventListener('click', () => eliminaVeicolo(btn.dataset.id));
+    });
+
+  } catch (err) { console.error('Errore:', err); }
+}
+
+async function eliminaVeicolo(id) {
+  if (!confirm('🚗 Eliminare questo veicolo?')) return;
+  try {
+    const res = await fetch(`${API_BASE}/veicoli/${id}`, { method: 'DELETE' });
+    if (res.status === 401 || res.status === 403) logout();
+    else caricaVeicoli();
+  } catch (err) { console.error(err); }
+}
+
+async function editVeicolo(id) {
+  try {
+    const res = await fetch(`${API_BASE}/veicoli/${id}`);
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+    const v = await res.json();
+    const form = document.getElementById('form-veicolo');
+    form.dataset.editId = id;
+    Object.keys(v).forEach(key => {
+      const input = form.querySelector(`[name="${key}"]`);
+      if (input && input.type !== 'file') input.value = v[key];
+    });
+    document.getElementById('submit-btn-veicolo').textContent = '✏️ AGGIORNA VEICOLO';
+    form.scrollIntoView({ behavior: 'smooth' });
+  } catch (err) { console.error(err); }
+}
+
+document.getElementById('form-veicolo').addEventListener('submit', async e => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const id = e.target.dataset.editId;
+  const url = id ? `${API_BASE}/veicoli/${id}` : `${API_BASE}/veicoli`;
+  const method = id ? 'PUT' : 'POST';
+  
+  const submitBtn = document.getElementById('submit-btn-veicolo');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'ELABORAZIONE...';
+
+  try {
+    const res = await fetch(url, { method, body: formData });
+    if (res.status === 401 || res.status === 403) logout();
+    else if (res.ok) {
+      e.target.reset();
+      delete e.target.dataset.editId;
+      submitBtn.textContent = '🏎️ INSERISCI VEICOLO F1';
+      caricaVeicoli();
+      alert('Operazione completata con successo! 🏁');
+    } else {
+      const errorData = await res.json();
+      alert('Errore: ' + (errorData.error || 'Errore sconosciuto'));
+    }
+  } catch (err) {
+    alert('Errore di rete o del server');
+  } finally {
+    submitBtn.disabled = false;
+    if (!e.target.dataset.editId) submitBtn.textContent = '🏎️ INSERISCI VEICOLO F1';
+  }
+});
+
+// ==============================
+// PERMUTE
+// ==============================
 async function caricaPermute() {
   try {
     const res = await fetch(`${API_BASE}/api/permuta`);
@@ -770,38 +832,30 @@ async function caricaPermute() {
           </div>
           <div class="info-group">
             <h4>🚗 Veicolo</h4>
-            <div class="info-item"><b>Anno:</b> ${p.anno} ${p.mese ? '/ '+p.mese : ''}</div>
+            <div class="info-item"><b>Anno:</b> ${p.anno}</div>
             <div class="info-item"><b>Km:</b> ${p.km.toLocaleString()}</div>
-            <div class="info-item"><b>Alimentazione:</b> ${p.alimentazione}</div>
-            <div class="info-item"><b>Cambio:</b> ${p.cambio}</div>
-            <div class="info-item"><b>Proprietari:</b> ${p.proprietari || 'N/D'}</div>
-            <div class="info-item"><b>Targa:</b> ${p.targa || 'N/D'}</div>
           </div>
-          <div class="info-group">
-            <h4>🛠️ Stato</h4>
-            <div class="info-item"><b>Condizioni:</b> ${p.condizioni}</div>
-            <div class="info-item"><b>Incidentata:</b> ${p.incidentata ? 'Sì' : 'No'}</div>
-            <div class="info-item"><b>Tagliandata:</b> ${p.tagliandata ? 'Sì' : 'No'}</div>
-            <div class="info-item"><b>Revisionata:</b> ${p.revisione ? 'Sì' : 'No'}</div>
-            <div class="info-item"><b>Fumatori:</b> ${p.fumatori ? 'Sì' : 'No'}</div>
-          </div>
-        </div>
-        ${p.descrizione ? `<div style="margin-top:1.5rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px;"><b>Note:</b> ${p.descrizione}</div>` : ''}
-        <div class="permuta-images">
-          ${p.immagini.map(img => `<img src="${img.url}" class="permuta-img" onclick="window.open('${img.url}', '_blank')">`).join('')}
         </div>
         <div class="permuta-actions">
-          <select class="status-select" onchange="updatePermutaStatus('${p._id}', this.value)">
+          <select class="status-select-action status-select" data-id="${p._id}">
             <option value="nuova" ${p.stato === 'nuova' ? 'selected' : ''}>Nuova</option>
             <option value="in_gestione" ${p.stato === 'in_gestione' ? 'selected' : ''}>In Gestione</option>
             <option value="completata" ${p.stato === 'completata' ? 'selected' : ''}>Completata</option>
             <option value="rifiutata" ${p.stato === 'rifiutata' ? 'selected' : ''}>Rifiutata</option>
           </select>
-          <button class="delete-btn" style="margin-top:0;" onclick="eliminaPermuta('${p._id}')">🗑️ Elimina</button>
+          <button class="delete-permuta-action delete-btn" data-id="${p._id}" style="margin-top:0;">🗑️ Elimina</button>
         </div>
       `;
       container.appendChild(card);
     });
+
+    container.querySelectorAll('.status-select-action').forEach(sel => {
+      sel.addEventListener('change', () => updatePermutaStatus(sel.dataset.id, sel.value));
+    });
+    container.querySelectorAll('.delete-permuta-action').forEach(btn => {
+      btn.addEventListener('click', () => eliminaPermuta(btn.dataset.id));
+    });
+
   } catch (err) { console.error(err); }
 }
 
@@ -826,82 +880,8 @@ async function eliminaPermuta(id) {
   } catch (err) { console.error(err); }
 }
 
-async function logout() {
-  try {
-    await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' });
-    window.location.reload();
-  } catch (err) { console.error("Errore logout"); }
-}
-
-async function caricaVeicoli() {
-  try {
-    const res = await fetch(`${API_BASE}/veicoli`);
-    if (res.status === 401 || res.status === 403) { logout(); return; }
-    const container = document.getElementById('lista-veicoli');
-    container.innerHTML = '';
-    const veicoli = await res.json();
-    veicoli.sort((a, b) => (a.marca + ' ' + a.modello).localeCompare(b.marca + ' ' + b.modello));
-    veicoli.forEach(v => {
-      const statoColor = v.statoVendita === 'venduto' ? '#EF4444' : v.statoVendita === 'trattativa' ? '#F59E0B' : '#10B981';
-      const div = document.createElement('div');
-      div.className = 'veicolo';
-      div.innerHTML = `
-        <strong>${v.marca} ${v.modello}</strong>
-        <span style="color:${statoColor};font-weight:700">(${v.statoVendita || 'Disponibile'})</span><br>
-        💰 €${parseFloat(v.prezzo || 0).toLocaleString()}<br>
-        <button class="edit-btn" onclick="editVeicolo('${v._id}')">✏️ MODIFICA</button>
-        <button class="delete-btn" onclick="eliminaVeicolo('${v._id}')">🗑️ ELIMINA</button>
-      `;
-      container.appendChild(div);
-    });
-  } catch (err) { console.error('Errore:', err); }
-}
-
-async function eliminaVeicolo(id) {
-  if (!confirm('🚗 Eliminare questo veicolo?')) return;
-  const res = await fetch(`${API_BASE}/veicoli/${id}`, { method: 'DELETE' });
-  if (res.status === 401 || res.status === 403) logout();
-  else caricaVeicoli();
-}
-
-async function editVeicolo(id) {
-  const res = await fetch(`${API_BASE}/veicoli/${id}`);
-  if (res.status === 401 || res.status === 403) { logout(); return; }
-  const v = await res.json();
-  const form = document.getElementById('form-veicolo');
-  form.dataset.editId = id;
-  Object.keys(v).forEach(key => {
-    const input = form.querySelector(`[name="${key}"]`);
-    if (input && input.type !== 'file') input.value = v[key];
-  });
-  form.querySelector('button[type="submit"]').textContent = '✏️ AGGIORNA VEICOLO';
-  form.scrollIntoView({ behavior: 'smooth' });
-}
-
-document.getElementById('form-veicolo').addEventListener('submit', async e => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const id = e.target.dataset.editId;
-  const url = id ? `${API_BASE}/veicoli/${id}` : `${API_BASE}/veicoli`;
-  const method = id ? 'PUT' : 'POST';
-  const res = await fetch(url, { method, body: formData });
-  if (res.status === 401 || res.status === 403) logout();
-  else if (res.ok) {
-    e.target.reset();
-    delete e.target.dataset.editId;
-    e.target.querySelector('button[type="submit"]').textContent = '🏎️ INSERISCI VEICOLO F1';
-    caricaVeicoli();
-  }
-});
-
-function switchTab(tabId) {
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(tabId + '-tab').classList.add('active');
-  document.querySelector(`button[onclick="switchTab('${tabId}')"]`).classList.add('active');
-  if (tabId === 'permute') caricaPermute();
-  else caricaVeicoli();
-}
+// Initial Check
+checkSession();
 </script>
 </body>
 </html>
