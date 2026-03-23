@@ -8,13 +8,37 @@ const path = require("path");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const jwt = require("jsonwebtoken");
 const http = require("http");
 const { WebSocketServer } = require("ws");
 
 const app = express();
 
+const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
+
 app.set("trust proxy", 1);
 app.disable("x-powered-by");
+
+// ==========================
+// AUTH MIDDLEWARE (JWT)
+// ==========================
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Accesso negato. Token mancante." });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.admin = decoded;
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: "Token non valido o scaduto." });
+  }
+};
 
 // ==========================
 // REDIRECT TO CUSTOM DOMAIN (SEO 301)
@@ -34,9 +58,87 @@ app.use((req, res, next) => {
 
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          "https://cdn.jsdelivr.net",
+          "https://cdnjs.cloudflare.com",
+          "https://unpkg.com",
+          "https://js-eu1.hs-scripts.com",
+          "https://js.hs-scripts.com",
+          "https://js.hscollectedforms.net",
+          "https://js-eu1.hs-analytics.net",
+          "https://embed.tawk.to",
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.jsdelivr.net",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.googleapis.com",
+        ],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://res.cloudinary.com",
+          "https://images.unsplash.com",
+          "https://www.google.com",
+          "https://www.google.it",
+          "https://maps.gstatic.com",
+          "https://maps.googleapis.com",
+          "https://*.hs-scripts.com",
+          "https://forms.hubspot.com",
+        ],
+        connectSrc: [
+          "'self'",
+          "wss://*.onrender.com",
+          "https://*.hubspot.com",
+          "https://*.hs-analytics.net",
+          "https://*.tawk.to",
+          "wss://*.tawk.to",
+        ],
+        fontSrc: [
+          "'self'",
+          "https://cdn.jsdelivr.net",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.gstatic.com",
+        ],
+        frameSrc: [
+          "'self'",
+          "https://www.google.com",
+          "https://www.facebook.com",
+          "https://forms.hubspot.com",
+          "https://embed.tawk.to",
+        ],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
+
+// HSTS (HTTP Strict Transport Security) - Forza HTTPS per 1 anno
+app.use(helmet.hsts({
+  maxAge: 31536000,
+  includeSubDomains: true,
+  preload: true
+}));
+
+// X-Frame-Options: Previene il Clickjacking
+app.use(helmet.frameguard({ action: 'sameorigin' }));
+
+// X-Content-Type-Options: Previene il MIME sniffing
+app.use(helmet.noSniff());
+
+// Referrer-Policy: Controlla quante informazioni del referrer vengono inviate
+app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 
 app.use(
   cors({
@@ -66,9 +168,26 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // ==========================
-// ADMIN BASIC AUTH
+// AUTH & ADMIN ROUTES
 // ==========================
 
+// Login Route
+app.post("/api/auth/login", (req, res) => {
+  const { user, pass } = req.body;
+
+  if (
+    user === process.env.ADMIN_USER &&
+    pass === process.env.ADMIN_PASSWORD
+  ) {
+    const token = jwt.sign({ user }, JWT_SECRET, { expiresIn: "8h" });
+    return res.json({ success: true, token });
+  }
+
+  res.status(401).json({ success: false, error: "Credenziali non valide" });
+});
+
+// Admin Page (Protetta da Basic Auth per l'accesso al file, o accessibile a tutti e gestita lato client)
+// Manteniamo Basic Auth per l'accesso al file HTML come ulteriore livello di sicurezza
 app.get("/admin", (req, res) => {
   const auth = req.headers.authorization;
 
@@ -77,24 +196,15 @@ app.get("/admin", (req, res) => {
     return res.status(401).send("Autenticazione richiesta");
   }
 
-  const credentials = Buffer.from(
-    auth.split(" ")[1],
-    "base64"
-  ).toString();
-
+  const credentials = Buffer.from(auth.split(" ")[1], "base64").toString();
   const [user, pass] = credentials.split(":");
 
-  if (
-    user !== process.env.ADMIN_USER ||
-    pass !== process.env.ADMIN_PASSWORD
-  ) {
+  if (user !== process.env.ADMIN_USER || pass !== process.env.ADMIN_PASSWORD) {
     res.setHeader("WWW-Authenticate", 'Basic realm="Admin Panel"');
     return res.status(401).send("Credenziali non valide");
   }
 
-  res.sendFile(
-    path.join(__dirname, "private", "admin.html")
-  );
+  res.sendFile(path.join(__dirname, "private", "admin.html"));
 });
 
 // Endpoint specifico per il logo admin

@@ -4,6 +4,9 @@ const multer = require('multer');
 const cloudinary = require('../cloudinary');
 const Permuta = require('../models/Permuta');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
 
 // Configurazione Multer per storage temporaneo
 const storage = multer.diskStorage({
@@ -19,7 +22,28 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Rotta per inviare la richiesta di permuta
+// -------------------
+// AUTH MIDDLEWARE (JWT)
+// -------------------
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Accesso negato. Token mancante." });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.admin = decoded;
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: "Token non valido o scaduto." });
+  }
+};
+
+// Rotta per inviare la richiesta di permuta (PUBBLICA)
 router.post('/', upload.array('immagini', 10), async (req, res) => {
   try {
     const data = req.body;
@@ -90,8 +114,8 @@ router.post('/', upload.array('immagini', 10), async (req, res) => {
   }
 });
 
-// Rotta per ottenere tutte le richieste (per Admin)
-router.get('/', async (req, res) => {
+// Rotta per ottenere tutte le richieste (per Admin - PROTETTA)
+router.get('/', authMiddleware, async (req, res) => {
   try {
     const permute = await Permuta.find().sort({ createdAt: -1 });
     res.json(permute);
@@ -100,8 +124,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Rotta per aggiornare lo stato di una richiesta
-router.patch('/:id', async (req, res) => {
+// Rotta per aggiornare lo stato di una richiesta (PROTETTA)
+router.patch('/:id', authMiddleware, async (req, res) => {
   try {
     const { stato } = req.body;
     const permuta = await Permuta.findByIdAndUpdate(req.params.id, { stato }, { new: true });
@@ -111,8 +135,8 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-// Rotta per eliminare una richiesta
-router.delete('/:id', async (req, res) => {
+// Rotta per eliminare una richiesta (PROTETTA)
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const permuta = await Permuta.findById(req.params.id);
     if (permuta && permuta.immagini.length > 0) {

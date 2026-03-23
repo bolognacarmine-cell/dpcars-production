@@ -2,6 +2,30 @@
 const express = require('express');
 const router = express.Router();
 const Blog = require('../models/Blog');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
+
+// -------------------
+// AUTH MIDDLEWARE (JWT)
+// -------------------
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Accesso negato. Token mancante." });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.admin = decoded;
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: "Token non valido o scaduto." });
+  }
+};
 
 // GET lista articoli (con filtro opzionale per argomento)
 router.get('/', async (req, res) => {
@@ -51,8 +75,8 @@ router.get('/:slug', async (req, res) => {
   }
 });
 
-// POST - creazione nuovo articolo (solo per admin / test)
-router.post('/', async (req, res) => {
+// POST - creazione nuovo articolo (PROTETTA)
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const { titolo, argomento, contenuto, immagine, slug } = req.body;
 
@@ -77,6 +101,17 @@ router.post('/', async (req, res) => {
     }
     console.error('[BLOG ERROR] POST /api/blog:', err.message);
     res.status(500).json({ error: 'Errore creazione articolo' });
+  }
+});
+
+// DELETE - eliminazione articolo (PROTETTA)
+router.delete('/:id', authMiddleware, async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndDelete(req.params.id);
+    if (!blog) return res.status(404).json({ error: 'Articolo non trovato' });
+    res.json({ success: true, message: 'Articolo eliminato' });
+  } catch (err) {
+    res.status(500).json({ error: 'Errore eliminazione articolo' });
   }
 });
 

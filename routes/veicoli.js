@@ -4,35 +4,28 @@ const mongoose = require("mongoose");
 const Vehicle = require("../models/Vehicle");
 const multer = require("multer");
 const cloudinary = require("../cloudinary");
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
 
 // -------------------
-// AUTH MIDDLEWARE (SICURO)
+// AUTH MIDDLEWARE (JWT)
 // -------------------
 const authMiddleware = (req, res, next) => {
-  if (!process.env.ADMIN_USER || !process.env.ADMIN_PASSWORD) {
-    return res.status(500).json({ error: "Auth non configurata" });
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Accesso negato. Token mancante." });
   }
 
-  const auth = req.headers.authorization;
-
-  if (!auth || !auth.startsWith("Basic ")) {
-    return res.status(401).json({ error: "Accesso negato 🛑" });
-  }
+  const token = authHeader.split(" ")[1];
 
   try {
-    const credentials = Buffer.from(auth.split(" ")[1], "base64").toString();
-    const [user, pass] = credentials.split(":");
-
-    if (
-      user !== process.env.ADMIN_USER ||
-      pass !== process.env.ADMIN_PASSWORD
-    ) {
-      return res.status(401).json({ error: "Accesso negato 🛑" });
-    }
-
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.admin = decoded;
     next();
-  } catch {
-    return res.status(401).json({ error: "Accesso negato 🛑" });
+  } catch (err) {
+    return res.status(403).json({ error: "Token non valido o scaduto." });
   }
 };
 
