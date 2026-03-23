@@ -1,65 +1,46 @@
-// routes/dpcars1.js
 const express = require('express');
 const router = express.Router();
-const Dpcars1 = require('../models/Dpcars1');  // importa il modello che hai appena creato
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
+const Dpcars1 = require('../models/Dpcars1');
+const { body, validationResult } = require('express-validator');
+const authMiddleware = require('../middleware/auth');
 
 // -------------------
-// AUTH MIDDLEWARE (JWT)
+// VALIDATION RULES
 // -------------------
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+const cardValidationRules = [
+  body('titolo').trim().notEmpty().withMessage('Titolo obbligatorio'),
+  body('testo').trim().notEmpty().withMessage('Testo obbligatorio'),
+  body('slug').trim().notEmpty().withMessage('Slug obbligatorio'),
+];
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Accesso negato. Token mancante." });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.admin = decoded;
-    next();
-  } catch (err) {
-    return res.status(403).json({ error: "Token non valido o scaduto." });
-  }
-};
-
-// GET - Recupera tutte le card (solo campi necessari per la visualizzazione in homepage)
+// GET - Recupera tutte le card
 router.get('/', async (req, res) => {
   try {
-    const vantaggi = await Dpcars1.find()
-      .select('slug titolo anteprima icona ordine')   // campi leggeri, no contenuto lungo
-      .sort({ ordine: 1 })                             // ordine che hai definito
-      .lean();                                         // più veloce, restituisce plain objects
-
-    res.json(vantaggi);
+    const cards = await Dpcars1.find({}, 'titolo testo icona slug immagine order').sort({ order: 1 });
+    res.json(cards);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Errore nel recupero dei vantaggi' });
+    res.status(500).json({ error: 'Errore nel recupero card' });
   }
 });
 
-// GET - Singolo vantaggio/articolo per slug (per la pagina di dettaglio)
+// GET - Singolo vantaggio per slug
 router.get('/:slug', async (req, res) => {
   try {
     const vantaggio = await Dpcars1.findOne({ slug: req.params.slug }).lean();
-
-    if (!vantaggio) {
-      return res.status(404).json({ success: false, message: 'Vantaggio non trovato' });
-    }
-
+    if (!vantaggio) return res.status(404).json({ error: 'Vantaggio non trovato' });
     res.json(vantaggio);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Errore nel server' });
+    res.status(500).json({ error: 'Errore nel server' });
   }
 });
 
 // POST - creazione vantaggio (PROTETTA)
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, cardValidationRules, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const nuovo = new Dpcars1(req.body);
     await nuovo.save();
@@ -70,7 +51,12 @@ router.post('/', authMiddleware, async (req, res) => {
 });
 
 // PUT - modifica vantaggio (PROTETTA)
-router.put('/:id', authMiddleware, async (req, res) => {
+router.put('/:id', authMiddleware, cardValidationRules, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const aggiornato = await Dpcars1.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(aggiornato);

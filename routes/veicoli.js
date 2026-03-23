@@ -4,30 +4,8 @@ const mongoose = require("mongoose");
 const Vehicle = require("../models/Vehicle");
 const multer = require("multer");
 const cloudinary = require("../cloudinary");
-const jwt = require("jsonwebtoken");
-
-const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
-
-// -------------------
-// AUTH MIDDLEWARE (JWT)
-// -------------------
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Accesso negato. Token mancante." });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.admin = decoded;
-    next();
-  } catch (err) {
-    return res.status(403).json({ error: "Token non valido o scaduto." });
-  }
-};
+const { body, validationResult } = require("express-validator");
+const authMiddleware = require("../middleware/auth");
 
 // -------------------
 // MULTER CONFIG
@@ -36,7 +14,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 10MB max
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|svg|avif|webp/;
     if (allowedTypes.test(file.mimetype.toLowerCase())) {
@@ -70,6 +48,17 @@ const uploadToCloudinary = (fileBuffer) => {
     stream.end(fileBuffer);
   });
 };
+
+// -------------------
+// VALIDATION RULES
+// -------------------
+const vehicleValidationRules = [
+  body("marca").trim().notEmpty().withMessage("Marca obbligatoria"),
+  body("modello").trim().notEmpty().withMessage("Modello obbligatorio"),
+  body("prezzo").isFloat({ min: 0 }).withMessage("Prezzo deve essere un numero positivo"),
+  body("annoImmatricolazione").optional({ checkFalsy: true }).isInt({ min: 1900, max: 2100 }).withMessage("Anno non valido"),
+  body("chilometri").optional({ checkFalsy: true }).isInt({ min: 0 }).withMessage("Km non validi"),
+];
 
 // -------------------
 // GET ALL VEICOLI (PUBBLICO)
@@ -113,7 +102,13 @@ router.post(
   "/",
   authMiddleware,
   upload.array("immagini", 10),
+  vehicleValidationRules,
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       if (req.files && req.files.length > 10) {
         return res.status(400).json({ error: "Max 10 immagini consentite" });
@@ -188,7 +183,13 @@ router.put(
   "/:id",
   authMiddleware,
   upload.array("immagini", 10),
+  vehicleValidationRules,
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: "ID non valido" });
@@ -202,7 +203,6 @@ router.put(
 
       const data = req.body;
 
-      // ✅ AGGIUNGI TUTTI I CAMPI MANCANTI!
       vehicle.marca = data.marca || vehicle.marca;
       vehicle.modello = data.modello || vehicle.modello;
       vehicle.versione = data.versione || vehicle.versione;
@@ -235,7 +235,6 @@ router.put(
         }
       }
 
-      // Immagini (codice tuo esistente)
       if (data.rimuoviImmagini) {
         const daRimuovere = Array.isArray(data.rimuoviImmagini) ? data.rimuoviImmagini : [data.rimuoviImmagini];
         for (const public_id of daRimuovere) {
@@ -305,8 +304,6 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 // ERROR HANDLER MULTER
 // -------------------
 router.use((err, req, res, next) => {
-  console.error("🔴 ERRORE MULTER:", err);
-
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
       return res.status(400).json({

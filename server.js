@@ -9,36 +9,28 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const http = require("http");
 const { WebSocketServer } = require("ws");
 
+const crypto = require("crypto");
+
 const app = express();
+
+app.use(cookieParser());
+
+// Middleware per generare nonce per ogni richiesta
+app.use((req, res, next) => {
+  res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  next();
+});
 
 const JWT_SECRET = process.env.JWT_SECRET || "dpcars-secret-key-2026";
 
 app.set("trust proxy", 1);
 app.disable("x-powered-by");
 
-// ==========================
-// AUTH MIDDLEWARE (JWT)
-// ==========================
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Accesso negato. Token mancante." });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.admin = decoded;
-    next();
-  } catch (err) {
-    return res.status(403).json({ error: "Token non valido o scaduto." });
-  }
-};
+const authMiddleware = require("./middleware/auth");
 
 // ==========================
 // REDIRECT TO CUSTOM DOMAIN (SEO 301)
@@ -56,6 +48,7 @@ app.use((req, res, next) => {
 // SECURITY
 // ==========================
 
+// CSP Base per tutto il sito (permette script inline per le pagine statiche)
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -63,8 +56,7 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          "'unsafe-inline'",
-          "'unsafe-eval'",
+          "'unsafe-inline'", // Necessario per le pagine statiche attuali
           "https://cdn.jsdelivr.net",
           "https://cdnjs.cloudflare.com",
           "https://unpkg.com",
@@ -124,6 +116,19 @@ app.use(
   })
 );
 
+// CSP più restrittiva solo per il pannello Admin
+const adminCSP = helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`, "https://cdnjs.cloudflare.com"],
+    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+    imgSrc: ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
+    connectSrc: ["'self'"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+    objectSrc: ["'none'"],
+  },
+});
+
 // HSTS (HTTP Strict Transport Security) - Forza HTTPS per 1 anno
 app.use(helmet.hsts({
   maxAge: 31536000,
@@ -180,15 +185,36 @@ app.post("/api/auth/login", (req, res) => {
     pass === process.env.ADMIN_PASSWORD
   ) {
     const token = jwt.sign({ user }, JWT_SECRET, { expiresIn: "8h" });
-    return res.json({ success: true, token });
+    
+    // Set Cookie HttpOnly
+    res.cookie("dpcars_admin_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // true in produzione (HTTPS)
+      sameSite: "strict",
+      maxAge: 8 * 60 * 60 * 1000, // 8 ore
+    });
+
+    return res.json({ success: true });
   }
 
   res.status(401).json({ success: false, error: "Credenziali non valide" });
 });
 
-// Admin Page (Protetta da Basic Auth per l'accesso al file, o accessibile a tutti e gestita lato client)
-// Manteniamo Basic Auth per l'accesso al file HTML come ulteriore livello di sicurezza
-app.get("/admin", (req, res) => {
+// Logout Route
+app.post("/api/auth/logout", (req, res) => {
+  res.clearCookie("dpcars_admin_token");
+  res.json({ success: true });
+});
+
+// Check Session Route
+app.get("/api/auth/check", authMiddleware, (req, res) => {
+  res.json({ success: true, user: req.admin.user });
+});
+
+const fs = require("fs");
+
+// Admin Page (Protetta da Basic Auth)
+app.get("/admin", adminCSP, (req, res) => {
   const auth = req.headers.authorization;
 
   if (!auth || !auth.startsWith("Basic ")) {
@@ -204,7 +230,14 @@ app.get("/admin", (req, res) => {
     return res.status(401).send("Credenziali non valide");
   }
 
-  res.sendFile(path.join(__dirname, "private", "admin.html"));
+  // Legge il file admin.html e inietta il nonce per la CSP
+  try {
+    let content = fs.readFileSync(path.join(__dirname, "private", "admin.html"), "utf8");
+    content = content.replace(/NONCE_PLACEHOLDER/g, res.locals.nonce);
+    res.send(content);
+  } catch (err) {
+    res.status(500).send("Errore nel caricamento del pannello admin");
+  }
 });
 
 // Endpoint specifico per il logo admin
