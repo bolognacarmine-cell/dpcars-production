@@ -48,73 +48,43 @@ app.use((req, res, next) => {
 // SECURITY
 // ==========================
 
-// CSP Base per tutto il sito (permette script inline per le pagine statiche)
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'", // Necessario per le pagine statiche attuali
-          "https://cdn.jsdelivr.net",
-          "https://cdnjs.cloudflare.com",
-          "https://unpkg.com",
-          "https://js-eu1.hs-scripts.com",
-          "https://js.hs-scripts.com",
-          "https://js.hscollectedforms.net",
-          "https://js-eu1.hs-analytics.net",
-          "https://embed.tawk.to",
-        ],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://cdn.jsdelivr.net",
-          "https://cdnjs.cloudflare.com",
-          "https://fonts.googleapis.com",
-        ],
-        imgSrc: [
-          "'self'",
-          "data:",
-          "blob:",
-          "https://res.cloudinary.com",
-          "https://images.unsplash.com",
-          "https://www.google.com",
-          "https://www.google.it",
-          "https://maps.gstatic.com",
-          "https://maps.googleapis.com",
-          "https://*.hs-scripts.com",
-          "https://forms.hubspot.com",
-        ],
-        connectSrc: [
-          "'self'",
-          "wss://*.onrender.com",
-          "https://*.hubspot.com",
-          "https://*.hs-analytics.net",
-          "https://*.tawk.to",
-          "wss://*.tawk.to",
-        ],
-        fontSrc: [
-          "'self'",
-          "https://cdn.jsdelivr.net",
-          "https://cdnjs.cloudflare.com",
-          "https://fonts.gstatic.com",
-        ],
-        frameSrc: [
-          "'self'",
-          "https://www.google.com",
-          "https://www.facebook.com",
-          "https://forms.hubspot.com",
-          "https://embed.tawk.to",
-        ],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: [],
-      },
+// CSP Base per tutto il sito (permette script inline e eval per le pagine pubbliche)
+app.use((req, res, next) => {
+  // Salta la CSP base per il pannello admin, che ne ha una sua più restrittiva
+  if (req.path === '/admin') return next();
+
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'", // Necessario per Vue.js 3 in modalità browser
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "https://unpkg.com",
+        "https://js-eu1.hs-scripts.com",
+        "https://js.hs-scripts.com",
+        "https://js.hscollectedforms.net",
+        "https://js-eu1.hs-analytics.net",
+        "https://embed.tawk.to",
+      ],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "https://fonts.googleapis.com",
+      ],
+      imgSrc: ["*", "data:", "blob:"], // Permissivo per le immagini
+      connectSrc: ["*"], // Permissivo per le connessioni
+      fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
+      frameSrc: ["'self'", "https://www.google.com", "https://www.facebook.com", "https://forms.hubspot.com", "https://embed.tawk.to"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
     },
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-  })
-);
+  })(req, res, next);
+});
 
 // CSP più restrittiva solo per il pannello Admin
 const adminCSP = helmet.contentSecurityPolicy({
