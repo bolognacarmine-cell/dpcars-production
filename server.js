@@ -66,6 +66,10 @@ app.use((req, res, next) => {
         "https://js-eu1.hs-scripts.com",
         "https://js.hs-scripts.com",
         "https://js.hscollectedforms.net",
+        "https://js-eu1.hscollectedforms.net",
+        "https://js.hs-banner.com",
+        "https://js-eu1.hs-banner.com",
+        "https://js.hs-analytics.net",
         "https://js-eu1.hs-analytics.net",
         "https://embed.tawk.to",
       ],
@@ -79,7 +83,7 @@ app.use((req, res, next) => {
       imgSrc: ["*", "data:", "blob:"], // Permissivo per le immagini
       connectSrc: ["*"], // Permissivo per le connessioni
       fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
-      frameSrc: ["'self'", "https://www.google.com", "https://www.facebook.com", "https://forms.hubspot.com", "https://embed.tawk.to"],
+      frameSrc: ["'self'", "https://www.google.com", "https://www.facebook.com", "https://forms.hubspot.com", "https://forms-eu1.hubspot.com", "https://embed.tawk.to"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: [],
     },
