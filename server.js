@@ -45,6 +45,17 @@ app.use((req, res, next) => {
 });
 
 // ==========================
+// HEALTH CHECK
+// ==========================
+app.get('/health', (req, res) => { 
+  res.status(200).json({ 
+    status: 'ok', 
+    service: 'online', 
+    timestamp: new Date().toISOString() 
+  }); 
+});
+
+// ==========================
 // SECURITY
 // ==========================
 
