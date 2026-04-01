@@ -552,10 +552,16 @@
     </select>
   </label>
   <label>Stato Vendita
-    <select name="statoVendita">
+    <select name="statoVendita" id="select-stato-vendita">
       <option value="disponibile">Disponibile</option>
       <option value="trattativa">In Trattativa</option>
       <option value="venduto">Venduto</option>
+    </select>
+  </label>
+  <label id="label-mostra-venduto" style="display:none;">Mostra nel sito se venduto?
+    <select name="mostraVenduto">
+      <option value="true">Sì</option>
+      <option value="false">No</option>
     </select>
   </label>
   <label>Chilometri <input name="chilometri" type="number"></label>
@@ -634,6 +640,16 @@
 
 <script nonce="NONCE_PLACEHOLDER">
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
+
+// Mostra/Nascondi opzione "Mostra nel sito se venduto"
+document.getElementById('select-stato-vendita').addEventListener('change', function() {
+  const labelMostra = document.getElementById('label-mostra-venduto');
+  if (this.value === 'venduto') {
+    labelMostra.style.display = 'block';
+  } else {
+    labelMostra.style.display = 'none';
+  }
+});
 
 // ==============================
 // AUTH & SESSION
@@ -758,6 +774,15 @@ async function editVeicolo(id) {
       const input = form.querySelector(`[name="${key}"]`);
       if (input && input.type !== 'file') input.value = v[key];
     });
+
+    // Gestione visibilità campo "mostraVenduto" in modifica
+    const labelMostra = document.getElementById('label-mostra-venduto');
+    if (v.statoVendita === 'venduto') {
+      labelMostra.style.display = 'block';
+    } else {
+      labelMostra.style.display = 'none';
+    }
+
     document.getElementById('submit-btn-veicolo').textContent = '✏️ AGGIORNA VEICOLO';
     form.scrollIntoView({ behavior: 'smooth' });
   } catch (err) { console.error(err); }

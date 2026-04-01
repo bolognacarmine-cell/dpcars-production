@@ -126,6 +126,11 @@ const VehicleSchema = new mongoose.Schema(
       default: "disponibile",
     },
 
+    mostraVenduto: {
+      type: Boolean,
+      default: true,
+    },
+
     tipo: {
       type: String,
       enum: ["auto", "moto"],

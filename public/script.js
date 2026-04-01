@@ -102,9 +102,13 @@ function renderVehicles(vehicles) {
     const prezzo = Number(v.prezzo || 0);
     const prezzoHTML = isNaN(prezzo) ? 'Prezzo su richiesta' : `€${prezzo.toLocaleString()}`;
 
+    const isSold = v.statoVendita === 'venduto';
+    const soldStampHTML = isSold ? `<div class="sold-stamp"></div>` : '';
+
     return `
-<article class="vehicle-card" data-aos="fade-up" data-aos-delay="${i * 80}">
+<article class="vehicle-card ${isSold ? 'is-sold' : ''}" data-aos="fade-up" data-aos-delay="${i * 80}">
   <div class="slider">
+    ${soldStampHTML}
     <div class="slides">${imagesHTML}</div>
     ${imgs.length > 1 ? `
       <button class="prev">❮</button>

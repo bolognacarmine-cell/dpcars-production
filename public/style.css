@@ -332,6 +332,41 @@ a {
   50% { transform: scale(1.1); }
 }
 
+/* VENDUTO BADGE STAMP */
+.sold-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  background: rgba(220, 38, 38, 0.9);
+  color: white;
+  padding: 10px 40px;
+  border: 4px solid white;
+  border-radius: 10px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.sold-stamp::after {
+  content: "VENDUTO";
+}
+
+.vehicle-card.is-sold {
+  filter: grayscale(0.5);
+}
+
+.vehicle-card.is-sold img {
+  opacity: 0.7;
+}
+
 /* =========================================================
    VANTAGGI
 ========================================================= */

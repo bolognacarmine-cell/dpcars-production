@@ -65,7 +65,14 @@ const vehicleValidationRules = [
 // -------------------
 router.get("/", async (req, res) => {
   try {
-    const veicoli = await Vehicle.find().sort({ createdAt: -1 });
+    // Filtra i veicoli venduti che non devono essere mostrati
+    const query = {
+      $or: [
+        { statoVendita: { $ne: "venduto" } },
+        { statoVendita: "venduto", mostraVenduto: true }
+      ]
+    };
+    const veicoli = await Vehicle.find(query).sort({ createdAt: -1 });
     res.json(veicoli);
   } catch (err) {
     console.error("💥 ERRORE GET /veicoli:", err);
@@ -162,6 +169,7 @@ router.post(
         descrizioni: descrizioniArr,
         immagini: immaginiArr,
         statoVendita: data.statoVendita || "disponibile",
+        mostraVenduto: data.mostraVenduto !== undefined ? data.mostraVenduto === "true" : true,
       });
 
       const savedVehicle = await newVehicle.save();
@@ -214,6 +222,10 @@ router.put(
       vehicle.colore = data.colore || vehicle.colore;
       vehicle.cambio = data.cambio || vehicle.cambio;
       vehicle.statoVendita = data.statoVendita || vehicle.statoVendita;
+
+      if (data.mostraVenduto !== undefined) {
+        vehicle.mostraVenduto = data.mostraVenduto === "true";
+      }
 
       if (data.usato !== undefined) {
         vehicle.usato = data.usato === "true";
