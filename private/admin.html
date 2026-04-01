@@ -534,7 +534,7 @@
 <div id="garage-tab" class="tab-content active">
   <form id="form-veicolo" enctype="multipart/form-data">
   <label>Tipo Veicolo
-    <select name="tipo" required>
+    <select name="tipo" id="select-tipo" required>
       <option value="auto">Auto</option>
       <option value="moto">Moto</option>
     </select>
@@ -596,18 +596,9 @@
   <label>Colore <input name="colore"></label>
   <label>Porte <input name="porte" type="number"></label>
   <label>Prezzo <input name="prezzo" type="number" step="0.01" required></label>
-  <label>Tipo Auto
-    <select name="tipoAuto">
-      <option value="city car">City Car</option>
-      <option value="crossover">Crossover</option>
-      <option value="suv">SUV</option>
-      <option value="utilitaria">Utilitaria</option>
-      <option value="berlina">Berlina</option>
-      <option value="station wagon">Station Wagon</option>
-      <option value="coupè">Coupè</option>
-      <option value="van">Van</option>
-      <option value="monovolume">Monovolume</option>
-      <option value="cabriolet">Cabriolet</option>
+  <label>Categoria / Segmento
+    <select name="tipoAuto" id="select-categoria">
+      <!-- Opzioni caricate via JS -->
     </select>
   </label>
   <label>Descrizione
@@ -640,6 +631,54 @@
 
 <script nonce="NONCE_PLACEHOLDER">
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
+
+const CATEGORIE = {
+  auto: [
+    { value: "city car", label: "City Car" },
+    { value: "crossover", label: "Crossover" },
+    { value: "suv", label: "SUV" },
+    { value: "utilitaria", label: "Utilitaria" },
+    { value: "berlina", label: "Berlina" },
+    { value: "station wagon", label: "Station Wagon" },
+    { value: "coupè", label: "Coupè" },
+    { value: "van", label: "Van" },
+    { value: "monovolume", label: "Monovolume" },
+    { value: "cabriolet", label: "Cabriolet" }
+  ],
+  moto: [
+    { value: "naked", label: "Naked" },
+    { value: "sportive/supersport", label: "Sportive / Supersport" },
+    { value: "adventure/touring", label: "Adventure / Touring" },
+    { value: "enduro/off-road", label: "Enduro / Off-road" },
+    { value: "custom/cruiser/chopper", label: "Custom / Cruiser / Chopper" },
+    { value: "scooter", label: "Scooter" },
+    { value: "hypermotard", label: "Hypermotard" },
+    { value: "motard", label: "Motard" },
+    { value: "crossover", label: "Crossover" }
+  ]
+};
+
+function updateCategorie(tipo, selectedValue = "") {
+  const selectCat = document.getElementById('select-categoria');
+  selectCat.innerHTML = '';
+  
+  const options = CATEGORIE[tipo] || [];
+  options.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.value;
+    o.textContent = opt.label;
+    if (opt.value === selectedValue) o.selected = true;
+    selectCat.appendChild(o);
+  });
+}
+
+// Inizializza categorie all'avvio
+updateCategorie('auto');
+
+// Cambio categorie al cambio tipo
+document.getElementById('select-tipo').addEventListener('change', function() {
+  updateCategorie(this.value);
+});
 
 // Mostra/Nascondi opzione "Mostra nel sito se venduto"
 document.getElementById('select-stato-vendita').addEventListener('change', function() {
@@ -775,6 +814,10 @@ async function editVeicolo(id) {
     const v = await res.json();
     const form = document.getElementById('form-veicolo');
     form.dataset.editId = id;
+
+    // Prima carichiamo le categorie corrette (auto o moto)
+    updateCategorie(v.tipo || 'auto', v.tipoAuto);
+
     Object.keys(v).forEach(key => {
       const input = form.querySelector(`[name="${key}"]`);
       if (input && input.type !== 'file') input.value = v[key];
