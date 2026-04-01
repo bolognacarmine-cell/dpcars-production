@@ -722,7 +722,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // ==============================
 async function caricaVeicoli() {
   try {
-    const res = await fetch(`${API_BASE}/veicoli`);
+    const res = await fetch(`${API_BASE}/veicoli/admin/all`);
     if (res.status === 401 || res.status === 403) { logout(); return; }
     const container = document.getElementById('lista-veicoli');
     container.innerHTML = '';
@@ -731,11 +731,16 @@ async function caricaVeicoli() {
     
     veicoli.forEach(v => {
       const statoColor = v.statoVendita === 'venduto' ? '#EF4444' : v.statoVendita === 'trattativa' ? '#F59E0B' : '#10B981';
+      const visibilitaInfo = v.statoVendita === 'venduto' 
+        ? `<span style="font-size:0.8rem; opacity:0.8;">(${v.mostraVenduto ? '👁️ Visibile' : '🚫 Nascosto nel sito'})</span>` 
+        : '';
+      
       const div = document.createElement('div');
       div.className = 'veicolo';
       div.innerHTML = `
         <strong>${v.marca} ${v.modello}</strong>
-        <span style="color:${statoColor};font-weight:700">(${v.statoVendita || 'Disponibile'})</span><br>
+        <span style="color:${statoColor};font-weight:700">(${v.statoVendita || 'Disponibile'})</span>
+        ${visibilitaInfo}<br>
         💰 €${parseFloat(v.prezzo || 0).toLocaleString()}<br>
         <button class="edit-btn-action edit-btn" data-id="${v._id}">✏️ MODIFICA</button>
         <button class="delete-btn-action delete-btn" data-id="${v._id}">🗑️ ELIMINA</button>

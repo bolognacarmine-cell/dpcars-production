@@ -81,6 +81,19 @@ router.get("/", async (req, res) => {
 });
 
 // -------------------
+// GET ALL VEICOLI (ADMIN - TUTTI)
+// -------------------
+router.get("/admin/all", authMiddleware, async (req, res) => {
+  try {
+    const veicoli = await Vehicle.find().sort({ createdAt: -1 });
+    res.json(veicoli);
+  } catch (err) {
+    console.error("💥 ERRORE GET /veicoli/admin/all:", err);
+    res.status(500).json({ error: "Errore nel recupero veicoli per admin" });
+  }
+});
+
+// -------------------
 // GET VEICOLO BY ID (PUBBLICO)
 // -------------------
 router.get("/:id", async (req, res) => {
