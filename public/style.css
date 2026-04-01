@@ -367,11 +367,11 @@ a {
   content: "VENDUTO";
 }
 
-.vehicle-card.is-sold {
+.vehicle-card.is-sold, .card.is-sold {
   filter: grayscale(0.5);
 }
 
-.vehicle-card.is-sold img {
+.vehicle-card.is-sold img, .card.is-sold img {
   opacity: 0.7;
 }
 

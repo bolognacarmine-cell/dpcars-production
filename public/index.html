@@ -1565,9 +1565,9 @@ window.silktideConsentManagerConfig = {
                     class="col"
                     role="listitem"
                     tabindex="0"
-                    :aria-label="vehicle.marca + ' ' + vehicle.modello + ', anno ' + (vehicle.annoImmatricolazione || vehicle.anno || '') + ', prezzo ' + (vehicle.prezzo ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'N/A')"
+                    :aria-label="vehicle.marca + ' ' + vehicle.modello + ', anno ' + (vehicle.annoImmatricolazione || vehicle.anno || '') + ', prezzo ' + (vehicle.prezzo && vehicle.prezzo > 0 ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'Prezzo su richiesta')"
                 >
-                    <div class="card h-100 shadow-sm" tabindex="-1">
+                    <div :class="['card', 'h-100', 'shadow-sm', { 'is-sold': vehicle.statoVendita === 'venduto' }]" tabindex="-1">
                         <!-- Image Carousel -->
                         <div
                             :id="'carousel-' + vehicle._id"
@@ -1575,6 +1575,9 @@ window.silktideConsentManagerConfig = {
                             data-bs-ride="carousel"
                             :aria-label="'Carosello immagini di ' + vehicle.marca + ' ' + vehicle.modello"
                         >
+                            <!-- Badge Venduto Timbro -->
+                            <div v-if="vehicle.statoVendita === 'venduto'" class="sold-stamp"></div>
+
                             <!-- Badge Usato/Nuovo -->
                             <div :class="['type-badge', vehicle.usato ? 'usato' : 'nuovo']">
                                 {{ vehicle.usato ? 'Usato' : 'Nuovo' }}
@@ -1645,30 +1648,30 @@ window.silktideConsentManagerConfig = {
                                 </div>
                                 <div class="spec-item">
                                     <i class="fas fa-tachometer-alt"></i>
-                                    <span>{{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() + ' km' : 'N/A' }}</span>
+                                    <span>{{ vehicle.chilometri ? vehicle.chilometri.toLocaleString() + ' km' : 'N/D' }}</span>
                                 </div>
                                 <div class="spec-item">
                                     <i class="fas fa-cog"></i>
-                                    <span>{{ vehicle.cambio || 'N/A' }} <small v-if="vehicle.marce">({{ vehicle.marce }})</small></span>
+                                    <span>{{ vehicle.cambio || 'N/D' }} <small v-if="vehicle.marce">({{ vehicle.marce }})</small></span>
                                 </div>
                                 <div class="spec-item">
                                     <i class="fas fa-gas-pump"></i>
-                                    <span>{{ vehicle.carburante || 'N/A' }}</span>
+                                    <span>{{ vehicle.carburante || 'N/D' }}</span>
                                 </div>
                                 <div class="spec-item">
                                     <i class="fas fa-bolt"></i>
-                                    <span>{{ vehicle.potenza || 'N/A' }}</span>
+                                    <span>{{ vehicle.potenza || 'N/D' }}</span>
                                 </div>
                                 <div class="spec-item">
                                     <i class="fas fa-palette"></i>
-                                    <span>{{ vehicle.colore || 'N/A' }}</span>
+                                    <span>{{ vehicle.colore || 'N/D' }}</span>
                                 </div>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                 <div class="price-tag">
                                     <span class="h4 fw-bold mb-0 text-primary-custom">
-                                        {{ vehicle.prezzo ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'N/A' }}
+                                        {{ (vehicle.prezzo && vehicle.prezzo > 0) ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'Prezzo su richiesta' }}
                                     </span>
                                 </div>
                                 <button
@@ -2725,7 +2728,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
               return vehicle.annoImmatricolazione ||
                      vehicle.anno ||
-                     'N/A';
+                     'N/D';
           },
 
 
