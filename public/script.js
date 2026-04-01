@@ -100,7 +100,7 @@ function renderVehicles(vehicles) {
       : `<div class="no-image">Foto non disponibile</div>`;
 
     const prezzo = Number(v.prezzo || 0);
-    const prezzoHTML = isNaN(prezzo) ? 'Prezzo su richiesta' : `€${prezzo.toLocaleString()}`;
+    const prezzoHTML = (isNaN(prezzo) || prezzo === 0) ? 'Prezzo su richiesta' : `€${prezzo.toLocaleString()}`;
 
     const isSold = v.statoVendita === 'venduto';
     const soldStampHTML = isSold ? `<div class="sold-stamp"></div>` : '';
@@ -259,12 +259,15 @@ function openDetails(v) {
   const modal = document.createElement('div');
   modal.className = 'vehicle-modal';
 
+    const pVal = Number(v.prezzo || 0);
+    const pHTML = (isNaN(pVal) || pVal === 0) ? 'Prezzo su richiesta' : `€${pVal.toLocaleString()}`;
+
   modal.innerHTML = `
     <div class="backdrop"></div>
     <div class="box">
       <button class="close">✕</button>
       <h2>${v.marca} ${v.modello}</h2>
-      <div class="price">€${parseInt(v.prezzo).toLocaleString()}</div>
+      <div class="price">${pHTML}</div>
       <ul class="specs">
         <li><b>Anno:</b> ${v.anno}</li>
         <li><b>Km:</b> ${v.chilometri?.toLocaleString()}</li>
