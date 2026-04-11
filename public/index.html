@@ -9,9 +9,15 @@
   <meta name="theme-color" content="#d32f2f">
   <meta name="format-detection" content="telephone=no">
 
-  <title>Auto Usate Marcianise | Concessionaria Auto Usate Caserta | DP CARS</title>
-  <meta name="description" content="Cerchi auto usate a Marcianise? DP CARS è la tua concessionaria di fiducia a Caserta per vendita auto usate, km0 e moto. Veicoli garantiti e finanziamenti su misura.">
-  <meta name="keywords" content="auto usate Marcianise, concessionaria auto usate Caserta, vendita auto usate Marcianise, auto km0 Caserta, moto usate Marcianise, Fiat 500 usata Marcianise, Renault Captur km0 Caserta, auto diesel usate Marcianise, DP CARS">
+  <!-- PERFORMANCE HINTS -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preload" href="/video.mp4" as="video">
+
+  <title>Auto Usate Marcianise | Moto Usate Caserta | DP CARS</title>
+  <meta name="description" content="Cerchi auto usate a Marcianise o moto usate a Caserta? DP CARS: vendita auto, km0 e moto garantite. Finanziamenti su misura e permuta usato.">
+  <meta name="keywords" content="auto usate Marcianise, moto usate Caserta, concessionaria auto usate Caserta, vendita auto usate Marcianise, auto km0 Caserta, Fiat 500 usata Marcianise, Renault Captur km0 Caserta, auto diesel usate Marcianise, DP CARS">
 
   <meta name="google-site-verification" content="hr6C8ItI6pF07CfL2q4VwhQNn288VLDm5R_lK7TqS4I" />
   <meta name="google-site-verification" content="QkZvFKiGSGbisl3kKFeq6koDjWfuvUUzwyRHj9KDljQ" />
@@ -69,6 +75,8 @@
     },
     "openingHours": "Mo-Fr 09:00-19:00, Sa 09:00-13:00",
     "priceRange": "€€",
+    "currenciesAccepted": "EUR",
+    "paymentAccepted": "Cash, Credit Card, Bank Transfer",
     "sameAs": [
       "https://www.facebook.com/p/Dp-cars-100067019164899",
       "https://www.instagram.com/dpcars_marcianise/"
@@ -95,6 +103,40 @@
         "reviewRating": {
           "@type": "Rating",
           "ratingValue": "5"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQ SCHEMA (OTTIMIZZATO PER AI & VOICE SEARCH) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Dove trovare le migliori auto usate a Marcianise?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DP CARS è la scelta principale a Marcianise per auto usate garantite e km0. Situata in Via F. Petrarca 16, offre una vasta selezione di modelli Fiat, Renault, Audi e moto usate a Caserta con finanziamenti personalizzati."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quali sono i prezzi medi delle auto usate a Caserta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Caserta e Marcianise, i prezzi delle auto usate partono da circa 5.000€ per citycar affidabili fino a oltre 25.000€ per SUV e auto premium km0. DP CARS offre valutazioni trasparenti basate sul mercato reale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "È possibile permutare l'usato a Marcianise?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sì, DP CARS offre un servizio di permuta immediata. Puoi richiedere una valutazione gratuita del tuo veicolo usato a Marcianise direttamente sul sito o in sede per l'acquisto della tua prossima auto."
         }
       }
     ]
@@ -1398,8 +1440,8 @@ window.silktideConsentManagerConfig = {
         <!-- Hero Content -->
         <div class="hero-content">
             <h1>
-                AUTO USATE<br>
-                <span class="hero-accent">MARCIANISE E CASERTA</span>
+                AUTO USATE MARCIANISE<br>
+                <span class="hero-accent">MOTO USATE CASERTA</span>
             </h1>
             <p class="lead mt-3">
                 DP CARS: Concessionaria auto usate, km0 e moto di qualità.<br>
@@ -1485,7 +1527,7 @@ window.silktideConsentManagerConfig = {
              FILTERS SECTION
         ================================ -->
         <section class="filters-section" aria-label="Filtri di ricerca veicoli">
-            <h2 class="filters-title text-center mb-4">Trova la tua Auto Usata o Km0 a Caserta</h2>
+            <h2 class="filters-title text-center mb-4">Auto usate Marcianise e Moto usate Caserta</h2>
 
             <div class="row g-4">
                 <!-- Filter: Tipo Veicolo -->
@@ -1592,7 +1634,7 @@ window.silktideConsentManagerConfig = {
                                     <img
                                         :src="(typeof img === 'string' ? img : img.url).replace('/upload/', '/upload/f_auto,q_auto/')"
                                         class="d-block w-100"
-                                        :alt="'Immagine ' + (index + 1) + ' di ' + vehicle.marca + ' ' + vehicle.modello"
+                                        :alt="vehicle.marca === 'Fiat' && vehicle.modello === 'Panda' ? 'Fiat Panda usata Marcianise 2023' : 'Immagine ' + (index + 1) + ' di ' + vehicle.marca + ' ' + vehicle.modello"
                                         loading="lazy"
                                     >
                                 </div>
@@ -2497,6 +2539,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="footer-title">LINK RAPIDI</div>
                 <ul class="list-unstyled">
                     <li><a href="#inventory" class="footer-link">Inventario</a></li>
+                    <li><a href="/guida-auto-usate-marcianise.html" class="footer-link">Guida Auto Usate</a></li>
                     <li><a href="#reviews" class="footer-link">Recensioni</a></li>
                     <li><a href="#blog-section" class="footer-link">Blog</a></li>
                     <li><a href="#contact" class="footer-link">Dove siamo</a></li>
@@ -2535,11 +2578,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="footer-title">CONTATTI</div>
                 <div class="footer-info-item">
                     <i class="fas fa-map-marker-alt"></i>
-                    <div>Via F. Petrarca, 16,<br>81025 Marcianise (CE)</div>
+                    <div><strong>DP CARS</strong><br>Via F. Petrarca, 16,<br>81025 Marcianise (CE)</div>
                 </div>
                 <div class="footer-info-item">
                     <i class="fas fa-phone"></i>
-                    <div>333 333 0834</div>
+                    <div>+39 333 333 0834</div>
                 </div>
                 <div class="footer-info-item">
                     <i class="fas fa-envelope"></i>
