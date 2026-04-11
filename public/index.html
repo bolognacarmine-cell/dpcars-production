@@ -444,7 +444,7 @@ window.silktideConsentManagerConfig = {
          HEADER / NAVIGATION
     ================================ -->
     <header class="main-header">
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" role="navigation" aria-label="Navigazione principale">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Navigazione principale">
             <div class="container">
                 <!-- Brand -->
                 <a href="/" class="navbar-brand d-flex align-items-center">
@@ -516,7 +516,7 @@ window.silktideConsentManagerConfig = {
     <!-- ================================
          HERO SECTION
     ================================ -->
-    <section id="home" class="hero" aria-label="Sezione principale">
+    <section id="home" class="hero" aria-labelledby="hero-heading">
         <!-- Background Video -->
         <video 
             class="hero-video" 
@@ -537,7 +537,7 @@ window.silktideConsentManagerConfig = {
 
         <!-- Hero Content -->
         <div class="hero-content">
-            <h1>
+            <h1 id="hero-heading">
                 AUTO USATE MARCIANISE<br>
                 <span class="hero-accent">MOTO USATE CASERTA</span>
             </h1>
@@ -624,8 +624,8 @@ window.silktideConsentManagerConfig = {
         <!-- ================================
              FILTERS SECTION
         ================================ -->
-        <section class="filters-section" aria-label="Filtri di ricerca veicoli">
-            <h2 class="filters-title text-center mb-4">Auto usate Marcianise e Moto usate Caserta</h2>
+        <section class="filters-section" aria-labelledby="filters-heading">
+            <h2 id="filters-heading" class="filters-title text-center mb-4">Auto usate Marcianise e Moto usate Caserta</h2>
 
             <div class="row g-4">
                 <!-- Filter: Tipo Veicolo -->
@@ -692,27 +692,26 @@ window.silktideConsentManagerConfig = {
         ================================ -->
         <section id="inventory" class="pt-0 pb-5" aria-label="Sezione inventario veicoli">
             <!-- Vehicle Grid -->
-            <div 
+            <ul 
                 id="inventory-grid" 
-                class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" 
-                role="list" 
+                class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 list-unstyled" 
                 aria-label="Griglia veicoli"
             >
                 <!-- Vehicle Card (Vue Template) -->
-                <article
+                <li
                     v-for="vehicle in sortedVehicles"
                     :key="vehicle._id"
                     class="col"
-                    role="listitem"
                     tabindex="0"
                     :aria-label="vehicle.marca + ' ' + vehicle.modello + ', anno ' + (vehicle.annoImmatricolazione || vehicle.anno || '') + ', prezzo ' + (vehicle.prezzo && vehicle.prezzo > 0 ? vehicle.prezzo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : 'Prezzo su richiesta')"
                 >
-                    <div :class="['card', 'h-100', 'shadow-sm', { 'is-sold': vehicle.statoVendita === 'venduto' }]" tabindex="-1">
+                    <article :class="['card', 'h-100', 'shadow-sm', { 'is-sold': vehicle.statoVendita === 'venduto' }]" tabindex="-1">
                         <!-- Image Carousel -->
                         <div
                             :id="'carousel-' + vehicle._id"
                             class="carousel slide"
                             data-bs-ride="carousel"
+                            role="region"
                             :aria-label="'Carosello immagini di ' + vehicle.marca + ' ' + vehicle.modello"
                         >
                             <!-- Badge Venduto Timbro -->
@@ -852,19 +851,18 @@ window.silktideConsentManagerConfig = {
                                 </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                </article>
-            </div>
+                    </article>
+                </li>
+            </ul>
         </section>
 
         <!-- ================================
              MONDO AUTO HUB SECTION
         ================================ -->
-        <section id="mondo-auto-hub" class="py-5 bg-dark" aria-label="Sezione Mondo Auto">
+        <section id="mondo-auto-hub" class="py-5 bg-dark" aria-labelledby="mondo-auto-heading">
             <div class="container">
                 <div class="text-center mb-5" data-aos="fade-up">
-                    <h2 class="display-5 fw-bold mb-3">Scopri il <span class="hero-accent">Mondo Auto</span></h2>
+                    <h2 id="mondo-auto-heading" class="display-5 fw-bold mb-3">Scopri il <span class="hero-accent">Mondo Auto</span></h2>
                     <p class="lead text-white-50">News, guide alla sicurezza, codice della strada ed eventi per veri appassionati.</p>
                 </div>
 
@@ -918,10 +916,10 @@ window.silktideConsentManagerConfig = {
         <!-- ================================
              PERMUTA SECTION (INTEGRATED FORM)
         ================================ -->
-        <section id="permuta" class="py-5 bg-dark-custom" aria-label="Sezione permuta auto">
+        <section id="permuta" class="py-5 bg-dark-custom" aria-labelledby="permuta-heading">
             <div class="container">
                 <div class="text-center mb-5" data-aos="fade-up">
-                    <h2 class="display-5 fw-bold mb-3">Vuoi cambiare auto? <span class="hero-accent">Permuta il tuo usato</span></h2>
+                    <h2 id="permuta-heading" class="display-5 fw-bold mb-3">Vuoi cambiare auto? <span class="hero-accent">Permuta il tuo usato</span></h2>
                     <p class="lead text-white-50">Valutazione professionale, immediata e senza impegno.</p>
                 </div>
 
@@ -1070,9 +1068,9 @@ window.silktideConsentManagerConfig = {
  <!-- ================================
          VANTAGGI SECTION
     ================================ -->
-<section class="vantaggi" aria-label="Perché scegliere DP CARS">
+<section class="vantaggi" aria-labelledby="vantaggi-heading">
     <div class="container text-center">
-        <h2>
+        <h2 id="vantaggi-heading">
             Perché scegliere <span class="hero-accent">DP CARS</span>
         </h2>
         <div class="vantaggi-grid" id="vantaggi-grid">
@@ -1119,10 +1117,10 @@ window.silktideConsentManagerConfig = {
     <!-- ================================
          SERVIZI UTILI SECTION
     ================================ -->
-    <section id="servizi-utili" class="py-5 bg-dark" aria-label="Servizi utili per l'automobilista">
+    <section id="servizi-utili" class="py-5 bg-dark" aria-labelledby="servizi-utili-heading">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="display-5 fw-bold mb-3">Servizi <span class="hero-accent">Utili</span></h2>
+                <h2 id="servizi-utili-heading" class="display-5 fw-bold mb-3">Servizi <span class="hero-accent">Utili</span></h2>
                 <p class="lead text-white-50">Consulta rapidamente i principali servizi online dedicati agli automobilisti tramite i portali ufficiali.</p>
             </div>
 
@@ -1175,9 +1173,9 @@ window.silktideConsentManagerConfig = {
     <!-- ================================
          RECENSIONI SECTION
     ================================ -->
-    <section id="reviews" aria-label="Recensioni clienti">
+    <section id="reviews" aria-labelledby="reviews-heading">
         <div class="container text-center">
-            <h2>Recensioni dei nostri clienti</h2>
+            <h2 id="reviews-heading">Recensioni dei nostri clienti</h2>
             <div class="row g-4">
                 <!-- Recensione 1 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
