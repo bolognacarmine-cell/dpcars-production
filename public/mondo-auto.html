@@ -19,7 +19,6 @@
       --bg-dark: #0a0a0a;
       --card-bg: rgba(20, 20, 20, 0.9);
       --border-light: rgba(255, 255, 255, 0.08);
-      --text-muted: rgba(255, 255, 255, 0.6);
       --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -30,7 +29,6 @@
       padding-top: 70px;
     }
 
-    /* --- Navbar --- */
     .navbar {
       padding: 0.6rem 0 !important;
       background: rgba(10, 10, 10, 0.95) !important;
@@ -38,126 +36,31 @@
       border-bottom: 1px solid var(--border-light);
     }
 
-    .brand-logo { height: 38px; border-radius: 4px; }
-    .brand-name { font-weight: 800; font-size: 1.15rem; color: #fff; }
-    .brand-tagline { font-size: 0.6rem; letter-spacing: 2px; opacity: 0.6; }
-
-    /* --- Hero --- */
     .mondo-hero {
       padding: 80px 0 100px;
       background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920');
-      background-size: cover;
-      background-position: center;
-      text-align: center;
-      border-bottom: 1px solid var(--primary-sport);
+      background-size: cover; background-position: center;
+      text-align: center; border-bottom: 1px solid var(--primary-sport);
     }
 
-    .mondo-hero h1 {
-      font-weight: 900;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      text-transform: uppercase;
-      letter-spacing: -1px;
-      margin-bottom: 1rem;
-    }
-
-    /* --- Category Grid --- */
     .category-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      padding: 30px;
-      height: 100%;
-      transition: var(--transition-base);
-      cursor: pointer;
-      overflow: hidden;
-      position: relative;
+      background: var(--card-bg); border: 1px solid var(--border-light);
+      border-radius: 20px; padding: 30px; height: 100%;
+      transition: var(--transition-base); cursor: pointer;
     }
+    .category-card:hover { transform: translateY(-10px); border-color: var(--primary-sport); background: rgba(30, 30, 30, 0.95); }
 
-    .category-card:hover {
-      transform: translateY(-10px);
-      border-color: var(--primary-sport);
-      background: rgba(30, 30, 30, 0.95);
-    }
+    .featured-article { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 60px; }
+    .featured-img { width: 100%; height: 400px; object-fit: cover; }
 
-    .category-icon {
-      font-size: 2.5rem;
-      color: var(--primary-sport);
-      margin-bottom: 20px;
-      display: block;
-    }
+    .news-card { background: rgba(255,255,255,0.03); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 30px; transition: var(--transition-base); }
+    .news-card:hover { background: rgba(255,255,255,0.05); transform: scale(1.02); }
 
-    .category-card h3 {
-      font-weight: 800;
-      margin-bottom: 15px;
-      font-size: 1.25rem;
-    }
+    .links-hub { background: linear-gradient(135deg, rgba(225, 29, 72, 0.1), rgba(0,0,0,0.4)); border-radius: 24px; padding: 40px; border: 1px solid rgba(225, 29, 72, 0.2); }
+    .link-item { display: flex; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 10px; text-decoration: none; color: #fff; transition: var(--transition-base); }
+    .link-item:hover { background: var(--primary-sport); transform: translateX(10px); }
 
-    /* --- Featured Article --- */
-    .featured-article {
-      background: var(--card-bg);
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--border-light);
-      margin-bottom: 60px;
-    }
-
-    .featured-img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-    }
-
-    /* --- News Section --- */
-    .news-card {
-      background: rgba(255,255,255,0.03);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border-light);
-      margin-bottom: 30px;
-      transition: var(--transition-base);
-    }
-
-    .news-card:hover {
-      background: rgba(255,255,255,0.05);
-      transform: scale(1.02);
-    }
-
-    .news-img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    /* --- Links Hub --- */
-    .links-hub {
-      background: linear-gradient(135deg, rgba(225, 29, 72, 0.1), rgba(0,0,0,0.4));
-      border-radius: 24px;
-      padding: 40px;
-      border: 1px solid rgba(225, 29, 72, 0.2);
-    }
-
-    .link-item {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      margin-bottom: 10px;
-      text-decoration: none;
-      color: #fff;
-      transition: var(--transition-base);
-    }
-
-    .link-item:hover {
-      background: var(--primary-sport);
-      color: #fff;
-      transform: translateX(10px);
-    }
-
-    @media (max-width: 768px) {
-      .featured-img { height: 250px; }
-      .mondo-hero { padding: 60px 0; }
-    }
+    @media (max-width: 768px) { .featured-img { height: 250px; } .mondo-hero { padding: 60px 0; } }
   </style>
 </head>
 <body>
