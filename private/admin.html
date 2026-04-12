@@ -499,6 +499,70 @@
       padding: 5px 10px;
       border-radius: 8px;
     }
+
+    /* THEME PICKER STYLE */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .theme-card {
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .theme-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(220,38,38,0.3);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .theme-card.active {
+      border-color: var(--ferrari-red) !important;
+      background: rgba(220,38,38,0.1) !important;
+      box-shadow: 0 10px 30px rgba(220,38,38,0.2);
+    }
+
+    .theme-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      border: 3px solid rgba(255,255,255,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .admin-tabs {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .tab-btn {
+        padding: 0.8rem 1rem;
+        font-size: 0.8rem;
+        flex: 1;
+        min-width: 120px;
+      }
+      .theme-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+      .theme-card {
+        padding: 1rem;
+      }
+      .theme-circle {
+        width: 40px;
+        height: 40px;
+      }
+      #save-theme-btn {
+        width: 100% !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -639,31 +703,31 @@
   <div class="veicolo">
     <p style="margin-bottom: 1.5rem; color: rgba(255,255,255,0.7);">Scegli il colore principale che darà un tocco nuovo al tuo sito. Il cambiamento è istantaneo per tutti gli utenti.</p>
     
-    <div id="theme-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+    <div id="theme-grid" class="theme-grid">
       <!-- Theme Card: Blue -->
-      <div class="theme-card" data-theme="blue" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
-        <div style="width: 50px; height: 50px; background: #2563eb; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);"></div>
+      <div class="theme-card" data-theme="blue">
+        <div class="theme-circle" style="background: #2563eb; box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);"></div>
         <strong style="display:block; color: #fff;">Deep Blue</strong>
         <span style="font-size: 0.8rem; opacity: 0.6;">Moderno & Tech</span>
       </div>
 
       <!-- Theme Card: Red -->
-      <div class="theme-card" data-theme="red" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
-        <div style="width: 50px; height: 50px; background: #e11d48; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(225, 29, 72, 0.5);"></div>
+      <div class="theme-card" data-theme="red">
+        <div class="theme-circle" style="background: #e11d48; box-shadow: 0 0 20px rgba(225, 29, 72, 0.5);"></div>
         <strong style="display:block; color: #fff;">Sport Red</strong>
         <span style="font-size: 0.8rem; opacity: 0.6;">Energico & Racing</span>
       </div>
 
       <!-- Theme Card: Orange -->
-      <div class="theme-card" data-theme="orange" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
-        <div style="width: 50px; height: 50px; background: #f97316; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(249, 115, 22, 0.5);"></div>
+      <div class="theme-card" data-theme="orange">
+        <div class="theme-circle" style="background: #f97316; box-shadow: 0 0 20px rgba(249, 115, 22, 0.5);"></div>
         <strong style="display:block; color: #fff;">Cyber Orange</strong>
         <span style="font-size: 0.8rem; opacity: 0.6;">Vivace & Moderno</span>
       </div>
 
       <!-- Theme Card: Gold -->
-      <div class="theme-card" data-theme="gold" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
-        <div style="width: 50px; height: 50px; background: #d4af37; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);"></div>
+      <div class="theme-card" data-theme="gold">
+        <div class="theme-circle" style="background: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);"></div>
         <strong style="display:block; color: #fff;">Luxury Gold</strong>
         <span style="font-size: 0.8rem; opacity: 0.6;">Elegante & Premium</span>
       </div>
@@ -827,11 +891,9 @@ async function caricaImpostazioni() {
 function updateThemeUI() {
   document.querySelectorAll('.theme-card').forEach(card => {
     if (card.dataset.theme === selectedTheme) {
-      card.style.borderColor = 'var(--ferrari-red)';
-      card.style.background = 'rgba(255,255,255,0.05)';
+      card.classList.add('active');
     } else {
-      card.style.borderColor = 'rgba(255,255,255,0.1)';
-      card.style.background = 'transparent';
+      card.classList.remove('active');
     }
   });
 }
