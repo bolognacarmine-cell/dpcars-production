@@ -15,6 +15,9 @@
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preload" href="/video.mp4" as="video">
 
+  <!-- ✅ THEME LOADER (Pre-render) -->
+  <script src="/theme-loader.js"></script>
+
   <title>Auto Usate Marcianise | Moto Usate Caserta | DP CARS</title>
   <meta name="description" content="Cerchi auto usate a Marcianise o moto usate a Caserta? DP CARS: vendita auto, km0 e moto garantite. Finanziamenti su misura e permuta usato.">
   <meta name="keywords" content="auto usate Marcianise, moto usate Caserta, concessionaria auto usate Caserta, vendita auto usate Marcianise, auto km0 Caserta, Fiat 500 usata Marcianise, Renault Captur km0 Caserta, auto diesel usate Marcianise, DP CARS">
@@ -162,13 +165,14 @@
     <!-- ================================
          CUSTOM STYLES
     ================================ -->
-    <style>
+    <style id="theme-vars">
         :root {
             --primary-sport: #2563eb;
             --accent-red: #1d4ed8;
             --secondary-sport: #60a5fa;
         }
-
+    </style>
+    <style>
         body {
             background: var(--bs-body-bg);
             color: #fff;

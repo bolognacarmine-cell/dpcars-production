@@ -311,6 +311,7 @@ app.use("/veicoli", require("./routes/veicoli"));
 app.use("/api/blog", require("./routes/blog"));
 app.use("/api/dpcars", require("./routes/dpcars1"));
 app.use("/api/permuta", require("./routes/permuta"));
+app.use("/api/config", require("./routes/config"));
 
 // ==========================
 // TEST ROUTE

@@ -529,6 +529,7 @@
 <div class="admin-tabs">
   <button class="tab-btn active" data-tab="garage">🏎️ Garage F1</button>
   <button class="tab-btn" data-tab="permute">📋 Richieste Permuta</button>
+  <button class="tab-btn" data-tab="personalizza">🎨 Personalizza</button>
 </div>
 
 <div id="garage-tab" class="tab-content active">
@@ -629,6 +630,52 @@
   </div>
 </div>
 
+<div id="personalizza-tab" class="tab-content">
+  <div class="text-center mb-4">
+    <button class="logout-btn delete-btn" style="width: auto; padding: 0.8rem 2rem;">🚪 LOGOUT</button>
+  </div>
+
+  <h2>🎨 Aspetto del Sito</h2>
+  <div class="veicolo">
+    <p style="margin-bottom: 1.5rem; color: rgba(255,255,255,0.7);">Scegli il colore principale che darà un tocco nuovo al tuo sito. Il cambiamento è istantaneo per tutti gli utenti.</p>
+    
+    <div id="theme-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+      <!-- Theme Card: Blue -->
+      <div class="theme-card" data-theme="blue" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
+        <div style="width: 50px; height: 50px; background: #2563eb; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);"></div>
+        <strong style="display:block; color: #fff;">Deep Blue</strong>
+        <span style="font-size: 0.8rem; opacity: 0.6;">Moderno & Tech</span>
+      </div>
+
+      <!-- Theme Card: Red -->
+      <div class="theme-card" data-theme="red" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
+        <div style="width: 50px; height: 50px; background: #e11d48; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(225, 29, 72, 0.5);"></div>
+        <strong style="display:block; color: #fff;">Sport Red</strong>
+        <span style="font-size: 0.8rem; opacity: 0.6;">Energico & Racing</span>
+      </div>
+
+      <!-- Theme Card: Orange -->
+      <div class="theme-card" data-theme="orange" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
+        <div style="width: 50px; height: 50px; background: #f97316; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(249, 115, 22, 0.5);"></div>
+        <strong style="display:block; color: #fff;">Cyber Orange</strong>
+        <span style="font-size: 0.8rem; opacity: 0.6;">Vivace & Moderno</span>
+      </div>
+
+      <!-- Theme Card: Gold -->
+      <div class="theme-card" data-theme="gold" style="cursor:pointer; border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
+        <div style="width: 50px; height: 50px; background: #d4af37; border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);"></div>
+        <strong style="display:block; color: #fff;">Luxury Gold</strong>
+        <span style="font-size: 0.8rem; opacity: 0.6;">Elegante & Premium</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 2rem; text-align: center;">
+      <p id="theme-status" style="margin-bottom: 1rem; font-weight: bold; color: #10B981; display: none;">✅ Tema aggiornato!</p>
+      <button id="save-theme-btn" type="button" class="tab-btn" style="width: auto; padding: 1rem 3rem;">💾 SALVA CONFIGURAZIONE</button>
+    </div>
+  </div>
+</div>
+
 <script nonce="NONCE_PLACEHOLDER">
 const API_BASE = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
 
@@ -725,6 +772,7 @@ async function checkSession() {
     if (res.ok) {
       document.getElementById('login-overlay').style.display = 'none';
       caricaVeicoli();
+      caricaImpostazioni(); // Carica il tema attuale
     }
   } catch (err) { console.error("Session check failed"); }
 }
@@ -749,8 +797,79 @@ function switchTab(tabId) {
   document.getElementById(tabId + '-tab').classList.add('active');
   document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
   if (tabId === 'permute') caricaPermute();
+  else if (tabId === 'personalizza') caricaImpostazioni();
   else caricaVeicoli();
 }
+
+// ==============================
+// PERSONALIZZAZIONE (THEME)
+// ==============================
+let selectedTheme = 'blue';
+
+const THEMES = {
+  blue: { primary: '#2563eb', accent: '#1d4ed8', secondary: '#60a5fa' },
+  red: { primary: '#e11d48', accent: '#b91c1c', secondary: '#38bdf8' },
+  orange: { primary: '#f97316', accent: '#ea580c', secondary: '#fdba74' },
+  gold: { primary: '#d4af37', accent: '#b8860b', secondary: '#fde047' }
+};
+
+async function caricaImpostazioni() {
+  try {
+    const res = await fetch(`${API_BASE}/api/config/theme`);
+    if (res.ok) {
+      const data = await res.json();
+      selectedTheme = data.value || 'blue';
+      updateThemeUI();
+    }
+  } catch (err) { console.error('Errore caricamento tema:', err); }
+}
+
+function updateThemeUI() {
+  document.querySelectorAll('.theme-card').forEach(card => {
+    if (card.dataset.theme === selectedTheme) {
+      card.style.borderColor = 'var(--ferrari-red)';
+      card.style.background = 'rgba(255,255,255,0.05)';
+    } else {
+      card.style.borderColor = 'rgba(255,255,255,0.1)';
+      card.style.background = 'transparent';
+    }
+  });
+}
+
+document.querySelectorAll('.theme-card').forEach(card => {
+  card.addEventListener('click', () => {
+    selectedTheme = card.dataset.theme;
+    updateThemeUI();
+  });
+});
+
+document.getElementById('save-theme-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('save-theme-btn');
+  const status = document.getElementById('theme-status');
+  
+  btn.disabled = true;
+  btn.textContent = 'SALVATAGGIO...';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/config`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'theme', value: selectedTheme })
+    });
+    
+    if (res.ok) {
+      status.style.display = 'block';
+      setTimeout(() => status.style.display = 'none', 3000);
+    } else {
+      alert('Errore durante il salvataggio del tema');
+    }
+  } catch (err) {
+    alert('Errore di connessione');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 SALVA CONFIGURAZIONE';
+  }
+});
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
