@@ -954,13 +954,32 @@ window.silktideConsentManagerConfig = {
         ================================ -->
         <section id="permuta" class="py-5 bg-dark-custom" aria-labelledby="permuta-heading">
             <div class="container">
-                <div class="text-center mb-5" data-aos="fade-up">
-                    <h2 id="permuta-heading" class="display-5 fw-bold mb-3">Vuoi cambiare auto? <span class="hero-accent">Permuta il tuo usato</span></h2>
-                    <p class="lead text-white-50">Valutazione professionale, immediata e senza impegno.</p>
+                <div class="text-center mb-4" data-aos="fade-up">
+                    <div 
+                        class="permuta-trigger-container p-4 rounded-4 border border-secondary-subtle bg-dark shadow-sm transition-hover" 
+                        style="cursor: pointer;"
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#permuta-collapse-content" 
+                        aria-expanded="false" 
+                        aria-controls="permuta-collapse-content"
+                        id="permuta-trigger"
+                    >
+                        <h2 id="permuta-heading" class="display-5 fw-bold mb-2">
+                            Vuoi cambiare auto? <span class="hero-accent">Permuta il tuo usato</span>
+                        </h2>
+                        <p class="lead text-white-50 mb-0">Valutazione professionale, immediata e senza impegno.</p>
+                        <div class="mt-3">
+                            <span class="btn btn-outline-primary rounded-pill px-4 py-2">
+                                <i class="fas fa-edit me-2"></i>Inizia la valutazione
+                                <i class="fas fa-chevron-down ms-2 transition-transform" id="permuta-chevron"></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="step-container" data-aos="fade-up" data-aos-delay="200">
-                    <!-- INDICATORE STEP -->
+                <div class="collapse mt-4" id="permuta-collapse-content">
+                    <div class="step-container shadow-lg" data-aos="fade-up">
+                        <!-- INDICATORE STEP -->
                     <div class="step-indicator">
                         <div class="step-dot active" data-step="1">1 <span class="step-label">Anagrafica</span></div>
                         <div class="step-dot" data-step="2">2 <span class="step-label">Veicolo</span></div>
@@ -1098,8 +1117,19 @@ window.silktideConsentManagerConfig = {
                     </form>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <script>
+        // Gestione rotazione chevron permuta
+        document.getElementById('permuta-collapse-content').addEventListener('show.bs.collapse', function () {
+            document.getElementById('permuta-chevron').style.transform = 'rotate(180deg)';
+        });
+        document.getElementById('permuta-collapse-content').addEventListener('hide.bs.collapse', function () {
+            document.getElementById('permuta-chevron').style.transform = 'rotate(0deg)';
+        });
+    </script>
+</main>
 
  <!-- ================================
          VANTAGGI SECTION
