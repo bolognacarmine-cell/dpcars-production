@@ -84,6 +84,14 @@ body {
   text-transform: uppercase;
 }
 
+.transition-transform {
+  transition: transform 0.3s ease;
+}
+
+.footer-title[aria-expanded="true"] .transition-transform {
+  transform: rotate(180deg);
+}
+
 .footer-link { 
   color: rgba(255, 255, 255, 0.7) !important; 
   transition: all 0.3s ease; 
@@ -143,9 +151,30 @@ body {
 @media (max-width: 768px) {
   .main-footer { text-align: center; padding: 4rem 0 2rem; }
   .footer-social-link { margin: 0 6px 15px; }
+  
+  .footer-title {
+    margin-bottom: 0;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+  }
+  
+  .footer-title i {
+    font-size: 0.9rem;
+    opacity: 0.5;
+  }
+
+  .collapse:not(.show) {
+    display: none;
+  }
+
+  #footer-links, #footer-hours, #footer-contact {
+    padding: 1.5rem 0;
+  }
+
   .footer-info-item { justify-content: center; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
   .footer-info-item i { margin-top: 0; }
-  .footer-bottom { text-align: center; }
+  .footer-bottom { text-align: center; border-top: none; margin-top: 2rem; }
   .footer-bottom .text-md-end { text-align: center !important; margin-top: 1rem; }
 }
 
