@@ -34,11 +34,36 @@
     }
 
     .navbar {
-      padding: 0.6rem 0 !important;
+      padding: 0.45rem 0 !important;
       background: rgba(10, 10, 10, 0.95) !important;
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-light);
     }
+
+    .navbar-brand { padding-top: 0; padding-bottom: 0; }
+    .brand-logo {
+      height: clamp(32px, 3.4vw, 40px);
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .brand-text { line-height: 1.05; }
+    .brand-name {
+      font-weight: 900;
+      font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+      letter-spacing: 0.1em;
+      color: #ffffff;
+    }
+    .brand-tagline {
+      font-weight: 750;
+      font-size: clamp(0.58rem, 0.9vw, 0.68rem);
+      letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.82);
+    }
+    @media (max-width: 420px) { .brand-tagline { display: none; } }
 
     html { scroll-padding-top: calc(var(--page-header-offset) + env(safe-area-inset-top)) !important; }
     #notizie, #codice, #sicurezza, #eventi { scroll-margin-top: calc(var(--page-header-offset) + env(safe-area-inset-top) + 12px); }
