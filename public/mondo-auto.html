@@ -421,21 +421,40 @@
       const nav = document.querySelector('.navbar.fixed-top');
       if (!nav) return;
 
-      const root = document.documentElement;
-
       const syncOffset = () => {
         const height = Math.ceil(nav.getBoundingClientRect().height);
-        if (height > 0) root.style.setProperty('--page-header-offset', `${height}px`);
+        if (height > 0) document.documentElement.style.setProperty('--page-header-offset', `${height}px`);
+      };
+
+      const scrollToTarget = (target) => {
+        syncOffset();
+        const height = Math.ceil(nav.getBoundingClientRect().height);
+        const y = target.getBoundingClientRect().top + window.scrollY - height - 12;
+        window.scrollTo(0, Math.max(0, y));
       };
 
       syncOffset();
       window.addEventListener('resize', syncOffset, { passive: true });
       window.addEventListener('load', () => {
-        syncOffset();
-        if (!location.hash) return;
-        const target = document.getElementById(location.hash.slice(1));
+        if (location.hash) {
+          const target = document.getElementById(location.hash.slice(1));
+          if (target) {
+            requestAnimationFrame(() => scrollToTarget(target));
+            setTimeout(() => scrollToTarget(target), 50);
+          }
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a[href^="#"]');
+        if (!anchor) return;
+        const id = anchor.getAttribute('href')?.slice(1);
+        if (!id) return;
+        const target = document.getElementById(id);
         if (!target) return;
-        target.scrollIntoView();
+        e.preventDefault();
+        history.pushState(null, '', `#${id}`);
+        scrollToTarget(target);
       });
     })();
   </script>
