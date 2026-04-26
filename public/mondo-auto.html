@@ -44,28 +44,65 @@
     #notizie, #codice, #sicurezza, #eventi { scroll-margin-top: calc(var(--page-header-offset) + env(safe-area-inset-top) + 12px); }
 
     .mondo-hero {
-      padding: 80px 0 100px;
+      padding: clamp(56px, 7vw, 92px) 0 clamp(64px, 8vw, 110px);
       background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920');
       background-size: cover; background-position: center;
       text-align: center; border-bottom: 1px solid var(--primary-sport);
+    }
+
+    .mondo-hero h1 {
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+      font-size: clamp(2.2rem, 4.2vw, 3.25rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .mondo-hero .lead {
+      max-width: 62ch;
+      margin: 0 auto;
+      text-wrap: pretty;
+      color: rgba(255, 255, 255, 0.86);
     }
 
     .category-card {
       background: var(--card-bg); border: 1px solid var(--border-light);
       border-radius: 20px; padding: 30px; height: 100%;
       transition: var(--transition-base); cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .category-card:hover { transform: translateY(-10px); border-color: var(--primary-sport); background: rgba(30, 30, 30, 0.95); }
+
+    .category-card h2 { margin: 0; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.01em; }
+    .category-card p { margin: 0; color: rgba(255, 255, 255, 0.72) !important; line-height: 1.55; }
+    .category-icon { font-size: 2.1rem; color: rgba(225, 29, 72, 0.95); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .category-card:hover { transform: translateY(-6px); border-color: var(--primary-sport); background: rgba(30, 30, 30, 0.95); }
+      .news-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+      .link-item:hover { background: var(--primary-sport); transform: translateX(10px); }
+    }
 
     .featured-article { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 60px; }
     .featured-img { width: 100%; height: 400px; object-fit: cover; }
 
     .news-card { background: rgba(255,255,255,0.03); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 30px; transition: var(--transition-base); }
-    .news-card:hover { background: rgba(255,255,255,0.05); transform: scale(1.02); }
 
     .links-hub { background: linear-gradient(135deg, rgba(225, 29, 72, 0.1), rgba(0,0,0,0.4)); border-radius: 24px; padding: 40px; border: 1px solid rgba(225, 29, 72, 0.2); }
     .link-item { display: flex; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 10px; text-decoration: none; color: #fff; transition: var(--transition-base); }
-    .link-item:hover { background: var(--primary-sport); transform: translateX(10px); }
+
+    .featured-article p,
+    .news-card p { color: rgba(255, 255, 255, 0.78); line-height: 1.7; }
+
+    .featured-article .text-muted,
+    .news-card .text-muted { color: rgba(255, 255, 255, 0.68) !important; }
+
+    a:focus-visible {
+      outline: 2px solid rgba(225, 29, 72, 0.9);
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
 
     @media (max-width: 991.98px) { :root { --page-header-offset: 120px; } }
     @media (max-width: 768px) { .featured-img { height: 250px; } .mondo-hero { padding: 60px 0; } }

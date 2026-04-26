@@ -27,18 +27,22 @@
       --card-bg: rgba(20, 20, 20, 0.9);
       --border-light: rgba(255, 255, 255, 0.08);
       --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --page-header-offset: 104px;
     }
 
     body {
       background-color: var(--bg-dark); color: #fff;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.6; padding-top: 65px;
+      line-height: 1.6;
+      padding-top: calc(var(--page-header-offset) + env(safe-area-inset-top)) !important;
     }
 
     .navbar {
       padding: 0.6rem 0 !important; background: rgba(10, 10, 10, 0.95) !important;
       backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light);
     }
+
+    html { scroll-padding-top: calc(var(--page-header-offset) + env(safe-area-inset-top)) !important; }
 
     .permuta-hero {
       position: relative; padding: 100px 0 120px;
@@ -47,15 +51,63 @@
       text-align: center; display: flex; align-items: center; justify-content: center;
     }
 
+    .permuta-hero .container {
+      max-width: 980px;
+      padding: 28px 22px;
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .permuta-hero h1 {
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+      font-size: clamp(2.2rem, 4.2vw, 3.25rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .permuta-hero .lead {
+      max-width: 62ch;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.86);
+      text-wrap: pretty;
+    }
+
     .vantaggio-item {
       background: var(--card-bg); padding: 35px 25px; border-radius: 20px;
       border: 1px solid var(--border-light); text-align: center; transition: var(--transition-base);
     }
-    .vantaggio-item:hover { transform: translateY(-8px); border-color: rgba(225, 29, 72, 0.4); background: rgba(30, 30, 30, 0.95); }
+    @media (hover: hover) and (pointer: fine) {
+      .vantaggio-item:hover { transform: translateY(-6px); border-color: rgba(225, 29, 72, 0.4); background: rgba(30, 30, 30, 0.95); }
+    }
 
     .step-container { background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border-light); padding: 50px; }
-    .step-dot { width: 48px; height: 48px; background: #1a1a1a; border: 2px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition-base); color: rgba(255,255,255,0.3); }
-    .step-dot.active { background: var(--primary-sport); border-color: var(--primary-sport); color: #fff; box-shadow: 0 0 25px rgba(225, 29, 72, 0.4); transform: scale(1.1); }
+    .step-indicator { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 0 0 28px; }
+    .step-dot {
+      height: 44px;
+      min-width: 44px;
+      padding: 0 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: var(--transition-base);
+      color: rgba(255,255,255,0.78);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      user-select: none;
+    }
+    .step-label { font-weight: 650; font-size: 0.9rem; color: rgba(255,255,255,0.72); }
+    .step-dot.active { background: rgba(225, 29, 72, 0.20); border-color: rgba(225, 29, 72, 0.55); box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.15); }
+    .step-dot.active .step-label { color: rgba(255, 255, 255, 0.92); }
+    .step-dot.completed { background: rgba(225, 29, 72, 0.10); border-color: rgba(225, 29, 72, 0.35); }
 
     .form-step { display: none; }
     .form-step.active { display: block; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -63,9 +115,67 @@
 
     .btn-action { padding: 16px 35px; border-radius: 16px; font-weight: 700; text-transform: uppercase; transition: all 0.3s ease; }
     .btn-next { background: linear-gradient(135deg, var(--primary-sport), var(--accent-red)); border: none; color: #fff; }
-    .btn-next:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(225, 29, 72, 0.5); color: #fff; }
+    @media (hover: hover) and (pointer: fine) {
+      .btn-next:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(225, 29, 72, 0.35); color: #fff; }
+    }
 
-    @media (max-width: 768px) { .step-container { padding: 30px 20px; } .vantaggi-permuta { margin-top: 0; } }
+    .btn-prev, .btn-submit {
+      padding: 16px 35px;
+      border-radius: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      transition: var(--transition-base);
+    }
+
+    .btn-prev {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .btn-prev:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.10); }
+      .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(34, 197, 94, 0.20); }
+    }
+
+    .btn-submit { background: linear-gradient(135deg, #22c55e, #16a34a); border: none; color: #fff; }
+
+    .section-title { font-weight: 900; letter-spacing: -0.02em; margin-bottom: 1rem; }
+
+    .custom-check-group {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .preview-container {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .preview-image {
+      width: 100%;
+      height: 92px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+    .step-container .form-control:focus,
+    .step-container .form-select:focus {
+      border-color: rgba(225, 29, 72, 0.55);
+      box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.15);
+    }
+
+    @media (max-width: 991.98px) { .permuta-hero { background-attachment: scroll; } }
+    @media (max-width: 768px) { .step-container { padding: 30px 20px; } .vantaggi-permuta { margin-top: 0; } .preview-container { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 576px) { .step-label { display: none; } .step-dot { padding: 0; width: 44px; } }
   </style>
 </head>
 <body>
@@ -516,7 +626,25 @@
   
   <script>
     AOS.init({ duration: 800, once: true });
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    const syncHeaderOffset = () => {
+      const nav = document.querySelector('.navbar.fixed-top');
+      if (!nav) return;
+      const h = Math.ceil(nav.getBoundingClientRect().height);
+      if (h > 0) document.documentElement.style.setProperty('--page-header-offset', `${h}px`);
+    };
+
+    const getHeaderOffset = () => {
+      syncHeaderOffset();
+      const nav = document.querySelector('.navbar.fixed-top');
+      const h = nav ? Math.ceil(nav.getBoundingClientRect().height) : 100;
+      return h + 12;
+    };
+
+    syncHeaderOffset();
+    window.addEventListener('resize', () => requestAnimationFrame(syncHeaderOffset));
 
     // Multi-step logic
     function nextStep(step) {
@@ -550,7 +678,11 @@
         else dot.classList.remove('completed');
       });
 
-      window.scrollTo(0, document.querySelector('.step-container').offsetTop - 100);
+      const stepContainer = document.querySelector('.step-container');
+      if (stepContainer) {
+        const y = stepContainer.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      }
     }
 
     function prevStep(step) {
