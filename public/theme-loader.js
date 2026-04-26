@@ -1,6 +1,14 @@
 // Theme Loader - DP CARS
 (async function() {
     try {
+        const host = window.location.hostname;
+        const isLocalhost = host === 'localhost' || host === '127.0.0.1';
+        const isPrivateNetwork =
+            /^10\./.test(host) ||
+            /^192\.168\./.test(host) ||
+            /^172\.(1[6-9]|2\d|3[01])\./.test(host);
+        if (isLocalhost || isPrivateNetwork) return;
+
         const res = await fetch('/api/config/theme');
         if (res.ok) {
             const data = await res.json();
