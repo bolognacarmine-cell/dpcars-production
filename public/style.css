@@ -285,7 +285,7 @@ body {
     position: relative;
     z-index: 3;                  /* sopra il video */
     min-height: calc(100vh + 50px); /* forza almeno 100vh + un po’ di buffer */
-    width: 100vw;
+    width: 100%;
     margin: 0;                   /* togli margin esterni che potrebbero far vedere il video */
     padding: 3rem 1.5rem;
     background: #0a0a0a;         /* sfondo pieno nero per coprire il video */
