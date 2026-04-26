@@ -263,10 +263,16 @@
         }
         @media (max-width: 991px) {
             .navbar > .container { flex-wrap: nowrap; }
-            .navbar-brand { flex: 1 1 auto; min-width: 0; }
+            .navbar-brand { flex: 1 1 auto; min-width: 0; max-width: calc(100% - 72px); }
             .navbar-brand .brand-text { min-width: 0; }
             .navbar-brand .brand-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .navbar-toggler { display: inline-flex !important; align-items: center; justify-content: center; }
+            .navbar-toggler {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+                margin-left: 0.75rem;
+            }
             .navbar { padding: 0.38rem 0 !important; }
             .navbar.is-compact { padding: 0.3rem 0 !important; }
             .navbar-collapse {
