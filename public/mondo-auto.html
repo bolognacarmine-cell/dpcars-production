@@ -23,13 +23,14 @@
       --card-bg: rgba(20, 20, 20, 0.9);
       --border-light: rgba(255, 255, 255, 0.08);
       --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --page-header-offset: 76px;
     }
 
     body {
       background-color: var(--bg-dark);
       color: #fff;
       font-family: 'Inter', sans-serif;
-      padding-top: 70px;
+      padding-top: var(--page-header-offset);
     }
 
     .navbar {
@@ -38,6 +39,9 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-light);
     }
+
+    html { scroll-padding-top: var(--page-header-offset); }
+    #notizie, #codice, #sicurezza, #eventi { scroll-margin-top: calc(var(--page-header-offset) + 12px); }
 
     .mondo-hero {
       padding: 80px 0 100px;
@@ -63,6 +67,7 @@
     .link-item { display: flex; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 10px; text-decoration: none; color: #fff; transition: var(--transition-base); }
     .link-item:hover { background: var(--primary-sport); transform: translateX(10px); }
 
+    @media (max-width: 991.98px) { :root { --page-header-offset: 88px; } }
     @media (max-width: 768px) { .featured-img { height: 250px; } .mondo-hero { padding: 60px 0; } }
   </style>
 </head>
