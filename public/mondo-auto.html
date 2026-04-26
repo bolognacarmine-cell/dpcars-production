@@ -416,5 +416,28 @@
   <script>
     AOS.init({ duration: 800, once: true });
   </script>
+  <script>
+    (() => {
+      const nav = document.querySelector('.navbar.fixed-top');
+      if (!nav) return;
+
+      const root = document.documentElement;
+
+      const syncOffset = () => {
+        const height = Math.ceil(nav.getBoundingClientRect().height);
+        if (height > 0) root.style.setProperty('--page-header-offset', `${height}px`);
+      };
+
+      syncOffset();
+      window.addEventListener('resize', syncOffset, { passive: true });
+      window.addEventListener('load', () => {
+        syncOffset();
+        if (!location.hash) return;
+        const target = document.getElementById(location.hash.slice(1));
+        if (!target) return;
+        target.scrollIntoView();
+      });
+    })();
+  </script>
 </body>
 </html>
