@@ -264,8 +264,8 @@ function openDetails(v) {
   const pHTML = isPriceOnRequest ? 'Prezzo su richiesta' : `€${pVal.toLocaleString()}`;
   const priceRequestHTML = isPriceOnRequest
     ? `
-      <div class="price-request-note">
-        <strong>Contattaci in privato per disponibilita, condizioni e tutti i dettagli del veicolo.</strong>
+      <div class="price-request-note" style="margin-top:16px;padding:14px 16px;border-radius:12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.28);color:#f5f5f5;line-height:1.6;">
+        <strong style="display:block;color:#ffffff;">Contattaci in privato per disponibilita, condizioni e tutti i dettagli del veicolo.</strong>
         <br>
         Ti aspettiamo in sede da DP CARS per visionarlo da vicino e ricevere una consulenza dedicata.
       </div>
