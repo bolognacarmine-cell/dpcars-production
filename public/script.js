@@ -259,8 +259,18 @@ function openDetails(v) {
   const modal = document.createElement('div');
   modal.className = 'vehicle-modal';
 
-    const pVal = Number(v.prezzo || 0);
-    const pHTML = (isNaN(pVal) || pVal === 0) ? 'Prezzo su richiesta' : `€${pVal.toLocaleString()}`;
+  const pVal = Number(v.prezzo || 0);
+  const isPriceOnRequest = isNaN(pVal) || pVal === 0;
+  const pHTML = isPriceOnRequest ? 'Prezzo su richiesta' : `€${pVal.toLocaleString()}`;
+  const priceRequestHTML = isPriceOnRequest
+    ? `
+      <div class="price-request-note">
+        <strong>Contattaci in privato per maggiori informazioni.</strong>
+        <br>
+        Ti aspettiamo anche in sede per conoscere tutti i dettagli del veicolo e ricevere una consulenza completa.
+      </div>
+    `
+    : '';
 
   modal.innerHTML = `
     <div class="backdrop"></div>
@@ -276,6 +286,7 @@ function openDetails(v) {
         <li><b>Potenza:</b> ${v.potenza || '—'} CV</li>
       </ul>
       <div class="desc">${v.descrizione || 'Descrizione disponibile in sede'}</div>
+      ${priceRequestHTML}
     </div>
   `;
 
