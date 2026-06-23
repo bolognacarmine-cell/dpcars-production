@@ -265,9 +265,9 @@ function openDetails(v) {
   const priceRequestHTML = isPriceOnRequest
     ? `
       <div class="price-request-note">
-        <strong>Contattaci in privato per maggiori informazioni.</strong>
+        <strong>Contattaci in privato per disponibilita, condizioni e tutti i dettagli del veicolo.</strong>
         <br>
-        Ti aspettiamo anche in sede per conoscere tutti i dettagli del veicolo e ricevere una consulenza completa.
+        Ti aspettiamo in sede da DP CARS per visionarlo da vicino e ricevere una consulenza dedicata.
       </div>
     `
     : '';
