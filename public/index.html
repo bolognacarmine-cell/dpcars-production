@@ -17,6 +17,29 @@
 
   <!-- ✅ THEME LOADER (Pre-render) -->
   <script src="/theme-loader.js"></script>
+  <script>
+    (() => {
+      const syncViewportWidth = () => {
+        const viewportWidth = Math.round(
+          window.visualViewport?.width ||
+          document.documentElement.clientWidth ||
+          window.innerWidth ||
+          0
+        );
+
+        if (viewportWidth > 0) {
+          document.documentElement.style.setProperty('--app-viewport-width', `${viewportWidth}px`);
+        }
+      };
+
+      syncViewportWidth();
+      window.addEventListener('load', syncViewportWidth, { once: true });
+      window.addEventListener('resize', syncViewportWidth, { passive: true });
+      window.addEventListener('orientationchange', syncViewportWidth, { passive: true });
+      window.visualViewport?.addEventListener('resize', syncViewportWidth, { passive: true });
+      requestAnimationFrame(() => requestAnimationFrame(syncViewportWidth));
+    })();
+  </script>
 
   <title>Auto Usate Marcianise | Moto Usate Caserta | DP CARS</title>
   <meta name="description" content="Cerchi auto usate a Marcianise o moto usate a Caserta? DP CARS: vendita auto, km0 e moto garantite. Finanziamenti su misura e permuta usato.">
@@ -170,7 +193,10 @@
         }
     </style>
     <style>
-        html { overflow-x: hidden; }
+        html {
+            overflow-x: hidden;
+            --app-viewport-width: 100vw;
+        }
         @supports (overflow-x: clip) { html { overflow-x: clip; } }
         body {
             background: var(--bs-body-bg);
@@ -179,6 +205,7 @@
             overflow-x: hidden;
             padding-top: 75px;
         }
+        @supports (overflow-x: clip) { body { overflow-x: clip; } }
         #silktide-wrapper {
             left: 0 !important;
             right: 0 !important;
@@ -195,8 +222,18 @@
         * { box-sizing: border-box; }
 
         /* NAVBAR */
-        .main-header { z-index: 1050; }
-        .navbar.fixed-top { left: 0; right: 0; }
+        .main-header {
+            z-index: 1050;
+            width: var(--app-viewport-width);
+            max-width: 100%;
+            overflow-x: clip;
+        }
+        .navbar.fixed-top {
+            left: 0;
+            right: 0;
+            width: var(--app-viewport-width);
+            max-width: 100%;
+        }
         .navbar {
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -303,6 +340,8 @@
             display: flex; align-items: center; justify-content: center;
             background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
             overflow: hidden;
+            width: var(--app-viewport-width);
+            max-width: 100%;
         }
         .hero-video {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
