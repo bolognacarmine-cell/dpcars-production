@@ -268,6 +268,10 @@ function openDetails(v) {
         <strong>Contattaci in privato per disponibilita, condizioni e tutti i dettagli del veicolo.</strong>
         <br>
         Ti aspettiamo in sede da DP CARS per visionarlo da vicino e ricevere una consulenza dedicata.
+        <br>
+        <a href="https://wa.me/393333330834" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        ·
+        <a href="tel:+393333330834">Chiama ora</a>
       </div>
     `
     : '';
