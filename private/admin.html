@@ -801,6 +801,40 @@ document.getElementById('select-stato-vendita').addEventListener('change', funct
   }
 });
 
+const formVeicolo = document.getElementById('form-veicolo');
+const prezzoInput = formVeicolo.querySelector('[name="prezzo"]');
+const descrizioniInput = formVeicolo.querySelector('[name="descrizioni"]');
+const PRICE_ON_REQUEST_NOTE = "Per disponibilita, condizioni e tutte le informazioni sul veicolo, utilizza i pulsanti Chiama e/o WhatsApp: ti risponderemo rapidamente con tutti i dettagli. Ti aspettiamo anche in sede da DP CARS per una consulenza dedicata.";
+
+function syncPriceOnRequestNote() {
+  const rawPrice = prezzoInput?.value?.trim() || "";
+  const isPriceOnRequest = rawPrice !== "" && Number(rawPrice) === 0;
+  const currentDescription = descrizioniInput.value.trim();
+  const hasAutoNote = descrizioniInput.value.includes(PRICE_ON_REQUEST_NOTE);
+
+  if (isPriceOnRequest) {
+    if (!hasAutoNote) {
+      descrizioniInput.value = currentDescription
+        ? `${currentDescription}\n\n${PRICE_ON_REQUEST_NOTE}`
+        : PRICE_ON_REQUEST_NOTE;
+      descrizioniInput.dataset.autoPriceNote = 'true';
+    }
+    return;
+  }
+
+  if (descrizioniInput.dataset.autoPriceNote === 'true' && hasAutoNote) {
+    descrizioniInput.value = descrizioniInput.value
+      .replace(PRICE_ON_REQUEST_NOTE, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  delete descrizioniInput.dataset.autoPriceNote;
+}
+
+prezzoInput.addEventListener('input', syncPriceOnRequestNote);
+prezzoInput.addEventListener('change', syncPriceOnRequestNote);
+
 // ==============================
 // AUTH & SESSION
 // ==============================
@@ -1003,6 +1037,7 @@ async function editVeicolo(id) {
       const input = form.querySelector(`[name="${key}"]`);
       if (input && input.type !== 'file') input.value = v[key];
     });
+    syncPriceOnRequestNote();
 
     // Gestione visibilità campo "mostraVenduto" in modifica
     const labelMostra = document.getElementById('label-mostra-venduto');
@@ -1034,6 +1069,7 @@ document.getElementById('form-veicolo').addEventListener('submit', async e => {
     if (res.status === 401 || res.status === 403) logout();
     else if (res.ok) {
       e.target.reset();
+      delete descrizioniInput.dataset.autoPriceNote;
       delete e.target.dataset.editId;
       submitBtn.textContent = '🏎️ INSERISCI VEICOLO F1';
       caricaVeicoli();
