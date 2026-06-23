@@ -347,14 +347,67 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: 0; background: #000;
         }
-        .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 1; }
-        .hero-content { position: relative; z-index: 4; padding: 2rem 1rem; max-width: 900px; text-align: center; }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.36) 0%, rgba(0, 0, 0, 0.44) 30%, rgba(0, 0, 0, 0.62) 100%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            padding: 2rem 1rem;
+            max-width: 900px;
+            text-align: center;
+        }
         .hero-content h1 {
             font-size: 4.5rem; font-weight: 900; margin-bottom: 1rem;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 3px 6px rgba(0, 0, 0, 1);
         }
         .hero-accent { color: var(--primary-sport); text-shadow: 0 0 40px rgba(255, 23, 68, 0.6); }
-        .hero-content .lead { font-size: 1.3rem; opacity: 0.95; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); }
+        .hero-content .lead {
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.2rem;
+            opacity: 0.96;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        .hero-actions { margin-top: 2.75rem; }
+        .hero-content h1,
+        .hero-content .lead,
+        .hero-actions {
+            opacity: 0;
+            transform: translateY(22px);
+            animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .hero-content .lead { animation-delay: 0.18s; }
+        .hero-actions { animation-delay: 0.34s; }
+
+        @keyframes heroFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-content h1,
+            .hero-content .lead,
+            .hero-actions {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
 
         @media (max-width: 991px) {
             .hero { padding-top: 100px; min-height: calc(100vh - 100px); }
@@ -814,12 +867,12 @@ window.silktideConsentManagerConfig = {
         <!-- Hero Content -->
         <div class="hero-content">
             <h1 id="hero-heading">
-                SELEZIONE, TRASPARENZA E PASSIONE SU STRADA
+                La tua prossima <span class="hero-accent">auto</span> parte da qui
             </h1>
             <p class="lead mt-3">
-                Auto usate a Marcianise e moto usate a Caserta, selezionate con cura da DP CARS.
+                Selezione accurata, trasparenza reale e passione autentica per ogni veicolo.
             </p>
-            <div class="mt-5 d-flex justify-content-center gap-3 flex-wrap">
+            <div class="hero-actions d-flex justify-content-center gap-3 flex-wrap">
                 <a href="#inventory" class="btn btn-primary btn-lg px-5">
                     <i class="fas fa-car me-2"></i>Sfoglia Garage
                 </a>
