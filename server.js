@@ -274,6 +274,23 @@ app.get('/sitemap.xml', async (req, res) => {
     console.error("SITEMAP: errore recupero articoli blog:", err.message);
   }
 
+  let veicoli = [];
+  try {
+    const Vehicle = require("./models/Vehicle");
+    veicoli = await Vehicle.find(
+      {
+        slug: { $exists: true, $ne: null },
+        $or: [
+          { statoVendita: { $ne: "venduto" } },
+          { statoVendita: "venduto", mostraVenduto: true },
+        ],
+      },
+      "slug updatedAt"
+    ).lean();
+  } catch (err) {
+    console.error("SITEMAP: errore recupero veicoli:", err.message);
+  }
+
   const esc = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -291,6 +308,13 @@ app.get('/sitemap.xml', async (req, res) => {
     const d = post.data ? new Date(post.data) : null;
     const lastmod = d && !isNaN(d) ? d.toISOString().split('T')[0] : today;
     xml += `  <url>\n    <loc>${baseUrl}/blog/${esc(post.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+  });
+
+  veicoli.forEach((v) => {
+    if (!v.slug) return;
+    const d = v.updatedAt ? new Date(v.updatedAt) : null;
+    const lastmod = d && !isNaN(d) ? d.toISOString().split('T')[0] : today;
+    xml += `  <url>\n    <loc>${baseUrl}/veicolo/${esc(v.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
   });
 
   xml += `</urlset>\n`;
@@ -317,6 +341,9 @@ app.use("/api/config", require("./routes/config"));
 
 // Pagine articolo blog renderizzate lato server (SEO): /blog/:slug
 app.use("/blog", require("./routes/blogPage"));
+
+// Pagine scheda veicolo renderizzate lato server (SEO): /veicolo/:slug
+app.use("/veicolo", require("./routes/vehiclePage"));
 
 // ==========================
 // TEST ROUTE

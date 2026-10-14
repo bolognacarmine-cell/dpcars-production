@@ -50,6 +50,21 @@ const uploadToCloudinary = (fileBuffer) => {
 };
 
 // -------------------
+// SLUG BACKFILL (veicoli storici senza slug)
+// -------------------
+async function backfillSlugs(veicoli) {
+  const missing = veicoli.filter((v) => !v.slug);
+  if (!missing.length) return;
+  await Promise.all(
+    missing.map((v) =>
+      Vehicle.ensureSlug(v).catch((err) =>
+        console.warn("⚠️ Backfill slug fallito:", err.message)
+      )
+    )
+  );
+}
+
+// -------------------
 // VALIDATION RULES
 // -------------------
 const vehicleValidationRules = [
@@ -73,6 +88,7 @@ router.get("/", async (req, res) => {
       ]
     };
     const veicoli = await Vehicle.find(query).sort({ createdAt: -1 });
+    await backfillSlugs(veicoli);
     res.json(veicoli);
   } catch (err) {
     console.error("💥 ERRORE GET /veicoli:", err);

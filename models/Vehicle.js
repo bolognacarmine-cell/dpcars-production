@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { uniqueVehicleSlug } = require("../utils/slug");
 
 // -------------------
 // IMAGE SCHEMA
@@ -36,6 +37,12 @@ const VehicleSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+
+    slug: {
+      type: String,
+      trim: true,
+      lowercase: true,
     },
 
     versione: {
@@ -143,11 +150,36 @@ const VehicleSchema = new mongoose.Schema(
 );
 
 // -------------------
+// SLUG AUTO (solo alla creazione: lo slug resta stabile per SEO)
+// -------------------
+VehicleSchema.pre("validate", async function (next) {
+  if (this.isNew && !this.slug) {
+    try {
+      this.slug = await uniqueVehicleSlug(this.constructor, this);
+    } catch (err) {
+      return next(err);
+    }
+  }
+  next();
+});
+
+// -------------------
+// BACKFILL: genera lo slug per veicoli storici privi di slug
+// -------------------
+VehicleSchema.statics.ensureSlug = async function (vehicle) {
+  if (!vehicle || vehicle.slug) return vehicle.slug;
+  vehicle.slug = await uniqueVehicleSlug(this, vehicle);
+  await vehicle.save();
+  return vehicle.slug;
+};
+
+// -------------------
 // INDEX per performance
 // -------------------
 VehicleSchema.index({ createdAt: -1 });
 VehicleSchema.index({ statoVendita: 1 });
 VehicleSchema.index({ marca: 1, modello: 1 });
+VehicleSchema.index({ slug: 1 }, { unique: true, sparse: true });
 
 // -------------------
 // EXPORT
