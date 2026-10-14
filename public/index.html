@@ -1712,7 +1712,8 @@ function renderizzaArticoli(posts) {
     }
     
     return `
-      <div class="col-lg-4 col-md-6" onclick="apriArticolo('${post.slug}')" style="cursor:pointer;">
+      <div class="col-lg-4 col-md-6">
+        <a href="/blog/${encodeURIComponent(post.slug)}" class="text-decoration-none text-white d-block h-100">
         <div class="card h-100 shadow bg-dark border-0 text-white overflow-hidden blog-card-hover">
           ${immagine}
           <div class="card-body d-flex flex-column p-4">
@@ -1720,9 +1721,10 @@ function renderizzaArticoli(posts) {
             <h3 class="card-title h5 mb-3">${post.titolo}</h3>
             <p class="card-text-preview small opacity-85 flex-grow-1">${preview}</p>
             <small class="text-muted mt-auto">${new Date(post.data).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'})}</small>
-            <button class="btn btn-outline-danger btn-sm mt-2 w-100">Leggi tutto l'articolo</button>
+            <span class="btn btn-outline-danger btn-sm mt-2 w-100">Leggi tutto l'articolo</span>
           </div>
         </div>
+        </a>
       </div>
     `;
   }).join('');

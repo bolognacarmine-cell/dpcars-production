@@ -13,6 +13,27 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Articoli del Blog -->
+  <url>
+    <loc>https://www.dpcars.it/blog/migliori-auto-usate-marcianise-2026</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.dpcars.it/blog/guida-acquisto-auto-usate-caserta</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.dpcars.it/blog/finanziamenti-auto-marcianise</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.dpcars.it/permuta.html</loc>
     <lastmod>2026-06-01</lastmod>

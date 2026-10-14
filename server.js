@@ -313,6 +313,9 @@ app.use("/api/dpcars", require("./routes/dpcars1"));
 app.use("/api/permuta", require("./routes/permuta"));
 app.use("/api/config", require("./routes/config"));
 
+// Pagine articolo blog renderizzate lato server (SEO): /blog/:slug
+app.use("/blog", require("./routes/blogPage"));
+
 // ==========================
 // TEST ROUTE
 // ==========================
@@ -344,13 +347,32 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get("*any", (req, res) => {
-  if (!req.path.match(/^\/(api|admin|uploads|veicoli|robots\.txt|sitemap\.xml)/) && 
-      !req.path.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|xml|txt)$/)) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  } else {
-    res.status(404).json({ error: 'Risorsa non trovata' });
-  }
+// ==========================
+// 404 HANDLER (niente soft-404)
+// ==========================
+
+app.use((req, res) => {
+  res
+    .status(404)
+    .set("X-Robots-Tag", "noindex, follow")
+    .type("html")
+    .send(`<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagina non trovata | DP CARS</title>
+  <meta name="robots" content="noindex, follow">
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;text-align:center;padding:5rem 1rem;">
+  <h1 style="color:#e11d48;font-size:2.5rem;margin-bottom:1rem;">404 &mdash; Pagina non trovata</h1>
+  <p style="color:#bbb;margin-bottom:2rem;">La pagina che cerchi non esiste o &egrave; stata spostata.</p>
+  <p>
+    <a href="/" style="color:#60a5fa;margin:0 1rem;text-decoration:none;">Torna alla Home</a>
+    <a href="/blog.html" style="color:#60a5fa;margin:0 1rem;text-decoration:none;">Vai al Blog</a>
+  </p>
+</body>
+</html>`);
 });
 
 // ==========================
