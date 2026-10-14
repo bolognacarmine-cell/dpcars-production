@@ -152,15 +152,10 @@ const VehicleSchema = new mongoose.Schema(
 // -------------------
 // SLUG AUTO (solo alla creazione: lo slug resta stabile per SEO)
 // -------------------
-VehicleSchema.pre("validate", async function (next) {
+VehicleSchema.pre("validate", async function () {
   if (this.isNew && !this.slug) {
-    try {
-      this.slug = await uniqueVehicleSlug(this.constructor, this);
-    } catch (err) {
-      return next(err);
-    }
+    this.slug = await uniqueVehicleSlug(this.constructor, this);
   }
-  next();
 });
 
 // -------------------
