@@ -252,49 +252,51 @@ app.get('/robots.txt', (req, res) => {
 });
 
 app.get('/sitemap.xml', async (req, res) => {
+  const baseUrl = "https://www.dpcars.it";
+  const today = new Date().toISOString().split('T')[0];
+
+  const staticPages = [
+    { loc: `${baseUrl}/`, changefreq: 'daily', priority: '1.0', lastmod: '2026-06-23' },
+    { loc: `${baseUrl}/blog.html`, changefreq: 'weekly', priority: '0.8', lastmod: '2026-06-01' },
+    { loc: `${baseUrl}/permuta.html`, changefreq: 'monthly', priority: '0.7', lastmod: '2026-06-01' },
+    { loc: `${baseUrl}/mondo-auto.html`, changefreq: 'monthly', priority: '0.6', lastmod: '2026-04-26' },
+    { loc: `${baseUrl}/guida-auto-usate-marcianise.html`, changefreq: 'monthly', priority: '0.6', lastmod: '2026-04-12' },
+    { loc: `${baseUrl}/vantaggi/qualita-garantita.html`, changefreq: 'monthly', priority: '0.5', lastmod: '2026-06-01' },
+    { loc: `${baseUrl}/vantaggi/finanziamenti.html`, changefreq: 'monthly', priority: '0.5', lastmod: '2026-06-01' },
+    { loc: `${baseUrl}/vantaggi/assistenza-post-vendita.html`, changefreq: 'monthly', priority: '0.5', lastmod: '2026-06-01' },
+  ];
+
+  let posts = [];
   try {
-    const Vehicle = require("./models/Vehicle");
-    // Recupera solo i veicoli non venduti
-    const vehicles = await Vehicle.find({ statoVendita: { $ne: "venduto" } }).lean();
-    
-    const baseUrl = "https://www.dpcars.it";
-    const today = new Date().toISOString().split('T')[0];
-
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Pagine Statiche Principali -->
-  <url><loc>${baseUrl}/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>${baseUrl}/#inventory</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>${baseUrl}/permuta.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>${baseUrl}/vantaggi/finanziamenti.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>${baseUrl}/vantaggi/qualita-garantita.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>${baseUrl}/vantaggi/assistenza-post-vendita.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>${baseUrl}/blog.html</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>${baseUrl}/#contact</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
-
-    // Aggiungi dinamicamente i veicoli (slug o id)
-    // Nota: poiché il sito è una Single Page App che usa i filtri Vue, 
-    // potresti non avere pagine di dettaglio separate. 
-    // Se avrai pagine tipo /veicolo/:id, scommenta sotto:
-    /*
-    vehicles.forEach(v => {
-      xml += `
-  <url>
-    <loc>${baseUrl}/veicolo/${v._id}</loc>
-    <lastmod>${v.updatedAt ? v.updatedAt.toISOString().split('T')[0] : today}</lastmod>
-    <priority>0.8</priority>
-  </url>`;
-    });
-    */
-
-    xml += `\n</urlset>`;
-
-    res.header('Content-Type', 'application/xml');
-    res.send(xml);
+    const Blog = require("./models/Blog");
+    posts = await Blog.find({}, 'slug data').sort({ data: -1 }).lean();
   } catch (err) {
-    console.error("❌ ERRORE GENERAZIONE SITEMAP:", err);
-    res.status(500).send("Errore sitemap");
+    console.error("SITEMAP: errore recupero articoli blog:", err.message);
   }
+
+  const esc = (s) => String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+  staticPages.forEach((p) => {
+    xml += `  <url>\n    <loc>${p.loc}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>\n`;
+  });
+
+  posts.forEach((post) => {
+    if (!post.slug) return;
+    const d = post.data ? new Date(post.data) : null;
+    const lastmod = d && !isNaN(d) ? d.toISOString().split('T')[0] : today;
+    xml += `  <url>\n    <loc>${baseUrl}/blog/${esc(post.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+  });
+
+  xml += `</urlset>\n`;
+
+  res.header('Content-Type', 'application/xml');
+  res.send(xml);
 });
 
 // ==========================
