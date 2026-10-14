@@ -5,8 +5,8 @@ Ultimo aggiornamento: 14 ottobre 2026
 ## Repository
 - Repo: `https://github.com/bolognacarmine-cell/dpcars-production.git`
 - Branch: `main`
-- Ultimo commit pubblicato su GitHub: `98f7345` (note SEO/AEO)
-- Commit locali pronti da pushare: `6974c04`, `e0c54cf`, `2b4b6cd` (vedi tabella)
+- Ultimo commit pubblicato su GitHub: `d668830` (rimozione credenziali esposte)
+- Commit locale da pushare: `5aa4505` (fix Mongoose 9 hook slug)
 - Deploy: Render fa auto-deploy ad ogni push su `main`
 - Sito: https://www.dpcars.it
 - Search Console: proprietà `https://www.dpcars.it/`
@@ -21,6 +21,9 @@ Ultimo aggiornamento: 14 ottobre 2026
 | `6974c04` | Pulizia: rimossi file spazzatura committati per errore |
 | `e0c54cf` | FAQ visibili in home (coerenti col JSON-LD FAQPage), `openingHours` come array |
 | `2b4b6cd` | Schede veicolo SSR `/veicolo/:slug` (schema Car/Motorcycle + Offer + Breadcrumb), slug auto, sitemap dinamica |
+| `de8e179` | Aggiornamento NOTE-SEO con storico veicoli/FAQ |
+| `d668830` | Rimozione `public/github.txt` (credenziali esposte) + `.gitignore` file sensibili |
+| `5aa4505` | Fix hook slug per Mongoose 9 (rimosso `next`, bloccava il save dei veicoli) |
 
 ## File toccati
 - `server.js` → route sitemap dinamica + 404 finale + mount `/veicolo` + veicoli in sitemap
@@ -65,6 +68,8 @@ curl -s https://www.dpcars.it/sitemap.xml | grep "/veicolo/" | head
   `/veicoli` (backfill automatico in `routes/veicoli.js`).
 - Il catch-all finale restituisce un VERO 404 (niente più soft-404).
 - URL non più validi (rubriche/percorsi inesistenti) ⇒ 404 corretto.
+- ⚠️ Mongoose 9: i middleware `pre`/`post` NON ricevono più `next`. Usare solo funzioni async
+  (un `next()` dentro un hook manda in errore il `save()`).
 
 ## Cosa resta da fare (quando vuoi)
 1. Search Console: riscarica `sitemap.xml` + richiedi indicizzazione di articoli e schede veicolo.
