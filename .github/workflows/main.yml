@@ -1,0 +1,54 @@
+name: Mantieni attivo DP Cars
+
+on:
+  schedule:
+    # Risveglio anticipato
+    - cron: "50 6 * * *"
+      timezone: "Europe/Rome"
+
+    # Ping regolari dalle 08:03 alle 21:53
+    - cron: "3,13,23,33,43,53 8-21 * * *"
+      timezone: "Europe/Rome"
+
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Richiesta a DP Cars con retry
+        run: |
+          URL="https://www.dpcars.it/"
+          MAX_TENTATIVI=3
+          ATTESA=120
+
+          for i in $(seq 1 $MAX_TENTATIVI); do
+            echo "DP Cars - tentativo $i di $MAX_TENTATIVI..."
+
+            if curl --location \
+                 --fail \
+                 --silent \
+                 --show-error \
+                 --connect-timeout 20 \
+                 --max-time 120 \
+                 --output /dev/null \
+                 --write-out 'HTTP %{http_code} - Tempo: %{time_total}s\n' \
+                 "$URL"; then
+              echo "Ping DP Cars riuscito."
+              exit 0
+            fi
+
+            echo "Ping DP Cars fallito."
+
+            if [ "$i" -lt "$MAX_TENTATIVI" ]; then
+              echo "Nuovo tentativo tra $ATTESA secondi..."
+              sleep "$ATTESA"
+            fi
+          done
+
+          echo "Tutti i tentativi per DP Cars sono falliti."
+          exit 1
