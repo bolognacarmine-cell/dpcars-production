@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Richiesta a DP Cars con retry
         run: |
-          URL="https://www.dpcars.it/"
+          URL="https://www.dpcars.it/api/keep-alive"
           MAX_TENTATIVI=3
           ATTESA=120
 
